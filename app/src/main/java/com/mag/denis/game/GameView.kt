@@ -1,20 +1,20 @@
 package com.mag.denis.game
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.mag.denis.game.objects.ImageGameObject
+import com.mag.denis.game.objects.FloorSet
 
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
 
     private val gameThread: GameThread
-    private var imageGameObject: ImageGameObject? = null
     private var paint: Paint
+
+    private var floorGameObjects: FloorSet? = null
 
     init {
         holder.addCallback(this)
@@ -31,21 +31,23 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
         // Game objects
-        imageGameObject = ImageGameObject(BitmapFactory.decodeResource(resources, R.drawable.ball))
+        floorGameObjects = FloorSet(resources)
 
         // Start the game thread
-        gameThread.setRunning(true)
-        gameThread.start()
+        if(!gameThread.isAlive){
+            gameThread.setRunning(true)
+            gameThread.start()
+        }
     }
 
     fun update() {
-        imageGameObject!!.update()
+        floorGameObjects?.update()
     }
 
 
     fun render(canvas: Canvas) {
         canvas.drawColor(Color.BLACK)
-        imageGameObject!!.draw(canvas, paint)
+        floorGameObjects?.draw(canvas, paint)
     }
 
     override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
