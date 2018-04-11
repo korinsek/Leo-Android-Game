@@ -1,6 +1,5 @@
-package com.mag.denis.game.objects
+package com.mag.denis.game.ui.main.objects
 
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint

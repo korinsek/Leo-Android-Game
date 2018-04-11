@@ -1,4 +1,4 @@
-package com.mag.denis.game
+package com.mag.denis.game.ui.main.view
 
 import android.content.Context
 import android.graphics.Canvas
@@ -7,7 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.mag.denis.game.objects.FloorSet
+import com.mag.denis.game.ui.main.objects.FloorSet
 
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
 

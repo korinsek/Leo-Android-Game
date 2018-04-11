@@ -1,4 +1,4 @@
-package com.mag.denis.game
+package com.mag.denis.game.ui.main.view
 
 import android.graphics.Canvas
 import android.view.SurfaceHolder

@@ -1,4 +1,4 @@
-package com.mag.denis.game.objects
+package com.mag.denis.game.ui.main.objects
 
 import android.content.res.Resources
 import android.graphics.BitmapFactory
