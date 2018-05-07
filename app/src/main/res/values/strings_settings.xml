@@ -1,0 +1,5 @@
+<resources>
+    <string name="settings_activity_title">Settings</string>
+    <string name="settings_topics">Sklopi</string>
+    <string name="settings_programming_language">Programming language</string>
+</resources>

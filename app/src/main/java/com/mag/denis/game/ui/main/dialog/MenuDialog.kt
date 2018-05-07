@@ -9,8 +9,8 @@ import com.mag.denis.game.R
 
 class MenuDialog : BaseDialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return return inflater.inflate(R.layout.dialog_menu, container)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.dialog_menu, container)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
