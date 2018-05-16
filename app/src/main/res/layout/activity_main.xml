@@ -9,43 +9,25 @@
         android:id="@+id/actionView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/actionViewBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gameView"
         app:layout_constraintHorizontal_weight="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/btnDrag1"
+        <LinearLayout
+            android:id="@+id/llActions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_squere"
-            />
-
-        <ImageView
-            android:id="@+id/btnDrag2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_squere"
-            app:layout_constraintTop_toBottomOf="@id/btnDrag1" />
-
-        <ImageView
-            android:id="@+id/btnDrag3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_squere"
-            app:layout_constraintTop_toBottomOf="@id/btnDrag2" />
+            android:orientation="vertical" />
 
         <LinearLayout
-            android:id="@+id/btnDropTarget"
-            android:layout_width="match_parent"
+            android:id="@+id/llActionHolders"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
-            android:background="@color/colorAccent"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </com.mag.denis.game.ui.main.actionview.ActionView>
 
@@ -66,4 +48,16 @@
     <!--android:background="?attr/selectableItemBackgroundBorderless"-->
     <!--android:text="MENU" />-->
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_play"
+        />
 </android.support.constraint.ConstraintLayout>

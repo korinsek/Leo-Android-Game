@@ -8,15 +8,14 @@ import android.os.Bundle
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.dialog.MenuDialog
+import com.mag.denis.game.ui.main.view.ActionImageView
+import com.mag.denis.game.ui.main.view.PlaceholderView
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-import android.widget.LinearLayout
-import android.view.ViewGroup
-
-
 
 
 class MainActivity : DaggerAppCompatActivity(), MainView {
@@ -29,35 +28,61 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        btnMenu.setOnClickListener { showMenuDialog() }
-        btnDrag1.setOnTouchListener { v, event ->
+        val actionUp = ActionImageView(this, R.drawable.ic_arrow_upward, ACTION_UP)
+        val actionRight = ActionImageView(this, R.drawable.ic_arrow_right, ACTION_RIGHT)
+        val actionLeft = ActionImageView(this, R.drawable.ic_arrow_left, ACTION_LEFT)
+        val actionDown = ActionImageView(this, R.drawable.ic_arrow_down, ACTION_DOWN)
+
+
+        llActions.addView(actionUp)
+        llActions.addView(actionRight)
+        llActions.addView(actionLeft)
+        llActions.addView(actionDown)
+
+        actionUp.setOnTouchListener { v, event ->
             getTouchListener(v, event)
         }
-        btnDrag2.setOnTouchListener { v, event ->
+        actionRight.setOnTouchListener { v, event ->
             getTouchListener(v, event)
         }
-        btnDrag3.setOnTouchListener { v, event ->
+        actionLeft.setOnTouchListener { v, event ->
             getTouchListener(v, event)
         }
-        btnDropTarget.setOnDragListener { v, event ->
-
-            val draggedView = event.localState as View
-            when (event.action) {
-                DragEvent.ACTION_DROP ->{
-                    val owner = draggedView.parent as ViewGroup
-                    owner.removeView(draggedView)
-                    val container = v as LinearLayout
-                    container.addView(draggedView)
-                    draggedView.visibility = View.VISIBLE
-                }
-                DragEvent.ACTION_DRAG_ENDED -> {
-                    draggedView.visibility = View.VISIBLE
-                }
-            }
-            true
-
+        actionDown.setOnTouchListener { v, event ->
+            getTouchListener(v, event)
         }
 
+        val placeholderView1 = PlaceholderView(this, 1)
+        val placeholderView2 = PlaceholderView(this, 2)
+        val placeholderView3 = PlaceholderView(this, 3)
+        val placeholderView4 = PlaceholderView(this, 4)
+
+        placeholderView1.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+        placeholderView2.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+        placeholderView3.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+        placeholderView4.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+        llActionHolders.addView(placeholderView1)
+        llActionHolders.addView(placeholderView2)
+        llActionHolders.addView(placeholderView3)
+        llActionHolders.addView(placeholderView4)
+
+
+
+        fabStart.setOnClickListener { presenter.onStartClick() }
+
+        presenter.onCreate(llActions.childCount)
+    }
+
+    override fun doActionsInGame(actions: List<String>) {
+        gameView.doActions(actions)
     }
 
     private fun getTouchListener(v: View, event: MotionEvent): Boolean {
@@ -71,15 +96,40 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
                     v.startDrag(data, shadowBuilder, v, 0)
                 }
 
-                v.visibility = View.INVISIBLE
+//                v.visibility = View.INVISIBLE
                 true
             }
             event.action == MotionEvent.ACTION_UP -> {
-                v.visibility = View.VISIBLE
+//                v.visibility = View.VISIBLE
                 true
             }
             else -> false
         }
+    }
+
+    private fun getDragListener(v: View, event: DragEvent): Boolean {
+        val draggedView = event.localState as ActionImageView
+        when (event.action) {
+            DragEvent.ACTION_DROP -> {
+                val owner = draggedView.parent as ViewGroup
+//                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit, v nasem primeru ga pustimo tam
+                val container = v as PlaceholderView
+                val newImageView = ActionImageView(this, draggedView.drawableId, draggedView.type)
+                newImageView.setOnClickListener {
+                    (newImageView.parent as ViewGroup).removeAllViews() //TODO remove action from presenter
+                }
+                container.removeAllViews()// Da se ne stackajo eden pod drugim, pobrisemo prejsnjega
+                container.addView(newImageView)
+                //TODO ADD action to presenter
+                presenter.addAction(draggedView.type, container.position)
+
+                draggedView.visibility = View.VISIBLE
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                draggedView.visibility = View.VISIBLE
+            }
+        }
+        return true
     }
 
     private fun showMenuDialog() {
@@ -87,6 +137,10 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
     }
 
     companion object {
+        const val ACTION_UP = "action_up"
+        const val ACTION_DOWN = "action_down"
+        const val ACTION_RIGHT = "action_right"
+        const val ACTION_LEFT = "action_left"
 
         fun newIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)

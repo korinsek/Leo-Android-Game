@@ -7,7 +7,12 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
+import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
+import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
+import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
 import com.mag.denis.game.ui.main.objects.FloorSet
+import com.mag.denis.game.ui.main.objects.GameActor
 
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
 
@@ -15,6 +20,9 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private var paint: Paint
 
     private var floorGameObjects: FloorSet? = null
+    private var actor: GameActor? = null
+    private lateinit var actions: List<String>
+    private var execActionPosition = 0
 
     init {
         holder.addCallback(this)
@@ -31,10 +39,20 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
         // Game objects
-        floorGameObjects = FloorSet(resources)
+        floorGameObjects = FloorSet(context, resources)
+        actor = GameActor(resources, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight())
+        actor?.setOnMoveListener(object : GameActor.ActorListener {
+            override fun onMove() {
+                invalidate()
+            }
+
+            override fun onAnimationEnd() {
+                nextActionAndExecute()
+            }
+        })
 
         // Start the game thread
-        if(!gameThread.isAlive){
+        if (!gameThread.isAlive) {
             gameThread.setRunning(true)
             gameThread.start()
         }
@@ -48,6 +66,35 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     fun render(canvas: Canvas) {
         canvas.drawColor(Color.BLACK)
         floorGameObjects?.draw(canvas, paint)
+        actor?.draw(canvas, paint)
+    }
+
+    fun doActions(actions: List<String>) {
+        this.actions = actions
+        //TODO CHECK
+        if (actions.isNotEmpty()) {
+            executeCurrentAction()
+        }
+    }
+
+    private fun nextActionAndExecute(): Boolean {
+        return if (execActionPosition < actions.size - 1) {
+            execActionPosition++
+            executeCurrentAction()
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun executeCurrentAction() {
+        val action = actions[execActionPosition]
+        when (action) {
+            ACTION_UP -> actor?.moveUp()
+            ACTION_DOWN -> actor?.moveDown()
+            ACTION_RIGHT -> actor?.moveRight()
+            ACTION_LEFT -> actor?.moveLeft()
+        }
     }
 
     override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
