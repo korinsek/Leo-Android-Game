@@ -76,7 +76,8 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
 
 
 
-        fabStart.setOnClickListener { presenter.onStartClick() }
+        btStart.setOnClickListener { presenter.onStartClick() }
+        btnMenu.setOnClickListener { presenter.onMenuClick() }
 
         presenter.onCreate(llActions.childCount)
     }
@@ -105,6 +106,15 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
             }
             else -> false
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        gameView.invalidate()
+    }
+
+    override fun openMenuActivity() {
+        startActivity(MenuActivity.newIntent(this))
     }
 
     private fun getDragListener(v: View, event: DragEvent): Boolean {

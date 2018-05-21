@@ -13,49 +13,24 @@ import com.mag.denis.game.R
 
 class FloorSet(context: Context, resources: Resources) {
 
-    private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
-    private val screenHeight = Resources.getSystem().displayMetrics.heightPixels
-    private val grassDrawable = ContextCompat.getDrawable(context, R.drawable.bg_tile_yelow)!!
-    private val seaDrawable = ContextCompat.getDrawable(context, R.drawable.bg_tile_brown)!!
-    //    private val routeDrawable = ContextCompat.getDrawable(context, R.drawable.bg_tile_yelow)!!
-    private val grassBitmap = drawableToBitmap(grassDrawable)
-    private val yellowBitmap = drawableToBitmap(seaDrawable)
-    //    private val routeBitmap = drawableToBitmap(routeDrawable)
+    private val leafDrawable = ContextCompat.getDrawable(context, R.drawable.ic_leaf)!!
+    private val leafBitmap = drawableToBitmap(leafDrawable)
     private val floorGameObjects = mutableListOf<FloorGameObject>()
 
     init {
-        var lineOffset = true
-//        val rand = Random()
-//        for (y in 0..screenHeight step grassBitmap.height / 2) {
-//            lineOffset = !lineOffset
-//            for (x in 0..screenWidth step grassBitmap.width) {
-//                val value = rand.nextInt(10)
-//                if (value == 0) {
-//                    continue
-//                }
-//                val bitmap = if (value ==1) {
-//                    seaBitmap
-//                } else {
-//                    grassBitmap
-//                }
-//                val xPosition = if (lineOffset) x + grassBitmap.width / 2 else x
-//                floorGameObjects.add(FloorGameObject(xPosition.toFloat(), y.toFloat(), bitmap))
-//            }
-//        }
-
         val floorTileMargin = 2
-        for (y in grassBitmap.height..screenHeight - grassBitmap.height * 2 step grassBitmap.height + floorTileMargin) {
-            for (x in grassBitmap.width..screenWidth - grassBitmap.width step grassBitmap.width + floorTileMargin) {
 
-                val bitmap = if (y !in 200..500) {
-                    yellowBitmap
-//                    seaBitmap
-                } else {
-                    grassBitmap
-                }
-                floorGameObjects.add(FloorGameObject(x.toFloat(), y.toFloat(), bitmap))
-            }
-        }
+        var initx = 300f
+        var inity = 300f
+        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
+        initx += leafBitmap.width
+        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
+        inity += leafBitmap.height
+        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
+        inity += leafBitmap.height
+        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
+        initx += leafBitmap.width
+        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
 
     }
 
@@ -83,10 +58,19 @@ class FloorSet(context: Context, resources: Resources) {
     }
 
     fun getTileWidth(): Int {
-        return grassBitmap.width
+        return leafBitmap.width
     }
 
     fun getTileHeight(): Int {
-        return grassBitmap.height
+        return leafBitmap.height
+    }
+
+    fun getInitPosition(): Pair<Float, Float>? {
+        val first = floorGameObjects.firstOrNull()
+        return if(first!=null) {
+            Pair(first.x, first.y)
+        }else{
+            null
+        }
     }
 }

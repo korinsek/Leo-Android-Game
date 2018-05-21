@@ -18,4 +18,8 @@ class MainPresenterImpl(private val view: MainView) : MainPresenter {
     override fun addAction(actionType: String, position: Int) {
         actions[position] = actionType
     }
+
+    override fun onMenuClick() {
+        view.openMenuActivity()
+    }
 }

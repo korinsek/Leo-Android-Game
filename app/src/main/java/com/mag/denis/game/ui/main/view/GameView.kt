@@ -4,9 +4,11 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
@@ -40,7 +42,9 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
         // Game objects
         floorGameObjects = FloorSet(context, resources)
-        actor = GameActor(resources, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight())
+        val positionx = floorGameObjects?.getInitPosition()?.first ?: 0f
+        val positiony = floorGameObjects?.getInitPosition()?.second ?: 0f
+        actor = GameActor(resources, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight(), positionx, positiony)
         actor?.setOnMoveListener(object : GameActor.ActorListener {
             override fun onMove() {
                 invalidate()
@@ -64,7 +68,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
 
     fun render(canvas: Canvas) {
-        canvas.drawColor(Color.BLACK)
+        canvas.drawColor(ContextCompat.getColor(context, R.color.backgroundBlueLight))
         floorGameObjects?.draw(canvas, paint)
         actor?.draw(canvas, paint)
     }

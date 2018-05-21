@@ -10,9 +10,7 @@ import android.graphics.Paint
 import com.mag.denis.game.R
 
 
-class GameActor(resources: Resources, private val moveWidth: Int, private val moveHeight: Int) {
-    private var x: Float = moveWidth.toFloat()
-    private var y: Float = moveHeight.toFloat()
+class GameActor(resources: Resources, private val moveWidth: Int, private val moveHeight: Int, var x: Float = 0f, var y: Float = 0f) {
     private val actorBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_actor)
     private var onMoveListener: ActorListener? = null
 

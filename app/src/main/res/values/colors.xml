@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#afa100</color>
 
-    <color name="actionViewBackground">#898989</color>
+    <color name="actionViewBackground">#6b000000</color>
     <color name="actionColor">#afa100</color>
     <color name="actionStrokeColor">#847601</color>
     <color name="actionPlaceholder">#d6d6d6</color>
@@ -12,8 +12,5 @@
     <color name="transparent">@android:color/transparent</color>
     <color name="gray">#808080</color>
 
-    <color name="tileYellow">#afa100</color>
-    <color name="tileYellowStroke">#847601</color>
-    <color name="tileBrown">#783e00</color>
-    <color name="tileBrownStroke">#603100</color>
+    <color name="backgroundBlueLight">#298aba</color>
 </resources>

@@ -1,11 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_cartoon">
 
-    <Button
+    <ImageButton
+        android:id="@+id/btPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play"/>
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_play_big"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.4"
+        />
+
+    <ImageButton
+        android:id="@+id/btScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_score"
+        app:layout_constraintEnd_toStartOf="@id/btSettings"
+        app:layout_constraintTop_toTopOf="@id/btSettings"
+        app:layout_constraintBottom_toBottomOf="@id/btSettings"
+        />
+
+    <ImageButton
+        android:id="@+id/btSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintTop_toBottomOf="@id/btPlay"
+        app:layout_constraintStart_toStartOf="@id/btPlay"
+        app:layout_constraintEnd_toEndOf="@id/btPlay"
+        />
+
+    <ImageButton
+        android:id="@+id/btAbout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_about"
+        app:layout_constraintStart_toEndOf="@id/btSettings"
+        app:layout_constraintTop_toTopOf="@id/btSettings"
+        app:layout_constraintBottom_toBottomOf="@id/btSettings"
+   />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_actor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
 </android.support.constraint.ConstraintLayout>

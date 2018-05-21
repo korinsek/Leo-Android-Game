@@ -5,11 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.mag.denis.game.R
+import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 import kotlinx.android.synthetic.main.activity_finish.*
 
-class FinishActivity : AppCompatActivity(), FinishView {
+class FinishActivity : DaggerAppCompatActivity(), FinishView {
 
     @Inject lateinit var presenter: FinishPresenter
 
