@@ -15,10 +15,16 @@ import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
 import com.mag.denis.game.ui.main.objects.FloorSet
 import com.mag.denis.game.ui.main.objects.GameActor
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
 
-    private val gameThread: GameThread
+    private var gameThreadSubscription: Disposable? = null
     private var paint: Paint
 
     private var floorGameObjects: FloorSet? = null
@@ -28,7 +34,6 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     init {
         holder.addCallback(this)
-        gameThread = GameThread(holder, this)
 
         paint = Paint()
         paint.style = Paint.Style.FILL
@@ -56,10 +61,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         })
 
         // Start the game thread
-        if (!gameThread.isAlive) {
-            gameThread.setRunning(true)
-            gameThread.start()
-        }
+        initGameThread()
     }
 
     fun update() {
@@ -98,20 +100,39 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
             ACTION_DOWN -> actor?.moveDown()
             ACTION_RIGHT -> actor?.moveRight()
             ACTION_LEFT -> actor?.moveLeft()
+
         }
     }
 
     override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
-        var retry = true
-        while (retry) {
-            try {
-                gameThread.setRunning(false)
-                gameThread.join()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        gameThreadSubscription?.dispose()
+    }
 
-            retry = false
-        }
+    private fun initGameThread() {
+        gameThreadSubscription?.dispose()
+        gameThreadSubscription = Observable.interval(1000L / targetFPS, TimeUnit.MILLISECONDS)
+                .flatMapSingle {
+                    Single.fromCallable {
+                        val canvas = this.holder.lockCanvas() // locking the canvas allows us to draw on to it
+                        synchronized(holder) {
+                            if (canvas != null) {
+                                this.update()
+                                this.render(canvas)
+                            }
+                        }
+                        canvas
+                    }.doOnSuccess { holder.unlockCanvasAndPost(it) }
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    //nothing to do
+                }, {
+                    //TODO error
+                })
+    }
+
+    companion object {
+        private const val targetFPS = 25L
     }
 }

@@ -4,8 +4,8 @@ import android.support.v7.app.AppCompatDialogFragment
 
 abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
-    open var widthRatio = 0.8
-    open var heightRatio = 0.8
+    open var widthRatio = 0.4
+    open var heightRatio = 0.4
 
     override fun onResume() {
         val params = dialog.window.attributes

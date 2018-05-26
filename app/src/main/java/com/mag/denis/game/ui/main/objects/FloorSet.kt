@@ -18,8 +18,6 @@ class FloorSet(context: Context, resources: Resources) {
     private val floorGameObjects = mutableListOf<FloorGameObject>()
 
     init {
-        val floorTileMargin = 2
-
         var initx = 300f
         var inity = 300f
         floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))

@@ -1,20 +1,20 @@
-package com.mag.denis.game.ui.settings
+package com.mag.denis.game.ui.about
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.mag.denis.game.R
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.activity_about.*
 import javax.inject.Inject
 
-class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
+class AboutActivity : DaggerAppCompatActivity(), AboutView {
 
-    @Inject lateinit var presenter: SettingsPresenter
+    @Inject lateinit var presenter: AboutPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_about)
         btBack.setOnClickListener { presenter.onBackClicked() }
     }
 
@@ -25,7 +25,7 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
     companion object {
 
         fun newIntent(context: Context): Intent {
-            return Intent(context, SettingsActivity::class.java)
+            return Intent(context, AboutActivity::class.java)
         }
 
     }

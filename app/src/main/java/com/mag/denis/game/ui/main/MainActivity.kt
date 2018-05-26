@@ -5,14 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.mag.denis.game.R
-import com.mag.denis.game.ui.main.dialog.MenuDialog
+import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.view.ActionImageView
 import com.mag.denis.game.ui.main.view.PlaceholderView
+import com.mag.denis.game.ui.menu.MenuActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -22,7 +24,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
 
     @Inject lateinit var presenter: MainPresenter
 
-    private var menuDialog: MenuDialog? = null
+    private var messageDialog: MessageDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,7 +116,9 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
     }
 
     override fun openMenuActivity() {
-        startActivity(MenuActivity.newIntent(this))
+        val intent = MenuActivity.newIntent(this)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 
     private fun getDragListener(v: View, event: DragEvent): Boolean {
@@ -142,8 +146,8 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
         return true
     }
 
-    private fun showMenuDialog() {
-        menuDialog = MenuDialog.show(supportFragmentManager)
+    override fun showMessageDialog(@StringRes messageId: Int) {
+        messageDialog = MessageDialog.show(supportFragmentManager, messageId)
     }
 
     companion object {

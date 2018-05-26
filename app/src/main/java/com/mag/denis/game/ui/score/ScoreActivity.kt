@@ -3,12 +3,10 @@ package com.mag.denis.game.ui.score
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.mag.denis.game.R
 import dagger.android.support.DaggerAppCompatActivity
-import javax.inject.Inject
-
 import kotlinx.android.synthetic.main.activity_score.*
+import javax.inject.Inject
 
 class ScoreActivity : DaggerAppCompatActivity(), ScoreView {
 
@@ -17,6 +15,11 @@ class ScoreActivity : DaggerAppCompatActivity(), ScoreView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_score)
+        btBack.setOnClickListener { presenter.onBackClicked() }
+    }
+
+    override fun closeView() {
+        finish()
     }
 
     companion object {

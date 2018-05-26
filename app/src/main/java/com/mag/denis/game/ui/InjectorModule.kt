@@ -1,5 +1,7 @@
 package com.mag.denis.game.ui
 
+import com.mag.denis.game.ui.about.AboutActivity
+import com.mag.denis.game.ui.about.AboutModule
 import com.mag.denis.game.ui.finish.FinishActivity
 import com.mag.denis.game.ui.finish.FinishModule
 import com.mag.denis.game.ui.main.MainActivity
@@ -36,4 +38,7 @@ abstract class InjectorModule {
 
     @ActivityScope @ContributesAndroidInjector(modules = [FinishModule::class])
     abstract fun contributeFinishActivityInjector(): FinishActivity
+
+    @ActivityScope @ContributesAndroidInjector(modules = [AboutModule::class])
+    abstract fun contributeAboutActivityInjector(): AboutActivity
 }

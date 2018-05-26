@@ -1,0 +1,4 @@
+<resources>
+    <string name="error_empty_actions">Fill all actions</string>
+    <string name="error_title_message">Message</string>
+</resources>
