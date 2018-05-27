@@ -1,3 +1,4 @@
 <resources>
     <string name="main_activity_title">Magistrska</string>
+    <string name="main_message_fall_into_see">You fall into sea</string>
 </resources>

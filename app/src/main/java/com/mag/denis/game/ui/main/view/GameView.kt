@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.SurfaceHolder
@@ -32,6 +33,8 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private lateinit var actions: List<String>
     private var execActionPosition = 0
 
+    private var messageCallback: OnMessageCallback? = null
+
     init {
         holder.addCallback(this)
 
@@ -56,7 +59,11 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
             }
 
             override fun onAnimationEnd() {
-                nextActionAndExecute()
+                if (floorGameObjects!!.isPositionOnFloorSet(execActionPosition, actor!!.x, actor!!.y)) {
+                    nextActionAndExecute()
+                } else {
+                    messageCallback?.showGameMessage(R.string.main_message_fall_into_see)
+                }
             }
         })
 
@@ -100,7 +107,6 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
             ACTION_DOWN -> actor?.moveDown()
             ACTION_RIGHT -> actor?.moveRight()
             ACTION_LEFT -> actor?.moveLeft()
-
         }
     }
 
@@ -130,6 +136,14 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 }, {
                     //TODO error
                 })
+    }
+
+    fun setOnMessageCallback(callback: OnMessageCallback) {
+        messageCallback = callback
+    }
+
+    interface OnMessageCallback {
+        fun showGameMessage(@StringRes messageId: Int)
     }
 
     companion object {

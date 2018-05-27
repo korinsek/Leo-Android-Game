@@ -17,19 +17,33 @@ class FloorSet(context: Context, resources: Resources) {
     private val leafBitmap = drawableToBitmap(leafDrawable)
     private val floorGameObjects = mutableListOf<FloorGameObject>()
 
-    init {
-        var initx = 300f
-        var inity = 300f
-        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
-        initx += leafBitmap.width
-        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
-        inity += leafBitmap.height
-        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
-        inity += leafBitmap.height
-        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
-        initx += leafBitmap.width
-        floorGameObjects.add(FloorGameObject(initx, inity, leafBitmap))
+    private val level1 = listOf(
+            listOf("1", "1", "1", "1", "1"),
+            listOf("0", "0", "0", "1", "0"),
+            listOf("0", "0", "0", "1", "0"),
+            listOf("0", "1", "1", "1", "0"))
 
+    init {
+        var screenHeight = 300f //TODO get screen width
+        var screenWidth = 300f
+
+        val height = level1.size
+        val width = level1.first().size
+
+        var xPosition = screenWidth / 2 - width / 2
+        var yPosition = screenHeight / 2 - height / 2
+
+        for (row in level1) {
+            var xTmp = xPosition
+            for (tile in row) {
+                if (tile == "1") {
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBitmap))
+
+                }
+                xTmp += leafBitmap.width
+            }
+            yPosition += leafBitmap.height
+        }
     }
 
     fun draw(canvas: Canvas, paint: Paint) {
@@ -65,10 +79,23 @@ class FloorSet(context: Context, resources: Resources) {
 
     fun getInitPosition(): Pair<Float, Float>? {
         val first = floorGameObjects.firstOrNull()
-        return if(first!=null) {
+        return if (first != null) {
             Pair(first.x, first.y)
-        }else{
+        } else {
             null
+        }
+    }
+
+    fun isPositionOnFloorSet(numAction: Int, x: Float, y: Float): Boolean {
+        return if (numAction < floorGameObjects.size) {
+            val floorTile = floorGameObjects[numAction + 1]
+            val imageWidthBounds = floorTile.image.width / 2
+            val imageHeightBounds = floorTile.image.height / 2
+            val result = x > (floorTile.x - imageWidthBounds) && x < (floorTile.x + imageWidthBounds)
+                    && y > (floorTile.y - imageHeightBounds) && y < (floorTile.y + imageHeightBounds)
+            result
+        } else {
+            false
         }
     }
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.view.ActionImageView
+import com.mag.denis.game.ui.main.view.GameView
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import com.mag.denis.game.ui.menu.MenuActivity
 import dagger.android.support.DaggerAppCompatActivity
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : DaggerAppCompatActivity(), MainView {
+class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCallback {
 
     @Inject lateinit var presenter: MainPresenter
 
@@ -81,6 +82,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
         btStart.setOnClickListener { presenter.onStartClick() }
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 
+        gameView.setOnMessageCallback(this)
         presenter.onCreate(llActions.childCount)
     }
 
@@ -144,6 +146,10 @@ class MainActivity : DaggerAppCompatActivity(), MainView {
             }
         }
         return true
+    }
+
+    override fun showGameMessage(messageId: Int) {
+        showMessageDialog(messageId)
     }
 
     override fun showMessageDialog(@StringRes messageId: Int) {
