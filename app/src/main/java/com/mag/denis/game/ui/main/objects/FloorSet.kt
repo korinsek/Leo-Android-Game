@@ -88,12 +88,14 @@ class FloorSet(context: Context, resources: Resources) {
 
     fun isPositionOnFloorSet(numAction: Int, x: Float, y: Float): Boolean {
         return if (numAction < floorGameObjects.size) {
+
             val floorTile = floorGameObjects[numAction + 1]
             val imageWidthBounds = floorTile.image.width / 2
             val imageHeightBounds = floorTile.image.height / 2
-            val result = x > (floorTile.x - imageWidthBounds) && x < (floorTile.x + imageWidthBounds)
-                    && y > (floorTile.y - imageHeightBounds) && y < (floorTile.y + imageHeightBounds)
-            result
+            floorGameObjects.firstOrNull {
+                x > (it.x - imageWidthBounds) && x < (it.x + imageWidthBounds)
+                        && y > (it.y - imageHeightBounds) && y < (it.y + imageHeightBounds)
+            } != null
         } else {
             false
         }
