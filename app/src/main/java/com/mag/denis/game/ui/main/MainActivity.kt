@@ -14,6 +14,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.view.ActionImageView
 import com.mag.denis.game.ui.main.view.GameView
+import com.mag.denis.game.ui.main.view.LoopView
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import com.mag.denis.game.ui.menu.MenuActivity
 import dagger.android.support.DaggerAppCompatActivity
@@ -42,6 +43,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         llActions.addView(actionLeft)
         llActions.addView(actionDown)
 
+
         actionUp.setOnTouchListener { v, event ->
             getTouchListener(v, event)
         }
@@ -55,6 +57,27 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
             getTouchListener(v, event)
         }
 
+        //Loop
+        val loop1 = LoopView(this)
+        val loop2 = LoopView(this)
+        llActions.addView(loop1)
+        llActions.addView(loop2)
+
+        loop1.setOnTouchListener { v, event ->
+            getTouchListener(v, event)
+        }
+        loop1.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+
+        loop2.setOnTouchListener { v, event ->
+            getTouchListener(v, event)
+        }
+        loop2.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+
+        //Placeholders
         val placeholderView1 = PlaceholderView(this, 1)
         val placeholderView2 = PlaceholderView(this, 2)
         val placeholderView3 = PlaceholderView(this, 3)
@@ -124,18 +147,35 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
     }
 
     private fun getDragListener(v: View, event: DragEvent): Boolean {
+        if (event.action == DragEvent.ACTION_DROP || event.action == DragEvent.ACTION_DRAG_ENDED) {
+            when (event.localState) {
+                is ActionImageView ->
+                    when (v) {
+                        is PlaceholderView -> handleActionToPlaceholderDrag(v, event)
+                        is LoopView -> handleActionToLoopDrag(v, event)
+                    }
+                is LoopView -> when (v) {
+                    is PlaceholderView -> handleLoopToPlaceholderDrag (v, event)
+                    is LoopView -> handleLoopToLoopDrag(v, event)
+                }
+            }
+        }
+        return true
+    }
+
+    private fun handleActionToPlaceholderDrag(v: View, event: DragEvent) {
         val draggedView = event.localState as ActionImageView
         when (event.action) {
             DragEvent.ACTION_DROP -> {
                 val owner = draggedView.parent as ViewGroup
-//                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit, v nasem primeru ga pustimo tam
+                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
                 val container = v as PlaceholderView
-                val newImageView = ActionImageView(this, draggedView.drawableId, draggedView.type)
-                newImageView.setOnClickListener {
-                    (newImageView.parent as ViewGroup).removeAllViews() //TODO remove action from presenter
-                }
-                container.removeAllViews()// Da se ne stackajo eden pod drugim, pobrisemo prejsnjega
-                container.addView(newImageView)
+//                val newImageView = ActionImageView(this, draggedView.drawableId, draggedView.type)
+//                newImageView.setOnClickListener {
+//                    (newImageView.parent as ViewGroup).removeAllViews() //TODO remove action from presenter
+//                }
+//                container.removeAllViews()// Da se ne stackajo eden pod drugim, pobrisemo prejsnjega
+                container.addView(draggedView)
                 //TODO ADD action to presenter
                 presenter.addAction(draggedView.type, container.position)
 
@@ -145,7 +185,63 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 draggedView.visibility = View.VISIBLE
             }
         }
-        return true
+    }
+
+    private fun handleLoopToPlaceholderDrag(v: View, event: DragEvent) {
+        val draggedView = event.localState as LoopView
+        when (event.action) {
+            DragEvent.ACTION_DROP -> {
+                val owner = draggedView.parent as ViewGroup
+                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
+                val container = v as PlaceholderView
+                container.addView(draggedView)
+                //TODO ADD action to presenter
+//                presenter.addAction(draggedView.type, container.position)
+
+                draggedView.visibility = View.VISIBLE
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                draggedView.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun handleActionToLoopDrag(v: View, event: DragEvent) {
+        val draggedView = event.localState as ActionImageView
+        when (event.action) {
+            DragEvent.ACTION_DROP -> {
+                val owner = draggedView.parent as ViewGroup
+                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit, v nasem primeru ga pustimo tam
+                val container = v as LoopView
+                container.addView(draggedView)
+                //TODO ADD action to presenter
+//                presenter.addAction(draggedView.type, container.position)
+
+                draggedView.visibility = View.VISIBLE
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                draggedView.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun handleLoopToLoopDrag(v: View, event: DragEvent) {
+        val draggedView = event.localState as LoopView
+        when (event.action) {
+            DragEvent.ACTION_DROP -> {
+                val owner = draggedView.parent as ViewGroup
+                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
+                val container = v as LoopView
+                container.addView(draggedView)
+                //TODO ADD action to presenter
+//                presenter.addAction(draggedView.type, container.position)
+
+                draggedView.visibility = View.VISIBLE
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                draggedView.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun showGameMessage(messageId: Int) {
