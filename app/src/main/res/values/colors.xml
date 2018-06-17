@@ -14,4 +14,7 @@
     <color name="white">#fff</color>
 
     <color name="backgroundBlueLight">#298aba</color>
+
+    <color name="loopColor">#af4c00</color>
+    <color name="conditionColor">#0061b6</color>
 </resources>

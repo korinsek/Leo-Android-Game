@@ -1,16 +1,18 @@
 package com.mag.denis.game.ui.main.view
 
 import android.content.Context
-import android.view.Gravity
+import android.support.constraint.ConstraintLayout
 import android.widget.LinearLayout
 import com.mag.denis.game.R
+import kotlinx.android.synthetic.main.loop.view.*
 
-class LoopView(context: Context) : LinearLayout(context) {
+class LoopView(context: Context) : ConstraintLayout(context) {
 
     init {
-        orientation = LinearLayout.VERTICAL
-        gravity = Gravity.CENTER
-        this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        setBackgroundResource(R.drawable.ic_grass)
+        inflate(context, R.layout.loop, this);
+    }
+
+    fun getPlaceholder(): LinearLayout {
+        return llLoopPlaceholder
     }
 }
