@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.dialog.MessageDialog
+import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.*
 import com.mag.denis.game.ui.menu.MenuActivity
 import dagger.android.support.DaggerAppCompatActivity
@@ -41,6 +42,9 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         llActions.addView(actionLeft)
         llActions.addView(actionDown)
 
+        llActions.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
 
         actionUp.setOnTouchListener { v, event ->
             getTouchListener(v, event)
@@ -93,20 +97,21 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
             getDragListener(v, event)
         }
 
-        btStart.setOnClickListener { presenter.onStartClick() }
+        btStart.setOnClickListener { presenter.onStartClick(llActionHolder) }
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 
         gameView.setOnMessageCallback(this)
         presenter.onCreate(llActions.childCount)
     }
 
-    override fun doActionsInGame(actions: List<String>) {
+    override fun doActionsInGame(actions: List<Command>) {
         gameView.doActions(actions)
     }
 
     private fun getTouchListener(v: View, event: MotionEvent): Boolean {
         return when {
             event.action == MotionEvent.ACTION_DOWN -> {
+                v.visibility = View.GONE
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = View.DragShadowBuilder(v)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -114,12 +119,9 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 } else {
                     v.startDrag(data, shadowBuilder, v, 0)
                 }
-
-//                v.visibility = View.INVISIBLE
                 true
             }
             event.action == MotionEvent.ACTION_UP -> {
-//                v.visibility = View.VISIBLE
                 true
             }
             else -> false
@@ -168,15 +170,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 val owner = draggedView.parent as ViewGroup
                 owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
                 val container = v as PlaceholderView
-//                val newImageView = ActionImageView(this, draggedView.drawableId, draggedView.type)
-//                newImageView.setOnClickListener {
-//                    (newImageView.parent as ViewGroup).removeAllViews() //TODO remove action from presenter
-//                }
-//                container.removeAllViews()// Da se ne stackajo eden pod drugim, pobrisemo prejsnjega
                 container.addView(draggedView)
-                //TODO ADD action to presenter
-//                presenter.addAction(draggedView.type, container.position)
-
                 draggedView.visibility = View.VISIBLE
             }
             DragEvent.ACTION_DRAG_ENDED -> {
@@ -193,9 +187,6 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 owner.removeView(draggedView)
                 val container = v as LinearLayout
                 container.addView(draggedView)
-                //TODO ADD action to presenter
-//                presenter.addAction(draggedView.type, container.position)
-
                 draggedView.visibility = View.VISIBLE
             }
             DragEvent.ACTION_DRAG_ENDED -> {
@@ -225,7 +216,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         when (e.action) {
             DragEvent.ACTION_DROP -> {
                 val container = v as LinearLayout
-                if(draggedView != container.parent){
+                if (draggedView != container.parent) {
                     val owner = draggedView.parent as ViewGroup
                     owner.removeView(draggedView)
                     container.addView(draggedView)
@@ -266,8 +257,6 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
                 val container = v as PlaceholderView
                 container.addView(draggedView)
-                //TODO ADD action to presenter
-//                presenter.addAction(draggedView.type, container.position)
 
                 draggedView.visibility = View.VISIBLE
             }
@@ -285,9 +274,6 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit, v nasem primeru ga pustimo tam
                 val container = v as LoopView
                 container.getPlaceholder().addView(draggedView)
-                //TODO ADD action to presenter
-//                presenter.addAction(draggedView.type, container.position)
-
                 draggedView.visibility = View.VISIBLE
             }
             DragEvent.ACTION_DRAG_ENDED -> {
@@ -306,9 +292,6 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                     owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
                     container.getPlaceholder().addView(draggedView)
                 }
-                //TODO ADD action to presenter
-//                presenter.addAction(draggedView.type, container.position)
-
                 draggedView.visibility = View.VISIBLE
             }
             DragEvent.ACTION_DRAG_ENDED -> {
@@ -325,9 +308,6 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit, v nasem primeru ga pustimo tam
                 val container = v as LoopView
                 container.getPlaceholder().addView(draggedView)
-                //TODO ADD action to presenter
-//                presenter.addAction(draggedView.type, container.position)
-
                 draggedView.visibility = View.VISIBLE
             }
             DragEvent.ACTION_DRAG_ENDED -> {

@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 
-class PlaceholderView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+class PlaceholderView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs), ActionView {
 
     init {
         //        orientation = LinearLayout.VERTICAL

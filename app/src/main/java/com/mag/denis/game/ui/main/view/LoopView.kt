@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import com.mag.denis.game.R
 import kotlinx.android.synthetic.main.loop.view.*
 
-class LoopView(context: Context) : ConstraintLayout(context) {
+class LoopView(context: Context) : ConstraintLayout(context), ActionView {
 
     init {
         inflate(context, R.layout.loop, this);

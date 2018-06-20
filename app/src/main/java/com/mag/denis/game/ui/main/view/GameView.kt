@@ -14,6 +14,10 @@ import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
+import com.mag.denis.game.ui.main.model.Action
+import com.mag.denis.game.ui.main.model.Command
+import com.mag.denis.game.ui.main.model.Condition
+import com.mag.denis.game.ui.main.model.Loop
 import com.mag.denis.game.ui.main.objects.FloorSet
 import com.mag.denis.game.ui.main.objects.GameActor
 import io.reactivex.Observable
@@ -23,6 +27,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
+
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
 
     private var gameThreadSubscription: Disposable? = null
@@ -30,7 +35,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     private var floorGameObjects: FloorSet? = null
     private var actor: GameActor? = null
-    private lateinit var actions: List<String>
+    private lateinit var actions: List<Command>
     private var execActionPosition = 0
 
     private var messageCallback: OnMessageCallback? = null
@@ -59,9 +64,8 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
             }
 
             override fun onAnimationEnd() {
-                if (floorGameObjects!!.isPositionOnFloorSet(execActionPosition, actor!!.x, actor!!.y)) {
-                    nextActionAndExecute()
-                } else {
+                if (!floorGameObjects!!.isPositionOnFloorSet(execActionPosition, actor!!.x, actor!!.y)) {
+                    actor?.stopAnimation()
                     messageCallback?.showGameMessage(R.string.main_message_fall_into_see)
                 }
             }
@@ -82,31 +86,38 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         actor?.draw(canvas, paint)
     }
 
-    fun doActions(actions: List<String>) {
+    fun doActions(actions: List<Command>) {
         this.actions = actions
-        //TODO CHECK
         if (actions.isNotEmpty()) {
-            executeCurrentAction()
-        }
-    }
-
-    private fun nextActionAndExecute(): Boolean {
-        return if (execActionPosition < actions.size - 1) {
-            execActionPosition++
-            executeCurrentAction()
-            true
-        } else {
-            false
-        }
-    }
-
-    private fun executeCurrentAction() {
-        val action = actions[execActionPosition]
-        when (action) {
-            ACTION_UP -> actor?.moveUp()
-            ACTION_DOWN -> actor?.moveDown()
-            ACTION_RIGHT -> actor?.moveRight()
-            ACTION_LEFT -> actor?.moveLeft()
+            for (action in actions) {
+                when (action) {
+                    is Loop -> {
+                        if (action.repeat > 0) {
+                            action.repeat--
+                            doActions(action.commands)
+                            doActions(actions)
+                        }
+                    }
+                    is Condition ->{
+                        //TODO check if condition is true
+                        if(action.condition == ""){
+                            doActions(action.trueCommands)
+                        }else{
+                            doActions(action.falseCommands)
+                        }
+                    }
+                    is Action -> {
+                        when (action.type) {
+                            ACTION_UP -> actor?.moveUp()
+                            ACTION_DOWN -> actor?.moveDown()
+                            ACTION_RIGHT -> actor?.moveRight()
+                            ACTION_LEFT -> actor?.moveLeft()
+                        }
+                    }
+                    else -> {
+                    }
+                }
+            }
         }
     }
 

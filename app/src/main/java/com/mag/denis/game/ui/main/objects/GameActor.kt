@@ -1,7 +1,6 @@
 package com.mag.denis.game.ui.main.objects
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.res.Resources
 import android.graphics.BitmapFactory
@@ -10,83 +9,124 @@ import android.graphics.Paint
 import com.mag.denis.game.R
 
 
-class GameActor(resources: Resources, private val moveWidth: Int, private val moveHeight: Int, var x: Float = 0f, var y: Float = 0f) {
+class GameActor(resources: Resources, private val moveWidth: Int, private val moveHeight: Int, var x: Float = 0f, var y: Float = 0f) : Animator.AnimatorListener {
     private val actorBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_actor)
     private var onMoveListener: ActorListener? = null
+
+    private val actionList: ArrayList<String> = ArrayList()
+    private var isAnimating = false
+    private var stoped = false
 
     fun draw(canvas: Canvas, paint: Paint) {
         canvas.drawBitmap(actorBitmap, x, y, paint)
     }
 
     fun moveUp() {
-        val animator = ValueAnimator.ofFloat(y, y - moveHeight)
-        animator.duration = 1000
-        animator.addUpdateListener { animation ->
-            y = (animation.animatedValue as Float)
-            onMoveListener?.onMove()
-        }
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                onMoveListener?.onAnimationEnd()
-            }
-        })
-        animator.start()
-
+        executeAnimator(MOVE_UP)
     }
 
     fun moveDown() {
-        val animator = ValueAnimator.ofFloat(y, y + moveHeight)
-        animator.duration = 1000
-        animator.addUpdateListener { animation ->
-            y = (animation.animatedValue as Float)
-            onMoveListener?.onMove()
-        }
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                onMoveListener?.onAnimationEnd()
-            }
-        })
-        animator.start()
+        executeAnimator(MOVE_DOWN)
     }
 
     fun moveRight() {
-        val animator = ValueAnimator.ofFloat(x, x + moveWidth)
-        animator.duration = 1000
-        animator.addUpdateListener { animation ->
-            x = (animation.animatedValue as Float)
-            onMoveListener?.onMove()
-        }
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                onMoveListener?.onAnimationEnd()
-            }
-        })
-        animator.start()
+        executeAnimator(MOVE_RIGHT)
     }
 
     fun moveLeft() {
-        val animator = ValueAnimator.ofFloat(x, x - moveWidth)
-        animator.duration = 1000
-        animator.addUpdateListener { animation ->
-            x = (animation.animatedValue as Float)
-            onMoveListener?.onMove()
-        }
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                onMoveListener?.onAnimationEnd()
-            }
-        })
-        animator.start()
+        executeAnimator(MOVE_RIGHT)
     }
 
     fun setOnMoveListener(listener: ActorListener) {
         onMoveListener = listener
     }
 
+    private fun executeAnimator(action: String) {
+        actionList.add(action)
+        if (!isAnimating && actionList.isNotEmpty()) {
+            isAnimating = true
+            executeNext()
+        }
+    }
+
+    private fun executeNext() {
+        val action = actionList.first()
+        actionList.removeAt(0)
+
+        val animator = when (action) {
+            MOVE_RIGHT -> {
+                val a = ValueAnimator.ofFloat(x, x + moveWidth)
+                a.addUpdateListener { animation ->
+                    x = (animation.animatedValue as Float)
+                    onMoveListener?.onMove()
+                }
+                a
+            }
+            MOVE_LEFT -> {
+                val a = ValueAnimator.ofFloat(x, x - moveWidth)
+                a.addUpdateListener { animation ->
+                    x = (animation.animatedValue as Float)
+                    onMoveListener?.onMove()
+                }
+                a
+            }
+            MOVE_DOWN -> {
+                val a = ValueAnimator.ofFloat(y, y + moveHeight)
+                a.addUpdateListener { animation ->
+                    y = (animation.animatedValue as Float)
+                    onMoveListener?.onMove()
+                }
+                a
+            }
+            MOVE_UP -> {
+                val a = ValueAnimator.ofFloat(y, y - moveHeight)
+                a.addUpdateListener { animation ->
+                    y = (animation.animatedValue as Float)
+                    onMoveListener?.onMove()
+                }
+                a
+            }
+            else -> throw IllegalStateException("Unknown action")
+        }
+        animator.duration = 1000
+        animator.addListener(this)
+        animator.start()
+    }
 
     interface ActorListener {
         fun onMove()
         fun onAnimationEnd()
     }
 
+    override fun onAnimationEnd(animation: Animator) {
+        onMoveListener?.onAnimationEnd()
+        if (!stoped && actionList.isNotEmpty()) {
+            executeNext()
+        } else {
+            isAnimating = false
+        }
+    }
+
+    override fun onAnimationRepeat(animation: Animator?) {
+        //Nothing to do
+    }
+
+    override fun onAnimationCancel(animation: Animator?) {
+        //Nothing to do
+    }
+
+    override fun onAnimationStart(animation: Animator?) {
+        //Nothing to do
+    }
+
+    fun stopAnimation() {
+        stoped = true
+    }
+
+    companion object {
+        private const val MOVE_RIGHT = "move_right"
+        private const val MOVE_LEFT = "move_left"
+        private const val MOVE_UP = "move_up"
+        private const val MOVE_DOWN = "move_down"
+    }
 }
