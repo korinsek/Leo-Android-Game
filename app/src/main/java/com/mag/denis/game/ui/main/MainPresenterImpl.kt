@@ -5,10 +5,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.mag.denis.game.R
-import com.mag.denis.game.ui.main.model.Action
-import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.model.Condition
-import com.mag.denis.game.ui.main.model.Loop
+import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.view.ActionImageView
 import com.mag.denis.game.ui.main.view.ConditionView
 import com.mag.denis.game.ui.main.view.LoopView
@@ -53,7 +50,7 @@ class MainPresenterImpl(private val view: MainView) : MainPresenter {
                 val condition = child.findViewById<EditText>(R.id.etIfValue)?.text?.toString() ?: ""
                 val containterTrue = child.findViewById<LinearLayout>(R.id.llIfTruePlaceholder)
                 val containterFalse = child.findViewById<LinearLayout>(R.id.llIfFalsePlaceholder)
-                list.add(Condition(condition, getAllChildren(containterTrue), getAllChildren(containterFalse)))
+                list.add(IfCondition(Condition(condition, Condition.TYPE_TRUE), getAllChildren(containterTrue), getAllChildren(containterFalse)))
             } else {
                 return getAllChildren(child)
             }

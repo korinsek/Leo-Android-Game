@@ -14,10 +14,7 @@ import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
-import com.mag.denis.game.ui.main.model.Action
-import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.model.Condition
-import com.mag.denis.game.ui.main.model.Loop
+import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet
 import com.mag.denis.game.ui.main.objects.GameActor
 import io.reactivex.Observable
@@ -86,7 +83,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         actor?.draw(canvas, paint)
     }
 
-    fun doActions(actions: List<Command>) {
+    fun doActions(actions: List<Command>, conditions: Conditions? = null) {
         this.actions = actions
         if (actions.isNotEmpty()) {
             for (action in actions) {
@@ -98,20 +95,32 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                             doActions(actions)
                         }
                     }
-                    is Condition ->{
-                        //TODO check if condition is true
-                        if(action.condition == ""){
-                            doActions(action.trueCommands)
-                        }else{
-                            doActions(action.falseCommands)
+                    is IfCondition -> {
+                        val conditionsTrue = if (conditions == null) {
+                            action.condition
+                            Conditions(arrayListOf())
+                        } else {
+                            conditions
                         }
+                        conditionsTrue.conditions.add(Condition(action.condition.value, Condition.TYPE_TRUE))
+
+                        val conditionsFalse = if (conditions == null) {
+                            action.condition
+                            Conditions(arrayListOf())
+                        } else {
+                            conditions
+                        }
+                        conditionsFalse.conditions.add(Condition(action.condition.value, Condition.TYPE_FALSE))
+
+                        doActions(action.trueCommands, conditionsTrue)
+                        doActions(action.falseCommands, conditionsFalse)
                     }
                     is Action -> {
                         when (action.type) {
-                            ACTION_UP -> actor?.moveUp()
-                            ACTION_DOWN -> actor?.moveDown()
-                            ACTION_RIGHT -> actor?.moveRight()
-                            ACTION_LEFT -> actor?.moveLeft()
+                            ACTION_UP -> actor?.moveUp(conditions)
+                            ACTION_DOWN -> actor?.moveDown(conditions)
+                            ACTION_RIGHT -> actor?.moveRight(conditions)
+                            ACTION_LEFT -> actor?.moveLeft(conditions)
                         }
                     }
                     else -> {

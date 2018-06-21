@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.loop.view.*
 class LoopView(context: Context) : ConstraintLayout(context), ActionView {
 
     init {
-        inflate(context, R.layout.loop, this);
+        inflate(context, R.layout.loop, this)
     }
 
     fun getPlaceholder(): LinearLayout {

@@ -7,13 +7,14 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.mag.denis.game.R
+import com.mag.denis.game.ui.main.model.Conditions
 
 
 class GameActor(resources: Resources, private val moveWidth: Int, private val moveHeight: Int, var x: Float = 0f, var y: Float = 0f) : Animator.AnimatorListener {
     private val actorBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_actor)
     private var onMoveListener: ActorListener? = null
 
-    private val actionList: ArrayList<String> = ArrayList()
+    private val actionList: ArrayList<ActorAction> = ArrayList()
     private var isAnimating = false
     private var stoped = false
 
@@ -21,27 +22,27 @@ class GameActor(resources: Resources, private val moveWidth: Int, private val mo
         canvas.drawBitmap(actorBitmap, x, y, paint)
     }
 
-    fun moveUp() {
-        executeAnimator(MOVE_UP)
+    fun moveUp(conditions: Conditions?) {
+        executeAnimator(ActorAction(MOVE_UP, conditions))
     }
 
-    fun moveDown() {
-        executeAnimator(MOVE_DOWN)
+    fun moveDown(conditions: Conditions?) {
+        executeAnimator(ActorAction(MOVE_DOWN, conditions))
     }
 
-    fun moveRight() {
-        executeAnimator(MOVE_RIGHT)
+    fun moveRight(conditions: Conditions?) {
+        executeAnimator(ActorAction(MOVE_RIGHT, conditions))
     }
 
-    fun moveLeft() {
-        executeAnimator(MOVE_RIGHT)
+    fun moveLeft(conditions: Conditions?) {
+        executeAnimator(ActorAction(MOVE_RIGHT, conditions))
     }
 
     fun setOnMoveListener(listener: ActorListener) {
         onMoveListener = listener
     }
 
-    private fun executeAnimator(action: String) {
+    private fun executeAnimator(action: ActorAction) {
         actionList.add(action)
         if (!isAnimating && actionList.isNotEmpty()) {
             isAnimating = true
@@ -53,7 +54,10 @@ class GameActor(resources: Resources, private val moveWidth: Int, private val mo
         val action = actionList.first()
         actionList.removeAt(0)
 
-        val animator = when (action) {
+        val conditions = action.conditions
+        //TODO CHECK conditions if we execute action
+
+        val animator = when (action.action) {
             MOVE_RIGHT -> {
                 val a = ValueAnimator.ofFloat(x, x + moveWidth)
                 a.addUpdateListener { animation ->
@@ -129,4 +133,6 @@ class GameActor(resources: Resources, private val moveWidth: Int, private val mo
         private const val MOVE_UP = "move_up"
         private const val MOVE_DOWN = "move_down"
     }
+
+    data class ActorAction(val action: String, val conditions: Conditions?)
 }
