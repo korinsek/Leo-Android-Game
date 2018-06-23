@@ -47,10 +47,10 @@ class MainPresenterImpl(private val view: MainView) : MainPresenter {
 
                 list.add(Loop(value, getAllChildren(containterll)))
             } else if (child is ConditionView) {
-                val condition = child.findViewById<EditText>(R.id.etIfValue)?.text?.toString() ?: ""
+                val condition = child.findViewById<EditText>(R.id.etIfValue)?.text?.toString()?.toIntOrNull() ?: 1
                 val containterTrue = child.findViewById<LinearLayout>(R.id.llIfTruePlaceholder)
                 val containterFalse = child.findViewById<LinearLayout>(R.id.llIfFalsePlaceholder)
-                list.add(IfCondition(Condition(condition, Condition.TYPE_TRUE), getAllChildren(containterTrue), getAllChildren(containterFalse)))
+                list.add(IfCondition(ColorCondition(condition, Condition.TYPE_TRUE), getAllChildren(containterTrue), getAllChildren(containterFalse)))
             } else {
                 return getAllChildren(child)
             }

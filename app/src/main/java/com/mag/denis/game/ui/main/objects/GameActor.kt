@@ -10,7 +10,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.model.Conditions
 
 
-class GameActor(resources: Resources, private val moveWidth: Int, private val moveHeight: Int, var x: Float = 0f, var y: Float = 0f) : Animator.AnimatorListener {
+class GameActor(resources: Resources, private val floorGameObjects: FloorSet, private val moveWidth: Int, private val moveHeight: Int, var x: Float = 0f, var y: Float = 0f) : Animator.AnimatorListener {
     private val actorBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_actor)
     private var onMoveListener: ActorListener? = null
 
@@ -35,7 +35,7 @@ class GameActor(resources: Resources, private val moveWidth: Int, private val mo
     }
 
     fun moveLeft(conditions: Conditions?) {
-        executeAnimator(ActorAction(MOVE_RIGHT, conditions))
+        executeAnimator(ActorAction(MOVE_LEFT, conditions))
     }
 
     fun setOnMoveListener(listener: ActorListener) {
@@ -55,7 +55,11 @@ class GameActor(resources: Resources, private val moveWidth: Int, private val mo
         actionList.removeAt(0)
 
         val conditions = action.conditions
+        val tile = floorGameObjects.getFloorplanObjectByPosition(x, y)
+
         //TODO CHECK conditions if we execute action
+
+
 
         val animator = when (action.action) {
             MOVE_RIGHT -> {

@@ -51,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/white"
+            android:background="@color/actionPlaceholder"
             app:layout_constraintStart_toEndOf="@id/llActions"
             app:layout_constraintEnd_toEndOf="parent" />
 

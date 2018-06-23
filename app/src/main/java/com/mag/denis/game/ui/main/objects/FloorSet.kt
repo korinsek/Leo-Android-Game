@@ -37,8 +37,7 @@ class FloorSet(context: Context, resources: Resources) {
             var xTmp = xPosition
             for (tile in row) {
                 if (tile == "1") {
-                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBitmap))
-
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBitmap, tile))
                 }
                 xTmp += leafBitmap.width
             }
@@ -99,5 +98,15 @@ class FloorSet(context: Context, resources: Resources) {
         } else {
             false
         }
+    }
+
+    fun getFloorplanObjectByPosition(x: Float, y: Float): FloorGameObject? {
+        return floorGameObjects.find { checkXCoordinate(it, x, y) }
+    }
+
+    private fun checkXCoordinate(item: FloorGameObject, x: Float, y: Float): Boolean {
+        val xCheck = (x <= item.x + leafBitmap.width / 2 && x >= item.x - leafBitmap.width / 2)
+        val yCheck = (y <= item.y + leafBitmap.height / 2 && y >= item.y - leafBitmap.height / 2)
+        return xCheck && yCheck
     }
 }

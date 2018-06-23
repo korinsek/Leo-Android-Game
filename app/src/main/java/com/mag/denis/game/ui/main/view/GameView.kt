@@ -54,7 +54,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         floorGameObjects = FloorSet(context, resources)
         val positionx = floorGameObjects?.getInitPosition()?.first ?: 0f
         val positiony = floorGameObjects?.getInitPosition()?.second ?: 0f
-        actor = GameActor(resources, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight(), positionx, positiony)
+        actor = GameActor(resources, floorGameObjects, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight(), positionx, positiony)
         actor?.setOnMoveListener(object : GameActor.ActorListener {
             override fun onMove() {
                 invalidate()
@@ -102,7 +102,11 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                         } else {
                             conditions
                         }
-                        conditionsTrue.conditions.add(Condition(action.condition.value, Condition.TYPE_TRUE))
+                        val condition = when (action.condition) {
+                            is ColorCondition -> ColorCondition(action.condition.color, Condition.TYPE_TRUE)
+                            else -> throw IllegalStateException("Condition dont exists")
+                        }
+                        conditionsTrue.conditions.add(condition)
 
                         val conditionsFalse = if (conditions == null) {
                             action.condition
@@ -110,7 +114,12 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                         } else {
                             conditions
                         }
-                        conditionsFalse.conditions.add(Condition(action.condition.value, Condition.TYPE_FALSE))
+
+                        val condition1 = when (action.condition) {
+                            is ColorCondition -> ColorCondition(action.condition.color, Condition.TYPE_FALSE)
+                            else -> throw IllegalStateException("Condition dont exists")
+                        }
+                        conditionsFalse.conditions.add(condition1)
 
                         doActions(action.trueCommands, conditionsTrue)
                         doActions(action.falseCommands, conditionsFalse)
