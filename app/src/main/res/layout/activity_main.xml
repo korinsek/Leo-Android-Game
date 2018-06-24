@@ -44,6 +44,7 @@
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/llActionHolder"
+            app:layout_constraintHorizontal_weight="2"
             android:orientation="vertical" />
 
         <com.mag.denis.game.ui.main.view.PlaceholderView
@@ -53,6 +54,7 @@
             android:orientation="vertical"
             android:background="@color/actionPlaceholder"
             app:layout_constraintStart_toEndOf="@id/llActions"
+            app:layout_constraintHorizontal_weight="3"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </com.mag.denis.game.ui.main.actionview.ActionView>

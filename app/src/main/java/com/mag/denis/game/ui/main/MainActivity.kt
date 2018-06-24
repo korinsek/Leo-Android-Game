@@ -79,7 +79,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
             getDragListener(v, event)
         }
 
-        val if1 = ConditionView(this)
+        val if1 = ConditionView(this, supportFragmentManager)
         llActions.addView(if1)
 
         if1.setOnTouchListener { v, event ->
@@ -97,7 +97,10 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
             getDragListener(v, event)
         }
 
-        btStart.setOnClickListener { presenter.onStartClick(llActionHolder) }
+        btStart.setOnClickListener {
+            gameView.resetGame()
+            presenter.onStartClick(llActionHolder)
+        }
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 
         gameView.setOnMessageCallback(this)

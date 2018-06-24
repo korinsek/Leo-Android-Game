@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:background="@color/conditionColor">
@@ -14,34 +14,40 @@
         android:layout_marginStart="4dp"
         android:text="if"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/etIfValue"
-        app:layout_constraintEnd_toStartOf="@+id/etIfValue"
+        app:layout_constraintBottom_toBottomOf="@id/rlIfValue"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etIfValue" />
+        app:layout_constraintTop_toTopOf="@id/rlIfValue" />
 
-    <EditText
-        android:id="@+id/etIfValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlIfValue"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_margin="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
-        android:background="@drawable/bg_squere_input"
         android:gravity="center"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:maxLength="1"
-        android:minEms="1"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tvIfLabel"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+        <EditText
+            android:id="@+id/etIfValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:visibility="gone"
+            android:gravity="center" />
+    </RelativeLayout>
+
 
 
     <LinearLayout
         android:id="@+id/llIfTruePlaceholder"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         android:layout_marginLeft="20dp"
@@ -54,7 +60,7 @@
         android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etIfValue" />
+        app:layout_constraintTop_toBottomOf="@id/rlIfValue" />
 
     <TextView
         android:id="@+id/tvElseLabel"
@@ -70,7 +76,7 @@
 
     <LinearLayout
         android:id="@+id/llIfFalsePlaceholder"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="20dp"

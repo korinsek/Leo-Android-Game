@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.mag.denis.game.R
+import com.mag.denis.game.ui.main.model.ColorCondition
+import com.mag.denis.game.ui.main.model.Condition
 import com.mag.denis.game.ui.main.model.Conditions
 
 
@@ -51,54 +53,74 @@ class GameActor(resources: Resources, private val floorGameObjects: FloorSet, pr
     }
 
     private fun executeNext() {
-        val action = actionList.first()
-        actionList.removeAt(0)
-
-        val conditions = action.conditions
-        val tile = floorGameObjects.getFloorplanObjectByPosition(x, y)
-
-        //TODO CHECK conditions if we execute action
+        val action = actionList.firstOrNull()
+        if (action != null) {
+            actionList.removeAt(0)
 
 
+            val conditions = action.conditions
 
-        val animator = when (action.action) {
-            MOVE_RIGHT -> {
-                val a = ValueAnimator.ofFloat(x, x + moveWidth)
-                a.addUpdateListener { animation ->
-                    x = (animation.animatedValue as Float)
-                    onMoveListener?.onMove()
+            var execute = true
+            if (conditions != null) {
+                val tile = floorGameObjects.getFloorplanObjectByPosition(x, y)
+                val statusBooleans = arrayListOf<Boolean>()
+                //TODO CHECK conditions if we execute action
+                for (condition in conditions.conditions) {
+                    statusBooleans.add(
+                            (condition.type == Condition.TYPE_TRUE) ==
+                                    when (condition) {
+                                        is ColorCondition -> condition.leafColorType == tile?.leafColorType
+                                        else -> condition.type != Condition.TYPE_TRUE
+                                    })
                 }
-                a
+                execute = !statusBooleans.contains(false)
             }
-            MOVE_LEFT -> {
-                val a = ValueAnimator.ofFloat(x, x - moveWidth)
-                a.addUpdateListener { animation ->
-                    x = (animation.animatedValue as Float)
-                    onMoveListener?.onMove()
+            if (execute) {
+                val animator = when (action.action) {
+                    MOVE_RIGHT -> {
+                        val a = ValueAnimator.ofFloat(x, x + moveWidth)
+                        a.addUpdateListener { animation ->
+                            x = (animation.animatedValue as Float)
+                            onMoveListener?.onMove()
+                        }
+                        a
+                    }
+                    MOVE_LEFT -> {
+                        val a = ValueAnimator.ofFloat(x, x - moveWidth)
+                        a.addUpdateListener { animation ->
+                            x = (animation.animatedValue as Float)
+                            onMoveListener?.onMove()
+                        }
+                        a
+                    }
+                    MOVE_DOWN -> {
+                        val a = ValueAnimator.ofFloat(y, y + moveHeight)
+                        a.addUpdateListener { animation ->
+                            y = (animation.animatedValue as Float)
+                            onMoveListener?.onMove()
+                        }
+                        a
+                    }
+                    MOVE_UP -> {
+                        val a = ValueAnimator.ofFloat(y, y - moveHeight)
+                        a.addUpdateListener { animation ->
+                            y = (animation.animatedValue as Float)
+                            onMoveListener?.onMove()
+                        }
+                        a
+                    }
+                    else -> throw IllegalStateException("Unknown action")
                 }
-                a
+                animator.duration = 1000
+                animator.addListener(this)
+                animator.start()
+            } else {
+                val animator = ValueAnimator.ofFloat(0f, 0f)
+                animator.duration = 0
+                animator.addListener(this)
+                animator.start()
             }
-            MOVE_DOWN -> {
-                val a = ValueAnimator.ofFloat(y, y + moveHeight)
-                a.addUpdateListener { animation ->
-                    y = (animation.animatedValue as Float)
-                    onMoveListener?.onMove()
-                }
-                a
-            }
-            MOVE_UP -> {
-                val a = ValueAnimator.ofFloat(y, y - moveHeight)
-                a.addUpdateListener { animation ->
-                    y = (animation.animatedValue as Float)
-                    onMoveListener?.onMove()
-                }
-                a
-            }
-            else -> throw IllegalStateException("Unknown action")
         }
-        animator.duration = 1000
-        animator.addListener(this)
-        animator.start()
     }
 
     interface ActorListener {

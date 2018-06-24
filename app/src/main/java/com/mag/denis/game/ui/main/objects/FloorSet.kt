@@ -13,15 +13,15 @@ import com.mag.denis.game.R
 
 class FloorSet(context: Context, resources: Resources) {
 
-    private val leafDrawable = ContextCompat.getDrawable(context, R.drawable.ic_leaf)!!
-    private val leafBitmap = drawableToBitmap(leafDrawable)
+    private val leafGreenBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_green)!!)
+    private val leafBrownBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_brown)!!)
     private val floorGameObjects = mutableListOf<FloorGameObject>()
 
     private val level1 = listOf(
-            listOf("1", "1", "1", "1", "1"),
-            listOf("0", "0", "0", "1", "0"),
-            listOf("0", "0", "0", "1", "0"),
-            listOf("0", "1", "1", "1", "0"))
+            listOf("1", "1", "1", "2", "1"),
+            listOf("0", "0", "0", "2", "0"),
+            listOf("0", "0", "0", "2", "0"),
+            listOf("0", "0", "0", "1", "1"))
 
     init {
         var screenHeight = 300f //TODO get screen width
@@ -37,11 +37,14 @@ class FloorSet(context: Context, resources: Resources) {
             var xTmp = xPosition
             for (tile in row) {
                 if (tile == "1") {
-                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBitmap, tile))
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafGreenBitmap, TYPE_LEAF_GREEN))//TODO TYPE
                 }
-                xTmp += leafBitmap.width
+                if (tile == "2") {
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_BROWN))//TODO TYPE
+                }
+                xTmp += leafGreenBitmap.width
             }
-            yPosition += leafBitmap.height
+            yPosition += leafGreenBitmap.height
         }
     }
 
@@ -69,11 +72,11 @@ class FloorSet(context: Context, resources: Resources) {
     }
 
     fun getTileWidth(): Int {
-        return leafBitmap.width
+        return leafGreenBitmap.width
     }
 
     fun getTileHeight(): Int {
-        return leafBitmap.height
+        return leafGreenBitmap.height
     }
 
     fun getInitPosition(): Pair<Float, Float>? {
@@ -105,8 +108,13 @@ class FloorSet(context: Context, resources: Resources) {
     }
 
     private fun checkXCoordinate(item: FloorGameObject, x: Float, y: Float): Boolean {
-        val xCheck = (x <= item.x + leafBitmap.width / 2 && x >= item.x - leafBitmap.width / 2)
-        val yCheck = (y <= item.y + leafBitmap.height / 2 && y >= item.y - leafBitmap.height / 2)
+        val xCheck = (x <= item.x + leafGreenBitmap.width / 2 && x >= item.x - leafGreenBitmap.width / 2)
+        val yCheck = (y <= item.y + leafGreenBitmap.height / 2 && y >= item.y - leafGreenBitmap.height / 2)
         return xCheck && yCheck
+    }
+
+    companion object {
+        const val TYPE_LEAF_GREEN = 1
+        const val TYPE_LEAF_BROWN = 2
     }
 }

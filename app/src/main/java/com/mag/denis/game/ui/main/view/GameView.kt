@@ -37,6 +37,9 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     private var messageCallback: OnMessageCallback? = null
 
+    private var initPositionX = 0f
+    private var initPositiony = 0f
+
     init {
         holder.addCallback(this)
 
@@ -50,11 +53,16 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     }
 
     override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
-        // Game objects
+        initGameObjects()
+        // Start the game thread
+        initGameThread()
+    }
+
+    private fun initGameObjects() {
         floorGameObjects = FloorSet(context, resources)
-        val positionx = floorGameObjects?.getInitPosition()?.first ?: 0f
-        val positiony = floorGameObjects?.getInitPosition()?.second ?: 0f
-        actor = GameActor(resources, floorGameObjects, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight(), positionx, positiony)
+        initPositionX = floorGameObjects?.getInitPosition()?.first ?: 0f
+        initPositiony = floorGameObjects?.getInitPosition()?.second ?: 0f
+        actor = GameActor(resources, floorGameObjects!!, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight(), initPositionX, initPositiony)
         actor?.setOnMoveListener(object : GameActor.ActorListener {
             override fun onMove() {
                 invalidate()
@@ -67,9 +75,6 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 }
             }
         })
-
-        // Start the game thread
-        initGameThread()
     }
 
     fun update() {
@@ -103,7 +108,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                             conditions
                         }
                         val condition = when (action.condition) {
-                            is ColorCondition -> ColorCondition(action.condition.color, Condition.TYPE_TRUE)
+                            is ColorCondition -> ColorCondition(action.condition.leafColorType, Condition.TYPE_TRUE)
                             else -> throw IllegalStateException("Condition dont exists")
                         }
                         conditionsTrue.conditions.add(condition)
@@ -116,7 +121,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                         }
 
                         val condition1 = when (action.condition) {
-                            is ColorCondition -> ColorCondition(action.condition.color, Condition.TYPE_FALSE)
+                            is ColorCondition -> ColorCondition(action.condition.leafColorType, Condition.TYPE_FALSE)
                             else -> throw IllegalStateException("Condition dont exists")
                         }
                         conditionsFalse.conditions.add(condition1)
@@ -165,6 +170,11 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 }, {
                     //TODO error
                 })
+    }
+
+    fun resetGame() {
+        initGameObjects()
+        initGameThread()
     }
 
     fun setOnMessageCallback(callback: OnMessageCallback) {
