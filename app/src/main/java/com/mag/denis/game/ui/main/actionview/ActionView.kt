@@ -17,9 +17,13 @@ import com.mag.denis.game.ui.main.view.ActionImageView
 import com.mag.denis.game.ui.main.view.ConditionView
 import com.mag.denis.game.ui.main.view.LoopView
 import com.mag.denis.game.ui.main.view.PlaceholderView
+import kotlinx.android.synthetic.main.action.view.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 
 class ActionView(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes) {
+    init {
+        inflate(context, R.layout.action, this)
+    }
 
     fun setupViews(fragmentManager: FragmentManager) {
         super.onAttachedToWindow()

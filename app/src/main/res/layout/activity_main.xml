@@ -26,7 +26,20 @@
         app:layout_constraintEnd_toEndOf="@id/spaceActions"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.mag.denis.game.ui.main.actionview.ActionView
+    <!--<com.mag.denis.game.ui.main.actionview.ActionView-->
+        <!--android:id="@+id/actionView"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:background="@color/actionViewBackground"-->
+        <!--android:padding="10dp"-->
+        <!--android:visibility="visible"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/gameView"-->
+        <!--app:layout_constraintHorizontal_weight="0.3"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.mag.denis.game.ui.main.actionview.FlowView
         android:id="@+id/actionView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -36,28 +49,7 @@
         app:layout_constraintEnd_toStartOf="@+id/gameView"
         app:layout_constraintHorizontal_weight="0.3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.mag.denis.game.ui.main.view.PlaceholderView
-            android:id="@+id/llActions"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/llActionHolder"
-            app:layout_constraintHorizontal_weight="2"
-            android:orientation="vertical" />
-
-        <com.mag.denis.game.ui.main.view.PlaceholderView
-            android:id="@+id/llActionHolder"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/actionPlaceholder"
-            app:layout_constraintStart_toEndOf="@id/llActions"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-    </com.mag.denis.game.ui.main.actionview.ActionView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Space
         android:id="@+id/spaceActions"
@@ -74,7 +66,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/menu"
         app:layout_constraintBottom_toTopOf="@id/btStart"
-        app:layout_constraintStart_toEndOf="@id/actionView"/>
+        app:layout_constraintStart_toEndOf="@id/actionView" />
 
     <ImageButton
         android:id="@+id/btStart"
@@ -83,8 +75,8 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_play_big"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/btnMenu"
         app:layout_constraintEnd_toEndOf="@id/btnMenu"
+        app:layout_constraintStart_toStartOf="@id/btnMenu"
         />
 
 

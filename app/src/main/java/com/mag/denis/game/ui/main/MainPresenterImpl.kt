@@ -13,14 +13,6 @@ import com.mag.denis.game.ui.main.view.LoopView
 
 class MainPresenterImpl(private val view: MainView) : MainPresenter {
 
-    private lateinit var actions: HashMap<Int, String>
-    private var placeHoldersCount: Int = 0
-
-    override fun onCreate(placeHoldersCount: Int) {
-        this.placeHoldersCount = placeHoldersCount
-        actions = HashMap(placeHoldersCount)
-    }
-
     override fun onStartClick(holder: LinearLayout) {
         val list = getAllChildren(holder)
         view.doActionsInGame(list)
@@ -57,10 +49,6 @@ class MainPresenterImpl(private val view: MainView) : MainPresenter {
 
         }
         return list
-    }
-
-    override fun addAction(actionType: String, position: Int) {
-        actions[position] = actionType
     }
 
     override fun onMenuClick() {

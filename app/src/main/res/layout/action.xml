@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.mag.denis.game.ui.main.view.PlaceholderView
+        android:id="@+id/llActions"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/llActionHolder"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.mag.denis.game.ui.main.view.PlaceholderView
+        android:id="@+id/llActionHolder"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/actionPlaceholder"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintStart_toEndOf="@id/llActions" />
+</merge>
