@@ -1,8 +1,8 @@
 package com.mag.denis.game.ui.main
 
-import android.widget.LinearLayout
+import com.mag.denis.game.ui.main.model.Command
 
 interface MainPresenter {
-    fun onStartClick(holder: LinearLayout)
+    fun onStartClick(commans: ArrayList<Command>)
     fun onMenuClick()
 }

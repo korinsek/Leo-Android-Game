@@ -10,7 +10,7 @@ import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.GameView
 import com.mag.denis.game.ui.menu.MenuActivity
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.action.*
+import kotlinx.android.synthetic.main.partial_flow_action1.*
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
         btStart.setOnClickListener {
             gameView.resetGame()
-            presenter.onStartClick(llActionHolder)
+            presenter.onStartClick(actionView.getActions())
         }
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 

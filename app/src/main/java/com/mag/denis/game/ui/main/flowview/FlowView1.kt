@@ -1,9 +1,10 @@
-package com.mag.denis.game.ui.main.actionview
+package com.mag.denis.game.ui.main.flowview
 
 import android.content.ClipData
 import android.content.Context
 import android.os.Build
 import android.support.constraint.ConstraintLayout
+import android.support.design.R.id.container
 import android.support.v4.app.FragmentManager
 import android.util.AttributeSet
 import android.view.DragEvent
@@ -12,14 +13,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
+import com.mag.denis.game.ui.main.model.Action
+import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.ActionImageView
 import com.mag.denis.game.ui.main.view.PlaceholderView
-import kotlinx.android.synthetic.main.action.view.*
+import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 
-class FlowView(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes) {
+class FlowView1(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes) {
 
     init {
-        inflate(context, R.layout.action, this)
+        inflate(context, R.layout.partial_flow_action1, this)
     }
 
     fun setupViews(fragmentManager: FragmentManager) {
@@ -53,7 +56,17 @@ class FlowView(context: Context, attributes: AttributeSet) : ConstraintLayout(co
             getTouchListener(v, event)
         }
 
-        llActionHolder.setOnDragListener { v, event ->
+        llActionHolder1.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+
+        llActionHolder2.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+        llActionHolder3.setOnDragListener { v, event ->
+            getDragListener(v, event)
+        }
+        llActionHolder4.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
     }
@@ -71,11 +84,19 @@ class FlowView(context: Context, attributes: AttributeSet) : ConstraintLayout(co
         val draggedView = e.localState as ActionImageView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                val owner = draggedView.parent as ViewGroup
-                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
+//                val owner = draggedView.parent as ViewGroup
+//                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
+
+                val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
+                newImageView.setOnClickListener {
+                    (newImageView.parent as ViewGroup).removeAllViews()
+                }
+
                 val container = v as PlaceholderView
-                container.addView(draggedView)
+                container.removeAllViews()
+                container.addView(newImageView)
                 draggedView.visibility = View.VISIBLE
+                draggedView.alpha = 1f
             }
             DragEvent.ACTION_DRAG_ENDED -> {
                 draggedView.visibility = View.VISIBLE
@@ -86,7 +107,8 @@ class FlowView(context: Context, attributes: AttributeSet) : ConstraintLayout(co
     private fun getTouchListener(v: View, event: MotionEvent): Boolean {
         return when {
             event.action == MotionEvent.ACTION_DOWN -> {
-                v.visibility = View.GONE
+                v.visibility = View.VISIBLE
+                v.alpha = 0.5f
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = View.DragShadowBuilder(v)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -101,5 +123,32 @@ class FlowView(context: Context, attributes: AttributeSet) : ConstraintLayout(co
             }
             else -> false
         }
+    }
+
+    fun getActions(): ArrayList<Command>{
+        //TODO check placeholders if all filled
+        val list = ArrayList<Command>()
+
+        val action1 = llActionHolder1.getChildAt(0)
+        if (action1 is ActionImageView) {
+            list.add(Action(action1.type))
+        }
+
+        val action2 = llActionHolder2.getChildAt(0)
+        if (action2 is ActionImageView) {
+            list.add(Action(action2.type))
+        }
+
+        val action3 = llActionHolder3.getChildAt(0)
+        if (action3 is ActionImageView) {
+            list.add(Action(action3.type))
+        }
+
+        val action4 = llActionHolder3.getChildAt(0)
+        if (action4 is ActionImageView) {
+            list.add(Action(action4.type))
+        }
+
+        return list
     }
 }

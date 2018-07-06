@@ -39,7 +39,19 @@
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <com.mag.denis.game.ui.main.actionview.FlowView
+    <!--<com.mag.denis.game.ui.main.flowview.FlowView1-->
+        <!--android:id="@+id/actionView"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:background="@color/actionViewBackground"-->
+        <!--android:padding="10dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/gameView"-->
+        <!--app:layout_constraintHorizontal_weight="0.3"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.mag.denis.game.ui.main.flowview.FlowView2
         android:id="@+id/actionView"
         android:layout_width="0dp"
         android:layout_height="0dp"

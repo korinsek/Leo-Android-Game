@@ -7,12 +7,12 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@id/llActionHolder"
+        app:layout_constraintEnd_toStartOf="@id/llActionHolder1"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.mag.denis.game.ui.main.view.PlaceholderView
-        android:id="@+id/llActionHolder"
+        android:id="@+id/llActionHolder1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/actionPlaceholder"

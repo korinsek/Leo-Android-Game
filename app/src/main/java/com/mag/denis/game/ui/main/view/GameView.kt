@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit
 class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
 
     private var gameThreadSubscription: Disposable? = null
+    private var mainCanvas: Canvas? = null
     private var paint: Paint
 
     private var floorGameObjects: FloorSet? = null
@@ -144,7 +145,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         }
     }
 
-    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
+    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder?) {
         gameThreadSubscription?.dispose()
     }
 
@@ -156,12 +157,12 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                         val canvas = this.holder.lockCanvas() // locking the canvas allows us to draw on to it
                         synchronized(holder) {
                             if (canvas != null) {
+                                mainCanvas = canvas
                                 this.update()
                                 this.render(canvas)
                             }
                         }
-                        canvas
-                    }.doOnSuccess { holder.unlockCanvasAndPost(it) }
+                    }.map { holder.unlockCanvasAndPost(mainCanvas) }
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

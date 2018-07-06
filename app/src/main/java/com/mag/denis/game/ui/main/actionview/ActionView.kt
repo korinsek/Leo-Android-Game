@@ -10,19 +10,20 @@ import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
+import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.view.ActionImageView
 import com.mag.denis.game.ui.main.view.ConditionView
 import com.mag.denis.game.ui.main.view.LoopView
 import com.mag.denis.game.ui.main.view.PlaceholderView
-import kotlinx.android.synthetic.main.action.view.*
-import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 
 class ActionView(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes) {
     init {
-        inflate(context, R.layout.action, this)
+        inflate(context, R.layout.partial_action_view, this)
     }
 
     fun setupViews(fragmentManager: FragmentManager) {
@@ -90,7 +91,7 @@ class ActionView(context: Context, attributes: AttributeSet) : ConstraintLayout(
         }
 
 
-        llActionHolder.setOnDragListener { v, event ->
+        llActionHolder1.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
     }
@@ -290,6 +291,43 @@ class ActionView(context: Context, attributes: AttributeSet) : ConstraintLayout(
                 draggedView.visibility = View.VISIBLE
             }
         }
+    }
+
+    fun getActions(): ArrayList<Command>{
+        return getAllChildren(llActionHolder1)
+    }
+
+    private fun getAllChildren(v: View): ArrayList<Command> {
+        val viewGroup = v as ViewGroup
+
+        val list = ArrayList<Command>()
+
+        for (i in 0 until viewGroup.childCount) {
+            val child = viewGroup.getChildAt(i)
+
+            if (child is ActionImageView) {
+                list.add(Action(child.type))
+            } else if (child is LoopView) {
+                val repeatEt = child.findViewById<EditText>(R.id.etLoopValue)
+                val containterll = child.findViewById<LinearLayout>(R.id.llLoopPlaceholder)
+                val value = if (!repeatEt.text.isNullOrEmpty()) {
+                    repeatEt.text.toString().toInt()
+                } else {
+                    0
+                }
+
+                list.add(Loop(value, getAllChildren(containterll)))
+            } else if (child is ConditionView) {
+                val condition = child.findViewById<EditText>(R.id.etIfValue)?.text?.toString()?.toIntOrNull() ?: 1
+                val containterTrue = child.findViewById<LinearLayout>(R.id.llIfTruePlaceholder)
+                val containterFalse = child.findViewById<LinearLayout>(R.id.llIfFalsePlaceholder)
+                list.add(IfCondition(ColorCondition(condition, Condition.TYPE_TRUE), getAllChildren(containterTrue), getAllChildren(containterFalse)))
+            } else {
+                return getAllChildren(child)
+            }
+
+        }
+        return list
     }
 
 }
