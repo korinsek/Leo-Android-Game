@@ -62,7 +62,7 @@ class FlowView1(context: Context, attributes: AttributeSet) : ConstraintLayout(c
         llActionHolder2.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
-        llActionHolder3.setOnDragListener { v, event ->
+        flowConditionView1.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
         llActionHolder4.setOnDragListener { v, event ->
@@ -138,12 +138,12 @@ class FlowView1(context: Context, attributes: AttributeSet) : ConstraintLayout(c
             list.add(Action(action2.type))
         }
 
-        val action3 = llActionHolder3.getChildAt(0)
+        val action3 = flowConditionView1.getChildAt(0)
         if (action3 is ActionImageView) {
             list.add(Action(action3.type))
         }
 
-        val action4 = llActionHolder3.getChildAt(0)
+        val action4 = flowConditionView1.getChildAt(0)
         if (action4 is ActionImageView) {
             list.add(Action(action4.type))
         }

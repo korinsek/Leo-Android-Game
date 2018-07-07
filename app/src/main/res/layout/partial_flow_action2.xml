@@ -14,7 +14,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintHolder"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:background="@color/actionPlaceholder"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_flow_squere_action"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/llActionHolder3"
+            app:layout_constraintBottom_toTopOf="@+id/flowConditionView1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +111,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="4dp"
             android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@id/llActionHolder3"
+            app:layout_constraintBottom_toTopOf="@id/flowConditionView1"
             app:layout_constraintEnd_toEndOf="@id/llActionHolder2"
             app:layout_constraintStart_toStartOf="@id/llActionHolder2"
             app:layout_constraintTop_toBottomOf="@id/llActionHolder2" />
@@ -125,12 +125,10 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine2"
             app:srcCompat="@drawable/ic_arrow_point_down" />
 
-        <com.mag.denis.game.ui.main.view.PlaceholderView
-            android:id="@+id/llActionHolder3"
+        <com.mag.denis.game.ui.main.view.flow.FlowConditionView
+            android:id="@+id/flowConditionView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_flow_squere_action"
-            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/tvEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -145,10 +143,10 @@
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:background="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/llActionHolder3"
+            app:layout_constraintBottom_toBottomOf="@id/flowConditionView1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/llActionHolder3"
-            app:layout_constraintTop_toTopOf="@id/llActionHolder3" />
+            app:layout_constraintStart_toEndOf="@id/flowConditionView1"
+            app:layout_constraintTop_toTopOf="@id/flowConditionView1" />
 
         <View
             android:id="@+id/viewLine4"
@@ -159,7 +157,7 @@
             android:background="@color/black"
             app:layout_constraintBottom_toTopOf="@id/viewLine3"
             app:layout_constraintEnd_toEndOf="@id/viewLine3"
-            app:layout_constraintTop_toTopOf="@id/viewLine2" />
+            app:layout_constraintTop_toTopOf="@id/viewLine0" />
 
         <View
             android:id="@+id/viewLine5"
@@ -171,7 +169,7 @@
             android:background="@color/black"
             app:layout_constraintBottom_toTopOf="@id/viewLine4"
             app:layout_constraintEnd_toEndOf="@id/viewLine4"
-            app:layout_constraintStart_toStartOf="@id/viewLine2" />
+            app:layout_constraintStart_toStartOf="@id/viewLine0" />
 
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
@@ -191,9 +189,9 @@
             android:layout_marginBottom="4dp"
             android:background="@color/black"
             app:layout_constraintBottom_toTopOf="@id/tvEnd"
-            app:layout_constraintEnd_toEndOf="@id/llActionHolder3"
-            app:layout_constraintStart_toStartOf="@id/llActionHolder3"
-            app:layout_constraintTop_toBottomOf="@id/llActionHolder3" />
+            app:layout_constraintEnd_toEndOf="@id/flowConditionView1"
+            app:layout_constraintStart_toStartOf="@id/flowConditionView1"
+            app:layout_constraintTop_toBottomOf="@id/flowConditionView1" />
 
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="wrap_content"
@@ -220,11 +218,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llActionHolder3" />
-
-        <com.mag.denis.game.ui.main.view.flow.FlowConditionView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toBottomOf="@+id/flowConditionView1" />
 
 
     </android.support.constraint.ConstraintLayout>

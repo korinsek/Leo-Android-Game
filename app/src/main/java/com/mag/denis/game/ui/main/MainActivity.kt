@@ -10,7 +10,6 @@ import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.GameView
 import com.mag.denis.game.ui.menu.MenuActivity
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.partial_flow_action1.*
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -20,6 +19,20 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
     @Inject lateinit var presenter: MainPresenter
 
     private var messageDialog: MessageDialog? = null
+
+    private val level1 = listOf(
+            listOf("1", "1", "1", "2", "1"),
+            listOf("0", "0", "0", "2", "0"),
+            listOf("0", "0", "0", "2", "0"),
+            listOf("0", "0", "0", "1", "1"))
+
+    private val level2 = listOf(
+            listOf("1", "1", "0", "0", "0", "0", "0"),
+            listOf("0", "1", "1", "0", "0", "0", "0"),
+            listOf("0", "0", "1", "1", "0", "0", "0"),
+            listOf("0", "0", "0", "1", "1", "0", "0"),
+            listOf("0", "0", "0", "0", "1", "1", "0"),
+            listOf("0", "0", "0", "0", "0", "1", "2"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +47,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 
         gameView.setOnMessageCallback(this)
+        gameView.setLevel(level2)
     }
 
     override fun doActionsInGame(actions: List<Command>) {

@@ -11,17 +11,11 @@ import android.support.v4.content.ContextCompat
 import com.mag.denis.game.R
 
 
-class FloorSet(context: Context, resources: Resources) {
+class FloorSet(context: Context, resources: Resources, level1: List<List<String>>) {
 
     private val leafGreenBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_green)!!)
     private val leafBrownBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_brown)!!)
     private val floorGameObjects = mutableListOf<FloorGameObject>()
-
-    private val level1 = listOf(
-            listOf("1", "1", "1", "2", "1"),
-            listOf("0", "0", "0", "2", "0"),
-            listOf("0", "0", "0", "2", "0"),
-            listOf("0", "0", "0", "1", "1"))
 
     init {
         var screenHeight = 300f //TODO get screen width

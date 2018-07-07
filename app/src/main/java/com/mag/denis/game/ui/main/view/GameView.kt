@@ -40,6 +40,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     private var initPositionX = 0f
     private var initPositiony = 0f
+    private var currentLevel: List<List<String>>? = null
 
     init {
         holder.addCallback(this)
@@ -60,7 +61,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     }
 
     private fun initGameObjects() {
-        floorGameObjects = FloorSet(context, resources)
+        floorGameObjects = FloorSet(context, resources, currentLevel!!)
         initPositionX = floorGameObjects?.getInitPosition()?.first ?: 0f
         initPositiony = floorGameObjects?.getInitPosition()?.second ?: 0f
         actor = GameActor(resources, floorGameObjects!!, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight(), initPositionX, initPositiony)
@@ -180,6 +181,10 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     fun setOnMessageCallback(callback: OnMessageCallback) {
         messageCallback = callback
+    }
+
+    fun setLevel(level: List<List<String>>) {
+        currentLevel = level
     }
 
     interface OnMessageCallback {

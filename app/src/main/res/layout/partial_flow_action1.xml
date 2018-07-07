@@ -80,7 +80,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine2"/>
 
         <com.mag.denis.game.ui.main.view.PlaceholderView
-            android:id="@+id/llActionHolder3"
+            android:id="@+id/flowConditionView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -95,9 +95,9 @@
             android:layout_width="2dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/llActionHolder3"
-            app:layout_constraintStart_toStartOf="@id/llActionHolder3"
-            app:layout_constraintEnd_toEndOf="@id/llActionHolder3"
+            app:layout_constraintTop_toBottomOf="@id/flowConditionView1"
+            app:layout_constraintStart_toStartOf="@id/flowConditionView1"
+            app:layout_constraintEnd_toEndOf="@id/flowConditionView1"
             android:background="@color/black" />
 
         <android.support.v7.widget.AppCompatImageView

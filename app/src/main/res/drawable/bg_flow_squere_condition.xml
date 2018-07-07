@@ -2,8 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:bottom="5dp"
-        android:left="8dp"
-        android:right="8dp"
+        android:left="7dp"
+        android:right="7dp"
         android:top="5dp">
         <rotate
             android:fromDegrees="45"

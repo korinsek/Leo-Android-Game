@@ -10,12 +10,14 @@ import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
-import com.mag.denis.game.ui.main.model.Action
-import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.view.action.ActionImageView
+import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.view.PlaceholderView
+import com.mag.denis.game.ui.main.view.action.ActionImageView
+import com.mag.denis.game.ui.main.view.flow.FlowConditionView
+import kotlinx.android.synthetic.main.flow_condition.view.*
 import kotlinx.android.synthetic.main.partial_flow_action2.view.*
 
 class FlowView2(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes) {
@@ -62,7 +64,7 @@ class FlowView2(context: Context, attributes: AttributeSet) : ConstraintLayout(c
         llActionHolder2.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
-        llActionHolder3.setOnDragListener { v, event ->
+        flowConditionView1.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
     }
@@ -122,24 +124,21 @@ class FlowView2(context: Context, attributes: AttributeSet) : ConstraintLayout(c
         //TODO check placeholders if all filled
         val list = ArrayList<Command>()
 
-        val action1 = llActionHolder1.getChildAt(0)
-        if (action1 is ActionImageView) {
-            list.add(Action(action1.type))
-        }
-
-        val action2 = llActionHolder2.getChildAt(0)
-        if (action2 is ActionImageView) {
-            list.add(Action(action2.type))
-        }
+        val action1 = llActionHolder1.getChildAt(0) as ActionImageView
+        val firstAction = Action(action1.type)
+        list.add(firstAction)
 
 
-        val action3 = llActionHolder3.getChildAt(0)
-        if (action3 is ActionImageView) {
-            //TODO handle it
-            for (i in 1..5) {
-                list.add(Action(action3.type))
-            }
+        val action2 = llActionHolder2.getChildAt(0) as ActionImageView
+        val secondAction = Action(action2.type)
+        list.add(secondAction)
+
+
+        val condition = etIfValue.text?.toString()?.toIntOrNull() ?: 1
+        for (i in 1..7) {
+            list.add(IfCondition(ColorCondition(condition, Condition.TYPE_TRUE), listOf(firstAction, secondAction), emptyList()))
         }
+
 
         return list
     }
