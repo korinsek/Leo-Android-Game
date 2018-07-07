@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.flowview
+package com.mag.denis.game.ui.main.actionflowview
 
 import android.content.ClipData
 import android.content.Context

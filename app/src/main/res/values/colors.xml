@@ -22,4 +22,6 @@
     <color name="bg_flow_round">#c9c9c9</color>
     <color name="bg_flow_squere_action">#efefef</color>
     <color name="bg_flow_squere_condition">#c9c9c9</color>
+
+    <color name="bg_pseudo_field">#7fffffff</color>
 </resources>

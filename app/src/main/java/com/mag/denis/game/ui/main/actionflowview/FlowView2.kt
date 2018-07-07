@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.flowview
+package com.mag.denis.game.ui.main.actionflowview
 
 import android.content.ClipData
 import android.content.Context
@@ -10,13 +10,11 @@ import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import com.mag.denis.game.ui.main.view.action.ActionImageView
-import com.mag.denis.game.ui.main.view.flow.FlowConditionView
 import kotlinx.android.synthetic.main.flow_condition.view.*
 import kotlinx.android.synthetic.main.partial_flow_action2.view.*
 

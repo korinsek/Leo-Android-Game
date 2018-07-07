@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actionview
+package com.mag.denis.game.ui.main.actionblockview
 
 import android.content.ClipData
 import android.content.Context
