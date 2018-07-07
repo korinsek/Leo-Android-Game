@@ -15,9 +15,9 @@ import android.widget.LinearLayout
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.*
-import com.mag.denis.game.ui.main.view.ActionImageView
-import com.mag.denis.game.ui.main.view.ConditionView
-import com.mag.denis.game.ui.main.view.LoopView
+import com.mag.denis.game.ui.main.view.action.ActionImageView
+import com.mag.denis.game.ui.main.view.action.ConditionView
+import com.mag.denis.game.ui.main.view.action.LoopView
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 

@@ -14,7 +14,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.Action
 import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.view.ActionImageView
+import com.mag.denis.game.ui.main.view.action.ActionImageView
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import kotlinx.android.synthetic.main.partial_flow_action2.view.*
 

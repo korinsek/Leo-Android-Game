@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.Context
 import android.os.Build
 import android.support.constraint.ConstraintLayout
-import android.support.design.R.id.container
 import android.support.v4.app.FragmentManager
 import android.util.AttributeSet
 import android.view.DragEvent
@@ -15,7 +14,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.Action
 import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.view.ActionImageView
+import com.mag.denis.game.ui.main.view.action.ActionImageView
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 

@@ -18,4 +18,8 @@
 
     <color name="loopColor">#af4c00</color>
     <color name="conditionColor">#0061b6</color>
+
+    <color name="bg_flow_round">#c9c9c9</color>
+    <color name="bg_flow_squere_action">#efefef</color>
+    <color name="bg_flow_squere_condition">#c9c9c9</color>
 </resources>
