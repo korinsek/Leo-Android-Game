@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 
 
 abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes), TextWatcher, View.OnKeyListener {
-    internal open val reservedLoopDefenition = "for"
+    internal open val reservedLoopDefinition = "for"
     internal val reservedConditionIf = "if"
     internal val reservedConditionElse = "else"
     internal val reservedIn = "in"

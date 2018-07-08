@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
-import android.widget.TextView
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
@@ -15,7 +14,6 @@ import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_BROWN
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_GREEN
-import io.reactivex.Single
 import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 import java.util.regex.Pattern
 
@@ -23,7 +21,7 @@ import java.util.regex.Pattern
 class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes) {
 
     override fun colorAndAddSpacing(s:Editable):Editable{
-        val pattern = Pattern.compile("$reservedLoopDefenition|$reservedConditionIf|$reservedConditionElse|$reservedIn|$reservedRange")
+        val pattern = Pattern.compile("$reservedLoopDefinition|$reservedConditionIf|$reservedConditionElse|$reservedIn|$reservedRange")
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -33,8 +31,8 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
 
         val line = s.split("\n").last { it != "\n" }
 
-        val command = if (line.contains(reservedLoopDefenition)) {
-            reservedLoopDefenition
+        val command = if (line.contains(reservedLoopDefinition)) {
+            reservedLoopDefinition
         } else if (line.contains(reservedConditionIf)) {
             reservedConditionIf
         } else if (line.contains(reservedConditionElse)) {
@@ -91,11 +89,11 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     }
                     list.add(action)
                     codeLines.removeAt(0)
-                } else if (child.contains(reservedLoopDefenition)) {
+                } else if (child.contains(reservedLoopDefinition)) {
                     val whileCodeLines = ArrayList<String>()
 
                     val conditionRepeat = getCondition(child).toIntOrNull() ?: 0
-                    val loopSpaceRange = child.substringBefore(reservedLoopDefenition).filter { it == ' ' } + space
+                    val loopSpaceRange = child.substringBefore(reservedLoopDefinition).filter { it == ' ' } + space
 
                     codeLines.removeAt(0)
                     while (codeLines.isNotEmpty()) {
@@ -147,7 +145,7 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     val elseLine = codeLines.firstOrNull()
                     if (elseLine != null && elseLine.contains(reservedConditionElse)) {
                         codeLines.removeAt(0)
-                        val loopSpaceRange = elseLine.substringBefore(reservedLoopDefenition).filter { it == ' ' } + space
+                        val loopSpaceRange = elseLine.substringBefore(reservedLoopDefinition).filter { it == ' ' } + space
                         while (codeLines.isNotEmpty()) {
                             val line = codeLines.firstOrNull()
                             if (line != null) {
