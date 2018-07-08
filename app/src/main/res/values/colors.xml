@@ -23,5 +23,7 @@
     <color name="bg_flow_squere_action">#efefef</color>
     <color name="bg_flow_squere_condition">#c9c9c9</color>
 
-    <color name="bg_pseudo_field">#7fffffff</color>
+    <color name="bg_pseudo_field">#920e0e0e</color>
+    <color name="code_text_color">#93a1b1</color>
+    <color name="loop_text_color">#cc7832</color>
 </resources>

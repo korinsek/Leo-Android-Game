@@ -26,18 +26,18 @@
         app:layout_constraintEnd_toEndOf="@id/spaceActions"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.mag.denis.game.ui.main.actionblockview.ActionView
-        android:id="@+id/actionView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/actionViewBackground"
-        android:padding="10dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/gameView"
-        app:layout_constraintHorizontal_weight="0.3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--<com.mag.denis.game.ui.main.actionblockview.ActionView-->
+        <!--android:id="@+id/actionView"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:background="@color/actionViewBackground"-->
+        <!--android:padding="10dp"-->
+        <!--android:visibility="visible"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/gameView"-->
+        <!--app:layout_constraintHorizontal_weight="0.3"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <!--<com.mag.denis.game.ui.main.actionflowview.FlowView1-->
         <!--android:id="@+id/actionView"-->
@@ -63,7 +63,7 @@
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <!--<com.mag.denis.game.ui.main.actionpseudoview.PreudoView-->
+    <!--<com.mag.denis.game.ui.main.actionpseudoview.PseudoKotlinView-->
         <!--android:id="@+id/actionView"-->
         <!--android:layout_width="0dp"-->
         <!--android:layout_height="0dp"-->
@@ -74,6 +74,18 @@
         <!--app:layout_constraintHorizontal_weight="0.3"-->
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.mag.denis.game.ui.main.actionpseudoview.PseudoPhytonView
+        android:id="@+id/actionView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/actionViewBackground"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gameView"
+        app:layout_constraintHorizontal_weight="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Space
         android:id="@+id/spaceActions"
