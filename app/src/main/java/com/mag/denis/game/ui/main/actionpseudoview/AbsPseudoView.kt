@@ -13,6 +13,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.model.Command
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 
@@ -34,6 +35,8 @@ abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : Const
     internal var backspacePressed = false
     internal var maxLastIndex = -1
 
+    private var textChangeListener: Disposable? = null
+
     init {
         inflate(context, R.layout.partial_pseudo_view, this)
     }
@@ -45,12 +48,14 @@ abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : Const
     }
 
     override fun afterTextChanged(s: Editable) {
-        Single.just(s)
+        //TODO instead of this create obeservable and call onNext here. Handle backpressure.
+        textChangeListener?.dispose()
+        textChangeListener = Single.just(s)
                 .map {
                     colorAndAddSpacing(it)
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     etCode.removeTextChangedListener(this)
                     etCode.setText(s, TextView.BufferType.SPANNABLE)
