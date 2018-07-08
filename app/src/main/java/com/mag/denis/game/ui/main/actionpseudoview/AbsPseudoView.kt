@@ -11,10 +11,11 @@ import android.view.View
 import android.widget.TextView
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.model.Command
-import io.reactivex.Single
+import io.reactivex.BackpressureStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 
 
@@ -36,6 +37,7 @@ abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : Const
     internal var maxLastIndex = -1
 
     private var textChangeListener: Disposable? = null
+    private val textChangeSubscribe = PublishSubject.create<Editable>()
 
     init {
         inflate(context, R.layout.partial_pseudo_view, this)
@@ -45,25 +47,25 @@ abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : Const
         super.onAttachedToWindow()
         etCode.addTextChangedListener(this)
         etCode.setOnKeyListener(this)
-    }
 
-    override fun afterTextChanged(s: Editable) {
-        //TODO instead of this create obeservable and call onNext here. Handle backpressure.
         textChangeListener?.dispose()
-        textChangeListener = Single.just(s)
-                .map {
-                    colorAndAddSpacing(it)
-                }
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
+        textChangeListener = textChangeSubscribe
+                .toFlowable(BackpressureStrategy.LATEST)
+                .map { colorAndAddSpacing(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     etCode.removeTextChangedListener(this)
-                    etCode.setText(s, TextView.BufferType.SPANNABLE)
+                    etCode.setText(it, TextView.BufferType.SPANNABLE)
                     etCode.setSelection(maxLastIndex)
                     etCode.addTextChangedListener(this)
                 }, {
                     //TODO handle error
                 })
+    }
+
+    override fun afterTextChanged(s: Editable) {
+        textChangeSubscribe.onNext(s)
     }
 
     override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
