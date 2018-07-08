@@ -15,17 +15,14 @@ import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_BROWN
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_GREEN
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 import java.util.regex.Pattern
 
 
 class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes) {
-    private var maxLastIndex = -1
 
-    override fun afterTextChanged(s: Editable) {
-        //TODO can be optimized now on each change go through all text
-        etCode.removeTextChangedListener(this)
-
+    override fun colorAndAddSpacing(s:Editable):Editable{
         val pattern = Pattern.compile("$reservedLoopDefenition|$reservedConditionIf|$reservedConditionElse|$reservedIn|$reservedRange")
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
@@ -55,19 +52,7 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
             }
         }
         backspacePressed = false
-
-        etCode.setText(s, TextView.BufferType.SPANNABLE)
-        etCode.setSelection(maxLastIndex)
-        etCode.addTextChangedListener(this)
-    }
-
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        //Nothing to do
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        //Nothing to do
+        return s
     }
 
     override fun getActions(): ArrayList<Command> {

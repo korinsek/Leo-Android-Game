@@ -1,16 +1,11 @@
 package com.mag.denis.game.ui.main.actionpseudoview
 
 import android.content.Context
-import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.Spannable
-import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
-import android.view.KeyEvent
-import android.view.View
-import android.widget.TextView
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
@@ -23,20 +18,30 @@ import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 import java.util.regex.Pattern
 
 
-class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes){
+class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes) {
     override val reservedLoopDefenition = "repeat"
 
-    private var maxLastIndex = -1
+    override fun getActions(): ArrayList<Command> {
+        val code = etCode.text
+        val numOfOpenBrackets = code.count { it == '{' }
+        val numOfCloseBrackets = code.count { it == '}' }
+        if (numOfOpenBrackets != numOfCloseBrackets) {
+            //TODO show error
+            throw IllegalStateException("Brackets missing")
+        }
+        val codeLines = code.split("\n") as ArrayList
 
-    override fun afterTextChanged(s: Editable) {
-        //TODO can be optimized now on each change go through all text
-        etCode.removeTextChangedListener(this)
+        //TODO execute this in background and subscribe on obervable
+        val commands = getCommands(codeLines)
 
+        return commands
+    }
+
+    override fun colorAndAddSpacing(s: Editable): Editable {
         val pattern = Pattern.compile("$reservedLoopDefenition|$reservedConditionIf|$reservedConditionElse")
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
         }
 
         maxLastIndex = etCode.selectionStart
@@ -62,35 +67,7 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
             }
         }
         backspacePressed = false
-
-        etCode.setText(s, TextView.BufferType.SPANNABLE)
-        etCode.setSelection(maxLastIndex)
-        etCode.addTextChangedListener(this)
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        //Nothing to do
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        //Nothing to do
-    }
-
-    override fun getActions(): ArrayList<Command> {
-        val code = etCode.text
-        val numOfOpenBrackets = code.count { it == '{' }
-        val numOfCloseBrackets = code.count { it == '}' }
-        if (numOfOpenBrackets != numOfCloseBrackets) {
-            //TODO show error
-            throw IllegalStateException("Brackets missing")
-        }
-        val codeLines = code.split("\n") as ArrayList
-
-        val commands = getCommands(codeLines)
-
-
-
-        return commands
+        return s
     }
 
     private fun getCommands(codeLines: ArrayList<String>): ArrayList<Command> {
