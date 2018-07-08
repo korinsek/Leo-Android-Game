@@ -1,7 +1,6 @@
 package com.mag.denis.game.ui.main.actionpseudoview
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -24,31 +23,10 @@ import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 import java.util.regex.Pattern
 
 
-class PseudoKotlinView(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes), TextWatcher, View.OnKeyListener {
-    private val reservedLoopDefenition = "repeat"
-    private val reservedConditionIf = "if"
-    private val reservedConditionElse = "else"
-    private val moveUp = "moveUp()"
-    private val moveDown = "moveDown()"
-    private val moveRight = "moveRight()"
-    private val moveLeft = "moveLeft()"
-    private val conditionGreenLeaf = "isGreenLeaf()"
-    private val conditionBrownLeaf = "isBrownLeaf()"
-    private val space = "    "
-
-
-    init {
-        inflate(context, R.layout.partial_pseudo_view, this)
-    }
-
-    fun setupViews(fragmentManager: FragmentManager) {
-        super.onAttachedToWindow()
-        etCode.addTextChangedListener(this)
-        etCode.setOnKeyListener(this)
-    }
+class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes){
+    override val reservedLoopDefenition = "repeat"
 
     private var maxLastIndex = -1
-    private var backspacePressed = false
 
     override fun afterTextChanged(s: Editable) {
         //TODO can be optimized now on each change go through all text
@@ -60,7 +38,6 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : ConstraintL
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         }
-
 
         maxLastIndex = etCode.selectionStart
 
@@ -91,15 +68,6 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : ConstraintL
         etCode.addTextChangedListener(this)
     }
 
-    override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_DEL) {
-                backspacePressed = true
-            }
-        }
-        return false
-    }
-
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         //Nothing to do
     }
@@ -108,7 +76,7 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : ConstraintL
         //Nothing to do
     }
 
-    fun getActions(): ArrayList<Command> {
+    override fun getActions(): ArrayList<Command> {
         val code = etCode.text
         val numOfOpenBrackets = code.count { it == '{' }
         val numOfCloseBrackets = code.count { it == '}' }
@@ -138,7 +106,7 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : ConstraintL
                     continue
                 }
                 if (child.contains("move")) {
-                    val action = when (child) {
+                    val action = when (child.trim()) {
                         moveUp -> Action(ACTION_UP)
                         moveDown -> Action(ACTION_DOWN)
                         moveRight -> Action(ACTION_RIGHT)
@@ -254,15 +222,5 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : ConstraintL
             }
         }
         return list
-    }
-
-    private fun getCondition(child: String): String {
-        val conditionStartIndex = child.indexOfFirst { it == '(' } + 1
-        val conditionEndIndex = child.indexOfLast { it == ')' }
-        if (conditionStartIndex == -1 || conditionEndIndex == -1 || (conditionStartIndex > conditionEndIndex)) {
-            //TODO handle error
-            throw IllegalStateException("Problem with condition")
-        }
-        return child.substring(conditionStartIndex, conditionEndIndex)
     }
 }
