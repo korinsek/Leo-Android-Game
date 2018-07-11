@@ -21,7 +21,7 @@ import java.util.regex.Pattern
 class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes) {
 
     override fun colorAndAddSpacing(s:Editable):Editable{
-        val pattern = Pattern.compile("$reservedLoopDefinition|$reservedConditionIf|$reservedConditionElse|$reservedIn|$reservedRange")
+        val pattern = Pattern.compile("$RESERVED_LOOP|$RESERVED_CONDITION_IF|$RESERVED_CONDITION_ELSE|$RESERVED_IN|$RESERVED_RANGE")
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -31,12 +31,12 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
 
         val line = s.split("\n").last { it != "\n" }
 
-        val command = if (line.contains(reservedLoopDefinition)) {
-            reservedLoopDefinition
-        } else if (line.contains(reservedConditionIf)) {
-            reservedConditionIf
-        } else if (line.contains(reservedConditionElse)) {
-            reservedConditionElse
+        val command = if (line.contains(RESERVED_LOOP)) {
+            RESERVED_LOOP
+        } else if (line.contains(RESERVED_CONDITION_IF)) {
+            RESERVED_CONDITION_IF
+        } else if (line.contains(RESERVED_CONDITION_ELSE)) {
+            RESERVED_CONDITION_ELSE
         } else {
             null
         }
@@ -45,8 +45,8 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
             if (line.endsWith(':')) {
                 val brackedIndex = s.lastIndexOf(':') + 1
                 val spaceBefore = line.substringBefore(command).filter { it == ' ' }
-                s.insert(brackedIndex, "\n$space$spaceBefore\n$spaceBefore")
-                maxLastIndex = brackedIndex + space.length + spaceBefore.length + 1
+                s.insert(brackedIndex, "\n$SPACE$spaceBefore\n$spaceBefore")
+                maxLastIndex = brackedIndex + SPACE.length + spaceBefore.length + 1
             }
         }
         backspacePressed = false
@@ -75,10 +75,10 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                 }
                 if (child.contains("move")) {
                     val action = when (child.trim()) {
-                        moveUp -> Action(ACTION_UP)
-                        moveDown -> Action(ACTION_DOWN)
-                        moveRight -> Action(ACTION_RIGHT)
-                        moveLeft -> Action(ACTION_LEFT)
+                        MOVE_UP -> Action(ACTION_UP)
+                        MOVE_DOWN -> Action(ACTION_DOWN)
+                        MOVE_RIGHT -> Action(ACTION_RIGHT)
+                        MOVE_LEFT -> Action(ACTION_LEFT)
                         else -> {
                             throw if (child.contains("(") && child.contains(")")) {
                                 IllegalStateException("Mising brackets () in command: $child")//TODO handle error
@@ -89,11 +89,11 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     }
                     list.add(action)
                     codeLines.removeAt(0)
-                } else if (child.contains(reservedLoopDefinition)) {
+                } else if (child.contains(RESERVED_LOOP)) {
                     val whileCodeLines = ArrayList<String>()
 
                     val conditionRepeat = getCondition(child).toIntOrNull() ?: 0
-                    val loopSpaceRange = child.substringBefore(reservedLoopDefinition).filter { it == ' ' } + space
+                    val loopSpaceRange = child.substringBefore(RESERVED_LOOP).filter { it == ' ' } + SPACE
 
                     codeLines.removeAt(0)
                     while (codeLines.isNotEmpty()) {
@@ -108,12 +108,12 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     }
                     //TODO VALUE
                     list.add(Loop(conditionRepeat, getCommands(whileCodeLines)))
-                } else if (child.contains(reservedConditionIf)) {
+                } else if (child.contains(RESERVED_CONDITION_IF)) {
                     val trueCodeLines = ArrayList<String>()
 
                     val conditionColor = when (getCondition(child)) {
-                        conditionGreenLeaf -> TYPE_LEAF_GREEN
-                        conditionBrownLeaf -> TYPE_LEAF_BROWN
+                        CONDITION_GREEN_LEAF -> TYPE_LEAF_GREEN
+                        CONDITION_BROWN_LEAF -> TYPE_LEAF_BROWN
                         else -> {
                             throw if (child.contains("(") && child.contains(")")) {
                                 IllegalStateException("Mising brackets () in condition.")//TODO handle error
@@ -130,8 +130,8 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                             codeLines.removeAt(0)
                             //TODO handle this
 
-                            if (line.contains(reservedConditionElse)) {
-                                if (line.contains(reservedConditionElse)) {
+                            if (line.contains(RESERVED_CONDITION_ELSE)) {
+                                if (line.contains(RESERVED_CONDITION_ELSE)) {
                                     codeLines.add(0, line)
                                 }
                                 break
@@ -143,9 +143,9 @@ class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoVi
 
                     val falseCodeLines = ArrayList<String>()
                     val elseLine = codeLines.firstOrNull()
-                    if (elseLine != null && elseLine.contains(reservedConditionElse)) {
+                    if (elseLine != null && elseLine.contains(RESERVED_CONDITION_ELSE)) {
                         codeLines.removeAt(0)
-                        val loopSpaceRange = elseLine.substringBefore(reservedLoopDefinition).filter { it == ' ' } + space
+                        val loopSpaceRange = elseLine.substringBefore(RESERVED_LOOP).filter { it == ' ' } + SPACE
                         while (codeLines.isNotEmpty()) {
                             val line = codeLines.firstOrNull()
                             if (line != null) {

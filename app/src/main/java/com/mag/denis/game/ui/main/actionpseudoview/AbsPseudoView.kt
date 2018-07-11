@@ -20,18 +20,6 @@ import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 
 
 abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes), TextWatcher, View.OnKeyListener {
-    internal open val reservedLoopDefinition = "for"
-    internal val reservedConditionIf = "if"
-    internal val reservedConditionElse = "else"
-    internal val reservedIn = "in"
-    internal val reservedRange = "range"
-    internal val moveUp = "moveUp()"
-    internal val moveDown = "moveDown()"
-    internal val moveRight = "moveRight()"
-    internal val moveLeft = "moveLeft()"
-    internal val conditionGreenLeaf = "isGreenLeaf()"
-    internal val conditionBrownLeaf = "isBrownLeaf()"
-    internal val space = "    "
 
     internal var backspacePressed = false
     internal var maxLastIndex = -1
@@ -97,5 +85,20 @@ abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : Const
             throw IllegalStateException("Problem with condition")
         }
         return child.substring(conditionStartIndex, conditionEndIndex).trim()
+    }
+
+    companion object {
+        const val RESERVED_LOOP = "for"
+        const val RESERVED_CONDITION_IF = "if"
+        const val RESERVED_CONDITION_ELSE = "else"
+        const val RESERVED_IN = "in"
+        const val RESERVED_RANGE = "range"
+        const val MOVE_UP = "MOVE_UP()"
+        const val MOVE_DOWN = "MOVE_DOWN()"
+        const val MOVE_RIGHT = "MOVE_RIGHT()"
+        const val MOVE_LEFT = "MOVE_LEFT()"
+        const val CONDITION_GREEN_LEAF = "isGreenLeaf()"
+        const val CONDITION_BROWN_LEAF = "isBrownLeaf()"
+        const val SPACE = "    "
     }
 }

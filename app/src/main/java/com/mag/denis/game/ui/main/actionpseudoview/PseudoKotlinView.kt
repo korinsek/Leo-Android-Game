@@ -19,7 +19,7 @@ import java.util.regex.Pattern
 
 
 class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes) {
-    override val reservedLoopDefinition = "repeat"
+
 
     override fun getActions(): ArrayList<Command> {
         val code = etCode.text
@@ -29,16 +29,18 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
             //TODO show error
             throw IllegalStateException("Brackets missing")
         }
-        val codeLines = code.split("\n") as ArrayList
-
-        //TODO execute this in background and subscribe on obervable
-        val commands = getCommands(codeLines)
-
+        val commands = if (code.isNotEmpty()) {
+            //TODO execute this in background and subscribe on obervable
+            val codeLines = code.split("\n") as ArrayList
+            getCommands(codeLines)
+        } else {
+            arrayListOf()
+        }
         return commands
     }
 
     override fun colorAndAddSpacing(s: Editable): Editable {
-        val pattern = Pattern.compile("$reservedLoopDefinition|$reservedConditionIf|$reservedConditionElse")
+        val pattern = Pattern.compile("$RESERVED_LOOP|$RESERVED_CONDITION_IF|$RESERVED_CONDITION_ELSE")
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -48,12 +50,12 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
 
         val line = s.split("\n").last { it != "}" }
 
-        val command = if (line.contains(reservedLoopDefinition)) {
-            reservedLoopDefinition
-        } else if (line.contains(reservedConditionIf)) {
-            reservedConditionIf
-        } else if (line.contains(reservedConditionElse)) {
-            reservedConditionElse
+        val command = if (line.contains(RESERVED_LOOP)) {
+            RESERVED_LOOP
+        } else if (line.contains(RESERVED_CONDITION_IF)) {
+            RESERVED_CONDITION_IF
+        } else if (line.contains(RESERVED_CONDITION_ELSE)) {
+            RESERVED_CONDITION_ELSE
         } else {
             null
         }
@@ -62,8 +64,8 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
             if (line.endsWith('{')) {
                 val brackedIndex = s.lastIndexOf('{') + 1
                 val spaceBefore = line.substringBefore(command).filter { it == ' ' }
-                s.insert(brackedIndex, "\n$space$spaceBefore\n$spaceBefore}")
-                maxLastIndex = brackedIndex + space.length + spaceBefore.length + 1
+                s.insert(brackedIndex, "\n$SPACE$spaceBefore\n$spaceBefore}")
+                maxLastIndex = brackedIndex + SPACE.length + spaceBefore.length + 1
             }
         }
         backspacePressed = false
@@ -84,10 +86,10 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                 }
                 if (child.contains("move")) {
                     val action = when (child.trim()) {
-                        moveUp -> Action(ACTION_UP)
-                        moveDown -> Action(ACTION_DOWN)
-                        moveRight -> Action(ACTION_RIGHT)
-                        moveLeft -> Action(ACTION_LEFT)
+                        MOVE_UP -> Action(ACTION_UP)
+                        MOVE_DOWN -> Action(ACTION_DOWN)
+                        MOVE_RIGHT -> Action(ACTION_RIGHT)
+                        MOVE_LEFT -> Action(ACTION_LEFT)
                         else -> {
                             throw if (child.contains("(") && child.contains(")")) {
                                 IllegalStateException("Mising brackets () in command: $child")//TODO handle error
@@ -99,7 +101,7 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     }
                     list.add(action)
                     codeLines.removeAt(0)
-                } else if (child.contains(reservedLoopDefinition)) {
+                } else if (child.contains(RESERVED_LOOP)) {
                     var bracketsOpened = 0
                     val whileCodeLines = ArrayList<String>()
 
@@ -109,7 +111,7 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     while (codeLines.isNotEmpty()) {
                         val line = codeLines.firstOrNull()
                         if (line != null) {
-                            if (line.contains(reservedLoopDefinition) || line.contains(reservedConditionIf) || line.contains(reservedConditionElse)) {
+                            if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF) || line.contains(RESERVED_CONDITION_ELSE)) {
                                 bracketsOpened++
                             }
                             codeLines.removeAt(0)
@@ -125,14 +127,14 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     }
                     //TODO VALUE
                     list.add(Loop(conditionRepeat, getCommands(whileCodeLines)))
-                } else if (child.contains(reservedConditionIf)) {
+                } else if (child.contains(RESERVED_CONDITION_IF)) {
                     var bracketsOpened = 0
                     val trueCodeLines = ArrayList<String>()
 
 
                     val conditionColor = when (getCondition(child)) {
-                        conditionGreenLeaf -> TYPE_LEAF_GREEN
-                        conditionBrownLeaf -> TYPE_LEAF_BROWN
+                        CONDITION_GREEN_LEAF -> TYPE_LEAF_GREEN
+                        CONDITION_BROWN_LEAF -> TYPE_LEAF_BROWN
                         else -> {
                             throw if (child.contains("(") && child.contains(")")) {
                                 IllegalStateException("Mising brackets () in condition.")//TODO handle error
@@ -146,13 +148,13 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
                     while (codeLines.isNotEmpty()) {
                         val line = codeLines.firstOrNull()
                         if (line != null) {
-                            if (line.contains(reservedLoopDefinition) || line.contains(reservedConditionIf) || line.contains(reservedConditionElse)) {
+                            if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF) || line.contains(RESERVED_CONDITION_ELSE)) {
                                 bracketsOpened++
                             }
                             codeLines.removeAt(0)
                             if (line.contains("}")) {
-                                if (bracketsOpened == 0 || line.contains(reservedConditionElse)) {
-                                    if (line.contains(reservedConditionElse)) {
+                                if (bracketsOpened == 0 || line.contains(RESERVED_CONDITION_ELSE)) {
+                                    if (line.contains(RESERVED_CONDITION_ELSE)) {
                                         codeLines.add(0, line)
                                     }
                                     break
@@ -167,13 +169,13 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
 
                     val falseCodeLines = ArrayList<String>()
                     val elseLine = codeLines.firstOrNull()
-                    if (elseLine != null && elseLine.contains(reservedConditionElse)) {
+                    if (elseLine != null && elseLine.contains(RESERVED_CONDITION_ELSE)) {
                         bracketsOpened = 0
                         codeLines.removeAt(0)
                         while (codeLines.isNotEmpty()) {
                             val line = codeLines.firstOrNull()
                             if (line != null) {
-                                if (line.contains(reservedLoopDefinition) || line.contains(reservedConditionIf) || line.contains(reservedConditionElse)) {
+                                if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF) || line.contains(RESERVED_CONDITION_ELSE)) {
                                     bracketsOpened++
                                 }
                                 codeLines.removeAt(0)
@@ -199,5 +201,9 @@ class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoVi
             }
         }
         return list
+    }
+
+    companion object {
+        const val RESERVED_LOOP = "repeat"
     }
 }

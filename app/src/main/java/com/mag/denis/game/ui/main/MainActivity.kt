@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.StringRes
+import android.view.View
 import com.mag.denis.game.R
+import com.mag.denis.game.ui.main.actionpseudoview.dialog.HelpKotlinDialog
+import com.mag.denis.game.ui.main.actionpseudoview.dialog.HelpPythonDialog
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.GameView
@@ -48,6 +51,9 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
         gameView.setOnMessageCallback(this)
         gameView.setLevel(level2)
+
+        btnHelp.visibility = View.VISIBLE
+        btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }//Todo show only when is pseudo mode
     }
 
     override fun doActionsInGame(actions: List<Command>) {
