@@ -37,16 +37,84 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <android.support.v7.widget.AppCompatCheckBox
+        <Button
+            android:id="@+id/btnKotlin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Theme1"
-            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_button_selector"
+            android:text="Kotlin"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
+        <Button
+            android:id="@+id/btnPython"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_button_selector"
+            android:text="Python"
+            android:textColor="@color/white"
+            app:layout_constraintBaseline_toBaselineOf="@id/btnKotlin"
+            app:layout_constraintStart_toEndOf="@id/btnKotlin"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <TextView
+            android:id="@+id/tvReorderThemes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Reorder themes"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/btnKotlin" />
+
+        <com.mag.denis.game.ui.main.view.PlaceholderView
+            android:id="@+id/llActions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/actionViewBackground"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvReorderThemes">
+
+            <TextView
+                android:id="@+id/tvBlocks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_button_unselected"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="BLOCKS"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvFlow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_button_unselected"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="FLOW"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvPseudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_button_unselected"
+                android:drawableEnd="@drawable/ic_arrow_right"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="PSEUDOCODE"
+                android:textColor="@color/white" />
+        </com.mag.denis.game.ui.main.view.PlaceholderView>
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
