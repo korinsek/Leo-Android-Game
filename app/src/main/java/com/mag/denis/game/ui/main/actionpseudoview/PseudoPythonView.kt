@@ -18,9 +18,13 @@ import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 import java.util.regex.Pattern
 
 
-class PseudoPythonView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes) {
+class PseudoPythonView : AbsPseudoView {
 
-    override fun colorAndAddSpacing(s:Editable):Editable{
+    constructor(context: Context) : super(context) {}
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+
+    override fun colorAndAddSpacing(s: Editable): Editable {
         val pattern = Pattern.compile("$RESERVED_LOOP|$RESERVED_CONDITION_IF|$RESERVED_CONDITION_ELSE|$RESERVED_IN|$RESERVED_RANGE")
         val matcher = pattern.matcher(s)
         while (matcher.find()) {

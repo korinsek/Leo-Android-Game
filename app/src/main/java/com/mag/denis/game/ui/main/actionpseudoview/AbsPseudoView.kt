@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.model.Command
@@ -19,7 +20,17 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 
 
-abstract class AbsPseudoView(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes), TextWatcher, View.OnKeyListener {
+abstract class AbsPseudoView : ConstraintLayout, TextWatcher, View.OnKeyListener {
+
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    init {
+        this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        val paddingPx = resources.getDimensionPixelSize(R.dimen.actionPadding)
+        this.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
+    }
 
     internal var backspacePressed = false
     internal var maxLastIndex = -1

@@ -18,7 +18,11 @@ import kotlinx.android.synthetic.main.partial_pseudo_view.view.*
 import java.util.regex.Pattern
 
 
-class PseudoKotlinView(context: Context, attributes: AttributeSet) : AbsPseudoView(context, attributes) {
+class PseudoKotlinView : AbsPseudoView {
+
+    constructor(context: Context) : super(context) {}
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
 
     override fun getActions(): ArrayList<Command> {

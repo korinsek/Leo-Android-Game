@@ -6,7 +6,12 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.View
 import com.mag.denis.game.R
+import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
+import com.mag.denis.game.ui.main.actionblockview.ActionBlockView
+import com.mag.denis.game.ui.main.actionflowview.FlowView1
+import com.mag.denis.game.ui.main.actionpseudoview.PseudoKotlinView
+import com.mag.denis.game.ui.main.actionpseudoview.PseudoPythonView
 import com.mag.denis.game.ui.main.actionpseudoview.dialog.HelpPythonDialog
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
@@ -21,6 +26,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
     @Inject lateinit var presenter: MainPresenter
     @Inject lateinit var levelManager: LevelManager
+    @Inject lateinit var gameManager: GameManager
 
     private var messageDialog: MessageDialog? = null
 
@@ -29,13 +35,33 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val stage = gameManager.getCurrentStage()
 
-        //TODO set correct action view
-        actionView.setupViews(supportFragmentManager)
+        val actionView = when (stage) {
+            GameManager.STAGE_BLOCK -> ActionBlockView(this)
+            GameManager.STAGE_FLOW -> {
+                when (gameManager.getCurrentLevel()) {
+                    1 -> FlowView1(this)
+                    2 -> FlowView1(this)
+                    else -> throw IllegalStateException("Invalid level flowview select")
+                }
+            }
+            GameManager.STAGE_PSEUDO -> {
+                when (gameManager.getLanguage()) {
+                    GameManager.LANGUAGE_KOTLIN -> PseudoKotlinView(this)
+                    GameManager.LANGUAGE_PYTHON -> PseudoPythonView(this)
+                    else -> throw IllegalStateException("Invalid programing langugage in manager")
+                }
+            }
+            else -> throw IllegalStateException("Invalid stage")
+        }
+
+        actionViewPlaceholder.addView(actionView)
+//        actionView.setupViews(supportFragmentManager) TODO SETUP VIEWS, GENERAL OBJECT
 
         btStart.setOnClickListener {
             gameView.resetGame()
-            presenter.onStartClick(actionView.getActions())
+//            presenter.onStartClick(actionView.getActions())//TODO ON START CLICK GET ACTIONS
         }
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 

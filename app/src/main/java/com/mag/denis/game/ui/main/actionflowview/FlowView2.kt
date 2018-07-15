@@ -10,6 +10,7 @@ import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.*
@@ -18,10 +19,17 @@ import com.mag.denis.game.ui.main.view.action.ActionImageView
 import kotlinx.android.synthetic.main.flow_condition.view.*
 import kotlinx.android.synthetic.main.partial_flow_action2.view.*
 
-class FlowView2(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes) {
+class FlowView2 : ConstraintLayout {
+
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     init {
         inflate(context, R.layout.partial_flow_action2, this)
+        this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        val paddingPx = resources.getDimensionPixelSize(R.dimen.actionPadding)
+        this.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
     }
 
     fun setupViews(fragmentManager: FragmentManager) {
