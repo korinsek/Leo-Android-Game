@@ -1,30 +1,33 @@
 package com.mag.denis.game.ui.settings
 
 import android.content.SharedPreferences
+import com.mag.denis.game.manager.GameManager
+import com.mag.denis.game.manager.GameManager.Companion.LANGUAGE_KOTLIN
+import com.mag.denis.game.manager.GameManager.Companion.LANGUAGE_PYTHON
 
 
-class SettingsPresenterImpl(private val view: SettingsView, private val sharedPreferences: SharedPreferences) : SettingsPresenter {
+class SettingsPresenterImpl(private val view: SettingsView, private val sharedPreferences: SharedPreferences, private val gameManager: GameManager) : SettingsPresenter {
 
     private var selectedLanguage: String? = null
 
     override fun onCreate() {
-        selectedLanguage = sharedPreferences.getString(LANGUAGE_PREFERENCES_ID, LANGUAGE_KOTLIN)
+        //TODO load stages to view
+        selectedLanguage = gameManager.getLanguage()
         view.selectLanguage(selectedLanguage == LANGUAGE_KOTLIN)
     }
 
-    override fun onBackClicked() {
-        saveSelectedLanguage()
+    override fun onBackClicked(stages: ArrayList<String>) {
+        saveSelectedLanguage(stages)
         view.closeView()
     }
 
-    override fun onBackPressed() {
-        saveSelectedLanguage()
+    override fun onBackPressed(stages: ArrayList<String>) {
+        saveSelectedLanguage(stages)
     }
 
-    private fun saveSelectedLanguage() {
-        val editor = sharedPreferences.edit()
-        editor.putString(LANGUAGE_PREFERENCES_ID, selectedLanguage)
-        editor.apply()
+    private fun saveSelectedLanguage(stages: ArrayList<String>) {
+        gameManager.setStages(stages)
+        gameManager.saveLanguage(selectedLanguage)
     }
 
     override fun onPythonClicked() {
@@ -35,12 +38,5 @@ class SettingsPresenterImpl(private val view: SettingsView, private val sharedPr
     override fun onKotlinClicked() {
         selectedLanguage = LANGUAGE_KOTLIN
         view.selectLanguage(true)
-    }
-
-    companion object {
-        const val LANGUAGE_PREFERENCES_ID = "com.mag.denis.game.ui.settings.language"
-
-        const val LANGUAGE_PYTHON = "Python"
-        const val LANGUAGE_KOTLIN = "Kotlin"
     }
 }

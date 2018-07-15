@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_cartoon">
@@ -15,18 +14,23 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/prew"
+        android:src="@drawable/ic_prew"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLevels"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="20dp"
         android:background="@drawable/bg_wood_container"
-        app:layout_constraintTop_toBottomOf="@+id/btBack"
-        tools:layout_editor_absoluteX="80dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btBack"
+        app:layout_constraintTop_toTopOf="@id/btBack">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -34,94 +38,60 @@
             android:layout_height="wrap_content"
             android:text="@string/map_activity_title"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:layout_marginTop="10dp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/tvLevel1"
+            android:id="@+id/tvStage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_placeholder_table"
-            android:gravity="center"
-            android:text="1"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvLevel2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
+            android:text="Block"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-        <TextView
-            android:id="@+id/tvLevel2"
+        <GridLayout
+            android:id="@+id/glLevels"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="0dp"
+            android:alignmentMode="alignBounds"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_placeholder_table"
-            android:enabled="false"
-            android:gravity="center"
-            android:text="2"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvLevel3"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvLevel1"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            android:columnCount="4"
+            android:orientation="horizontal"
+            android:useDefaultMargins="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ibNext"
+            app:layout_constraintStart_toEndOf="@id/ibPrevious"
+            app:layout_constraintTop_toBottomOf="@id/tvStage" />
 
-        <TextView
-            android:id="@+id/tvLevel3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_placeholder_table"
-            android:enabled="false"
-            android:gravity="center"
-            android:text="3"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvLevel4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvLevel2"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        <ImageButton
+            android:id="@+id/ibPrevious"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_prew"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/tvLevel4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_placeholder_table"
-            android:enabled="false"
-            android:gravity="center"
-            android:text="4"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvLevel5"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvLevel3"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-
-        <TextView
-            android:id="@+id/tvLevel5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_placeholder_table"
-            android:enabled="false"
-            android:gravity="center"
-            android:text="5"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvLevel4"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        <ImageButton
+            android:id="@+id/ibNext"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="30dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

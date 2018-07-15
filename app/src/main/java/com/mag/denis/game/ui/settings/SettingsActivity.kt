@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.mag.denis.game.R
+import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -23,7 +24,10 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        btBack.setOnClickListener { presenter.onBackClicked() }
+        tvBlocks.text = GameManager.STAGE_BLOCK
+        tvFlow.text = GameManager.STAGE_FLOW
+        tvPseudo.text = GameManager.STAGE_PSEUDO
+        btBack.setOnClickListener { presenter.onBackClicked(getStages()) }
         btnKotlin.setOnClickListener { presenter.onKotlinClicked() }
         btnPython.setOnClickListener { presenter.onPythonClicked() }
         initReorderThemes()
@@ -102,8 +106,12 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
     }
 
     override fun onBackPressed() {
-        presenter.onBackClicked()
+        presenter.onBackClicked(getStages())
         super.onBackPressed()
+    }
+
+    private fun getStages(): ArrayList<String> {
+        return arrayListOf((llActions.getChildAt(0) as TextView).text.toString(), (llActions.getChildAt(1) as TextView).text.toString(), (llActions.getChildAt(2) as TextView).text.toString())
     }
 
     companion object {

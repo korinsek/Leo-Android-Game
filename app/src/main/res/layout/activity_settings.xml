@@ -14,7 +14,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/prew"
+        android:src="@drawable/ic_prew"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,7 +86,6 @@
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="BLOCKS"
                 android:textColor="@color/white" />
 
             <TextView
@@ -99,7 +98,6 @@
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="FLOW"
                 android:textColor="@color/white" />
 
             <TextView
@@ -112,7 +110,6 @@
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="PSEUDOCODE"
                 android:textColor="@color/white" />
         </com.mag.denis.game.ui.main.view.PlaceholderView>
 

@@ -14,8 +14,8 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.Action
 import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.view.action.ActionImageView
 import com.mag.denis.game.ui.main.view.PlaceholderView
+import com.mag.denis.game.ui.main.view.action.ActionImageView
 import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 
 class FlowView1(context: Context, attributes: AttributeSet) : ConstraintLayout(context, attributes) {
@@ -124,7 +124,7 @@ class FlowView1(context: Context, attributes: AttributeSet) : ConstraintLayout(c
         }
     }
 
-    fun getActions(): ArrayList<Command>{
+    fun getActions(): ArrayList<Command> {
         //TODO check placeholders if all filled
         val list = ArrayList<Command>()
 

@@ -1,6 +1,9 @@
 package com.mag.denis.game.ui.map
 
 interface MapPresenter {
-    fun onLevelClicked()
+    fun onCreate()
+    fun onLevelClicked(level: Int)
     fun onBackClicked()
+    fun onNextClick()
+    fun onPrevClick()
 }

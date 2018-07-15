@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.View
 import com.mag.denis.game.R
-import com.mag.denis.game.ui.main.actionpseudoview.dialog.HelpKotlinDialog
+import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.ui.main.actionpseudoview.dialog.HelpPythonDialog
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
@@ -20,27 +20,17 @@ import javax.inject.Inject
 class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCallback {
 
     @Inject lateinit var presenter: MainPresenter
+    @Inject lateinit var levelManager: LevelManager
 
     private var messageDialog: MessageDialog? = null
 
-    private val level1 = listOf(
-            listOf("1", "1", "1", "2", "1"),
-            listOf("0", "0", "0", "2", "0"),
-            listOf("0", "0", "0", "2", "0"),
-            listOf("0", "0", "0", "1", "1"))
-
-    private val level2 = listOf(
-            listOf("1", "1", "0", "0", "0", "0", "0"),
-            listOf("0", "1", "1", "0", "0", "0", "0"),
-            listOf("0", "0", "1", "1", "0", "0", "0"),
-            listOf("0", "0", "0", "1", "1", "0", "0"),
-            listOf("0", "0", "0", "0", "1", "1", "0"),
-            listOf("0", "0", "0", "0", "0", "1", "2"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        //TODO set correct action view
         actionView.setupViews(supportFragmentManager)
 
         btStart.setOnClickListener {
@@ -50,7 +40,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 
         gameView.setOnMessageCallback(this)
-        gameView.setLevel(level2)
+        gameView.setLevel(levelManager.getCurrentLevel())
 
         btnHelp.visibility = View.VISIBLE
         btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }//Todo show only when is pseudo mode
