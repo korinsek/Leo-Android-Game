@@ -49,10 +49,21 @@ class GameManager @Inject constructor(private val sharedPreferences: SharedPrefe
         return stages
     }
 
+    fun getCurrentStage(): String {
+        return sharedPreferences.getString(CURRENT_STAGE_PREFERENCES_ID, stages.firstOrNull())
+    }
+
+    fun setCurrentStage(stage: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(CURRENT_LEVEL_PREFERENCES_ID, stage)
+        editor.apply()
+    }
+
     companion object {
         const val LANGUAGE_PREFERENCES_ID = "com.mag.denis.game.ui.settings.language"
         const val CURRENT_LEVEL_PREFERENCES_ID = "com.mag.denis.game.ui.settings.currentLevel"
         const val MAX_LEVEL_PREFERENCES_ID = "com.mag.denis.game.ui.settings.maxLevel"
+        const val CURRENT_STAGE_PREFERENCES_ID = "com.mag.denis.game.ui.settings.currentStage"
 
         const val LANGUAGE_PYTHON = "Python"
         const val LANGUAGE_KOTLIN = "Kotlin"
