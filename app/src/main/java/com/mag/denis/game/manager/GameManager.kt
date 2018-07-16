@@ -55,7 +55,7 @@ class GameManager @Inject constructor(private val sharedPreferences: SharedPrefe
 
     fun setCurrentStage(stage: String) {
         val editor = sharedPreferences.edit()
-        editor.putString(CURRENT_LEVEL_PREFERENCES_ID, stage)
+        editor.putString(CURRENT_STAGE_PREFERENCES_ID, stage)
         editor.apply()
     }
 

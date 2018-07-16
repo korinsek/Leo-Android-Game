@@ -10,6 +10,11 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
 
     override fun onCreate() {
         stages = gameManager.getStages()
+        if (gameManager.getCurrentStage() != stages[currentStage]) {
+            currentStage = stages.indexOf(gameManager.getCurrentStage())
+            gameManager.setCurrentStage(stages[currentStage])
+        }
+        view.setStageTitle(stages[currentStage])
         maxStage = stages.size - 1
         checkButtons()
         for (i in 1..8) {

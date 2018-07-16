@@ -30,46 +30,63 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
     private var messageDialog: MessageDialog? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val stage = gameManager.getCurrentStage()
+        setupActionView()
 
-        val actionView = when (stage) {
-            GameManager.STAGE_BLOCK -> ActionBlockView(this)
-            GameManager.STAGE_FLOW -> {
-                when (gameManager.getCurrentLevel()) {
-                    1 -> FlowView1(this)
-                    2 -> FlowView1(this)
-                    else -> throw IllegalStateException("Invalid level flowview select")
-                }
-            }
-            GameManager.STAGE_PSEUDO -> {
-                when (gameManager.getLanguage()) {
-                    GameManager.LANGUAGE_KOTLIN -> PseudoKotlinView(this)
-                    GameManager.LANGUAGE_PYTHON -> PseudoPythonView(this)
-                    else -> throw IllegalStateException("Invalid programing langugage in manager")
-                }
-            }
-            else -> throw IllegalStateException("Invalid stage")
-        }
-
-        actionViewPlaceholder.addView(actionView)
-//        actionView.setupViews(supportFragmentManager) TODO SETUP VIEWS, GENERAL OBJECT
-
-        btStart.setOnClickListener {
-            gameView.resetGame()
-//            presenter.onStartClick(actionView.getActions())//TODO ON START CLICK GET ACTIONS
-        }
         btnMenu.setOnClickListener { presenter.onMenuClick() }
 
         gameView.setOnMessageCallback(this)
         gameView.setLevel(levelManager.getCurrentLevel())
+    }
 
-        btnHelp.visibility = View.VISIBLE
-        btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }//Todo show only when is pseudo mode
+    private fun setupActionView() {
+        val stage = gameManager.getCurrentStage()
+
+        when (stage) {
+            GameManager.STAGE_BLOCK -> {
+                val actionView = ActionBlockView(this)
+                actionViewPlaceholder.addView(actionView)
+                actionView.setupViews(supportFragmentManager)
+                btStart.setOnClickListener {
+                    gameView.resetGame()
+                    presenter.onStartClick(actionView.getActions())
+                }
+                btnHelp.visibility = View.GONE
+            }
+            GameManager.STAGE_FLOW -> {
+                val actionView = when (gameManager.getCurrentLevel()) {
+                    1 -> FlowView1(this)
+                    2 -> FlowView1(this)
+                    else -> throw IllegalStateException("Invalid level flowview select")
+                }
+                actionViewPlaceholder.addView(actionView)
+                actionView.setupViews(supportFragmentManager)
+                btStart.setOnClickListener {
+                    gameView.resetGame()
+                    presenter.onStartClick(actionView.getActions())
+                }
+                btnHelp.visibility = View.GONE
+            }
+            GameManager.STAGE_PSEUDO -> {
+                val actionView = when (gameManager.getLanguage()) {
+                    GameManager.LANGUAGE_KOTLIN -> PseudoKotlinView(this)
+                    GameManager.LANGUAGE_PYTHON -> PseudoPythonView(this)
+                    else -> throw IllegalStateException("Invalid programing langugage in manager")
+                }
+                actionViewPlaceholder.addView(actionView)
+                actionView.setupViews(supportFragmentManager)
+                btStart.setOnClickListener {
+                    gameView.resetGame()
+                    presenter.onStartClick(actionView.getActions())
+                }
+                btnHelp.visibility = View.VISIBLE
+                btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }//Todo show only when is pseudo mode
+            }
+            else -> throw IllegalStateException("Invalid stage")
+        }
     }
 
     override fun doActionsInGame(actions: List<Command>) {
@@ -104,7 +121,5 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         fun newIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)
         }
-
     }
-
 }
