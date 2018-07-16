@@ -8,11 +8,11 @@ import android.view.View
 import com.mag.denis.game.R
 import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
-import com.mag.denis.game.ui.main.actionblockview.ActionBlockView
-import com.mag.denis.game.ui.main.actionflowview.FlowView1
-import com.mag.denis.game.ui.main.actionpseudoview.PseudoKotlinView
-import com.mag.denis.game.ui.main.actionpseudoview.PseudoPythonView
-import com.mag.denis.game.ui.main.actionpseudoview.dialog.HelpPythonDialog
+import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
+import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
+import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
+import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoPythonView
+import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpPythonDialog
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.GameView

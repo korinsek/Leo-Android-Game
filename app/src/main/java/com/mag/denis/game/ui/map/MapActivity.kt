@@ -4,10 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.transition.ChangeBounds
+import android.transition.ChangeImageTransform
 import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import com.mag.denis.game.R
@@ -15,6 +19,9 @@ import com.mag.denis.game.ui.main.MainActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_map.*
 import javax.inject.Inject
+import android.animation.ObjectAnimator
+
+
 
 
 class MapActivity : DaggerAppCompatActivity(), MapView {
@@ -79,7 +86,9 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
         tv.text = level.toString()
         tv.gravity = Gravity.CENTER
-        tv.setOnClickListener { presenter.onLevelClicked(level) }
+        tv.setOnClickListener {
+            presenter.onLevelClicked(level)
+        }
         val drawable = when (stars) {
             0 -> R.drawable.ic_star_0
             1 -> R.drawable.ic_star_1
@@ -92,6 +101,12 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         tv.setCompoundDrawables(null, null, null, img)
         tv.isEnabled = enabled
         glLevels.addView(tv)
+    }
+
+    private fun animate(view: View) {
+        val anim = ObjectAnimator.ofFloat(view, "rotation", 360f)
+        anim.duration = 600
+        anim.start()
     }
 
     companion object {
