@@ -11,7 +11,8 @@ class SettingsPresenterImpl(private val view: SettingsView, private val sharedPr
     private var selectedLanguage: String? = null
 
     override fun onCreate() {
-        //TODO load stages to view
+        val stages = gameManager.getStages()
+        view.setupStages(stages[0], stages[1], stages[2])
         selectedLanguage = gameManager.getLanguage()
         view.selectLanguage(selectedLanguage == LANGUAGE_KOTLIN)
     }

@@ -24,9 +24,6 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        tvBlocks.text = GameManager.STAGE_BLOCK
-        tvFlow.text = GameManager.STAGE_FLOW
-        tvPseudo.text = GameManager.STAGE_PSEUDO
         btBack.setOnClickListener { presenter.onBackClicked(getStages()) }
         btnKotlin.setOnClickListener { presenter.onKotlinClicked() }
         btnPython.setOnClickListener { presenter.onPythonClicked() }
@@ -40,13 +37,13 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
             getDragListener(v, event)
         }
 
-        tvBlocks.setOnTouchListener { v, event ->
+        tvStage1.setOnTouchListener { v, event ->
             getTouchListener(v, event)
         }
-        tvFlow.setOnTouchListener { v, event ->
+        tvStage2.setOnTouchListener { v, event ->
             getTouchListener(v, event)
         }
-        tvPseudo.setOnTouchListener { v, event ->
+        tvStage3.setOnTouchListener { v, event ->
             getTouchListener(v, event)
         }
     }
@@ -110,6 +107,12 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
         super.onBackPressed()
     }
 
+    override fun setupStages(stage1: String, stage2: String, stage3: String) {
+        tvStage1.text = stage1
+        tvStage2.text = stage2
+        tvStage3.text = stage3
+    }
+
     private fun getStages(): ArrayList<String> {
         return arrayListOf((llActions.getChildAt(0) as TextView).text.toString(), (llActions.getChildAt(1) as TextView).text.toString(), (llActions.getChildAt(2) as TextView).text.toString())
     }
@@ -119,7 +122,5 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
         fun newIntent(context: Context): Intent {
             return Intent(context, SettingsActivity::class.java)
         }
-
     }
-
 }
