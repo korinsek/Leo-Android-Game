@@ -1,5 +1,6 @@
 package com.mag.denis.game.ui.main
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -41,6 +42,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         gameView.setOnMessageCallback(this)
         gameView.setLevel(levelManager.getCurrentLevel())
     }
+
 
     private fun setupActionView() {
         val stage = gameManager.getCurrentStage()
@@ -91,6 +93,15 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
     override fun doActionsInGame(actions: List<Command>) {
         gameView.doActions(actions)
+    }
+
+    override fun onLevelFinished() {
+        presenter.onLevelFinished()
+    }
+
+    override fun closeOk() {
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     override fun onResume() {

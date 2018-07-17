@@ -1,17 +1,15 @@
 package com.mag.denis.game.ui.map
 
+import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.transition.ChangeBounds
-import android.transition.ChangeImageTransform
 import android.transition.TransitionManager
-import android.transition.TransitionSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import com.mag.denis.game.R
@@ -19,9 +17,6 @@ import com.mag.denis.game.ui.main.MainActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_map.*
 import javax.inject.Inject
-import android.animation.ObjectAnimator
-
-
 
 
 class MapActivity : DaggerAppCompatActivity(), MapView {
@@ -41,8 +36,22 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         presenter.onCreate()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_GAME_PLAY -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        presenter.onLevelComplete()
+                    }
+                    else -> finish()
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     override fun openGameView() {
-        startActivity(MainActivity.newIntent(this))
+        startActivityForResult(MainActivity.newIntent(this), REQUEST_GAME_PLAY)
     }
 
     override fun closeView() {
@@ -76,7 +85,7 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         TransitionManager.beginDelayedTransition(glLevels)
     }
 
-    override fun setupLevel(level: Int, enabled: Boolean, stars: Int) {
+    override fun setupLevel(level: Int, enabled: Boolean, stars: Int, animate: Boolean) {
         val tv = Button(this)
         tv.setBackgroundResource(R.drawable.bg_placeholder_table)
         val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -101,6 +110,13 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         tv.setCompoundDrawables(null, null, null, img)
         tv.isEnabled = enabled
         glLevels.addView(tv)
+        if (animate) {
+            animate(tv)
+        }
+    }
+
+    override fun clearLevels() {
+        glLevels.removeAllViews()
     }
 
     private fun animate(view: View) {
@@ -110,6 +126,8 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
     }
 
     companion object {
+
+        const val REQUEST_GAME_PLAY = 1
 
         fun newIntent(context: Context): Intent {
             return Intent(context, MapActivity::class.java)

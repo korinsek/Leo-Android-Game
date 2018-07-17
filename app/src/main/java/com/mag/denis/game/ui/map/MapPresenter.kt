@@ -6,4 +6,5 @@ interface MapPresenter {
     fun onBackClicked()
     fun onNextClick()
     fun onPrevClick()
+    fun onLevelComplete()
 }

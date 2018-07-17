@@ -126,6 +126,7 @@ class GameActor(resources: Resources, private val floorGameObjects: FloorSet, pr
     interface ActorListener {
         fun onMove()
         fun onAnimationEnd()
+        fun onFinish(x: Float, y: Float)
     }
 
     override fun onAnimationEnd(animation: Animator) {
@@ -134,6 +135,7 @@ class GameActor(resources: Resources, private val floorGameObjects: FloorSet, pr
             executeNext()
         } else {
             isAnimating = false
+            onMoveListener?.onFinish(x, y)
         }
     }
 

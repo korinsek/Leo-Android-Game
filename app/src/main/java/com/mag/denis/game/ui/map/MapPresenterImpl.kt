@@ -17,9 +17,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         view.setStageTitle(stages[currentStage])
         maxStage = stages.size - 1
         checkButtons()
-        for (i in 1..8) {
-            view.setupLevel(i, i <= gameManager.getMaxLevelAchived(), 0) //TODO get stars for level from history
-        }
+        setupLevels()
     }
 
     override fun onLevelClicked(level: Int) {
@@ -51,8 +49,24 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         view.animateLevels()
     }
 
+    override fun onLevelComplete() {
+        val currentLevel = gameManager.getCurrentLevel()
+        //TODO check and move to next stage
+        if (currentLevel < 8) {
+            gameManager.setMaxLevelAchived(currentLevel + 1)
+            setupLevels()
+        }
+    }
+
     private fun checkButtons() {
         view.enablePrev(currentStage > 0)
         view.enableNext(currentStage < maxStage)
+    }
+
+    private fun setupLevels() {
+        view.clearLevels()
+        for (i in 1..8) {
+            view.setupLevel(i, i <= gameManager.getMaxLevelAchived(), 0, i == gameManager.getMaxLevelAchived()) //TODO get stars for level from history
+        }
     }
 }

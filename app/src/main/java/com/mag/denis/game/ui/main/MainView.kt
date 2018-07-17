@@ -7,4 +7,5 @@ interface MainView {
     fun doActionsInGame(actions: List<Command>)
     fun openMenuActivity()
     fun showMessageDialog(@StringRes messageId: Int)
+    fun closeOk()
 }

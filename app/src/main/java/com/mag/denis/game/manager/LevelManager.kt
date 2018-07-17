@@ -9,7 +9,7 @@ class LevelManager @Inject constructor(private val gameManager: GameManager) {
             listOf("1", "1", "1", "2", "1"),
             listOf("0", "0", "0", "2", "0"),
             listOf("0", "0", "0", "2", "0"),
-            listOf("0", "0", "0", "1", "1"))
+            listOf("0", "0", "0", "1", "F"))
 
     private val level2 = listOf(
             listOf("1", "1", "0", "0", "0", "0", "0"),
@@ -17,7 +17,7 @@ class LevelManager @Inject constructor(private val gameManager: GameManager) {
             listOf("0", "0", "1", "1", "0", "0", "0"),
             listOf("0", "0", "0", "1", "1", "0", "0"),
             listOf("0", "0", "0", "0", "1", "1", "0"),
-            listOf("0", "0", "0", "0", "0", "1", "2"))
+            listOf("0", "0", "0", "0", "0", "1", "F"))
 
     fun getCurrentLevel(): List<List<String>> {
         return when (gameManager.getCurrentLevel()) {

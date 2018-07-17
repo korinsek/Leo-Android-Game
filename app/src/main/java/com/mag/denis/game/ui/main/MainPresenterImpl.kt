@@ -12,4 +12,8 @@ class MainPresenterImpl(private val view: MainView) : MainPresenter {
     override fun onMenuClick() {
         view.openMenuActivity()
     }
+
+    override fun onLevelFinished() {
+        view.closeOk()
+    }
 }

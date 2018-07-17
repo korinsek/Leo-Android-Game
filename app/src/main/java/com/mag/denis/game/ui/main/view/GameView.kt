@@ -36,7 +36,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private lateinit var actions: List<Command>
     private var execActionPosition = 0
 
-    private var messageCallback: OnMessageCallback? = null
+    private var callback: OnMessageCallback? = null
 
     private var initPositionX = 0f
     private var initPositiony = 0f
@@ -73,7 +73,13 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
             override fun onAnimationEnd() {
                 if (!floorGameObjects!!.isPositionOnFloorSet(execActionPosition, actor!!.x, actor!!.y)) {
                     actor?.stopAnimation()
-                    messageCallback?.showGameMessage(R.string.main_message_fall_into_see)
+                    callback?.showGameMessage(R.string.main_message_fall_into_see)
+                }
+            }
+
+            override fun onFinish(x: Float, y: Float) {
+                if (isFinish(x, y)) {
+                    callback?.onLevelFinished()
                 }
             }
         })
@@ -90,16 +96,25 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         actor?.draw(canvas, paint)
     }
 
-    fun doActions(actions: List<Command>, conditions: Conditions? = null) {
+    private fun isFinish(x: Float, y: Float): Boolean {
+        return floorGameObjects?.getFloorplanObjectByPosition(x, y)?.leafColorType == FloorSet.TYPE_LEAF_FINISH
+    }
+
+    fun doActions(actions: List<Command>) {
+        executeActions(actions)
+    }
+
+    private fun executeActions(actions: List<Command>, conditions: Conditions? = null) {
         this.actions = actions
+
         if (actions.isNotEmpty()) {
             for (action in actions) {
                 when (action) {
                     is Loop -> {
                         if (action.repeat > 0) {
                             action.repeat--
-                            doActions(action.commands)
-                            doActions(actions)
+                            executeActions(action.commands)
+                            executeActions(actions)
                         }
                     }
                     is IfCondition -> {
@@ -128,8 +143,8 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                         }
                         conditionsFalse.conditions.add(condition1)
 
-                        doActions(action.trueCommands, conditionsTrue)
-                        doActions(action.falseCommands, conditionsFalse)
+                        executeActions(action.trueCommands, conditionsTrue)
+                        executeActions(action.falseCommands, conditionsFalse)
                     }
                     is Action -> {
                         when (action.type) {
@@ -180,7 +195,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     }
 
     fun setOnMessageCallback(callback: OnMessageCallback) {
-        messageCallback = callback
+        this.callback = callback
     }
 
     fun setLevel(level: List<List<String>>) {
@@ -189,6 +204,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     interface OnMessageCallback {
         fun showGameMessage(@StringRes messageId: Int)
+        fun onLevelFinished()
     }
 
     companion object {

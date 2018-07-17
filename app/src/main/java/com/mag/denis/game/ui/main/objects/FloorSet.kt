@@ -31,10 +31,13 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
             var xTmp = xPosition
             for (tile in row) {
                 if (tile == "1") {
-                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafGreenBitmap, TYPE_LEAF_GREEN))//TODO TYPE
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafGreenBitmap, TYPE_LEAF_GREEN))
                 }
                 if (tile == "2") {
-                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_BROWN))//TODO TYPE
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_BROWN))
+                }
+                if(tile == "F"){
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_FINISH))//TODO finish leaf
                 }
                 xTmp += leafGreenBitmap.width
             }
@@ -110,5 +113,6 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
     companion object {
         const val TYPE_LEAF_GREEN = 1
         const val TYPE_LEAF_BROWN = 2
+        const val TYPE_LEAF_FINISH = 3
     }
 }
