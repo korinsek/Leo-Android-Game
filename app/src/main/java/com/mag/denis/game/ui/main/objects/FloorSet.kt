@@ -15,6 +15,7 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
 
     private val leafGreenBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_green)!!)
     private val leafBrownBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_brown)!!)
+    private val star = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_pick)!!)
     private val floorGameObjects = mutableListOf<FloorGameObject>()
 
     init {
@@ -24,7 +25,8 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
         val height = level1.size
         val width = level1.first().size
 
-        var xPosition = screenWidth / 2 - width / 2
+        val margin = 10
+        var xPosition = screenWidth / 2 - width / 2 + margin
         var yPosition = screenHeight / 2 - height / 2
 
         for (row in level1) {
@@ -36,7 +38,15 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
                 if (tile == "2") {
                     floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_BROWN))
                 }
-                if(tile == "F"){
+                if (tile == "1S") {
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafGreenBitmap, TYPE_LEAF_GREEN))
+                    floorGameObjects.add(FloorGameObject(xTmp + 15, yPosition + 12, star, TYPE_LEAF_STAR))
+                }
+                if (tile == "2s") {
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_BROWN))
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, star, TYPE_LEAF_STAR))
+                }
+                if (tile == "F") {
                     floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_FINISH))//TODO finish leaf
                 }
                 xTmp += leafGreenBitmap.width
@@ -114,5 +124,6 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
         const val TYPE_LEAF_GREEN = 1
         const val TYPE_LEAF_BROWN = 2
         const val TYPE_LEAF_FINISH = 3
+        const val TYPE_LEAF_STAR = 4
     }
 }
