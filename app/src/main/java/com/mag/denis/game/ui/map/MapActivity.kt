@@ -121,7 +121,7 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
 
     private fun animate(view: View) {
         val anim = ObjectAnimator.ofFloat(view, "rotation", 360f)
-        anim.duration = 600
+        anim.duration = 500
         anim.start()
     }
 

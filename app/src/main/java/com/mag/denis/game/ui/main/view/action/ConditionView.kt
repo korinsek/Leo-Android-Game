@@ -9,7 +9,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.dialog.ColorDialog
 import kotlinx.android.synthetic.main.condition.view.*
 
-class ConditionView(context: Context, private val supportFragmentManager: FragmentManager) : ConstraintLayout(context), ActionView, ColorDialog.ColorCallback {
+class ConditionView(context: Context, val supportFragmentManager: FragmentManager) : ConstraintLayout(context), ActionView, ColorDialog.ColorCallback {
 
     init {
         inflate(context, R.layout.condition, this)

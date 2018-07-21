@@ -42,7 +42,7 @@ abstract class AbsPseudoView : ConstraintLayout, TextWatcher, View.OnKeyListener
         inflate(context, R.layout.partial_pseudo_view, this)
     }
 
-    fun setupViews(fragmentManager: FragmentManager) {
+    fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>) {
         super.onAttachedToWindow()
         etCode.addTextChangedListener(this)
         etCode.setOnKeyListener(this)

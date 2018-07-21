@@ -11,6 +11,7 @@ import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
+import com.mag.denis.game.ui.main.actions.actionflowview.FlowView2
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoPythonView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpPythonDialog
@@ -46,12 +47,12 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
     private fun setupActionView() {
         val stage = gameManager.getCurrentStage()
-
+        val avilableCommands = levelManager.getAvilableCommandsForLevel(gameManager.getCurrentLevel())
         when (stage) {
             GameManager.STAGE_BLOCK -> {
                 val actionView = ActionBlockView(this)
                 actionViewPlaceholder.addView(actionView)
-                actionView.setupViews(supportFragmentManager)
+                actionView.setupViews(supportFragmentManager, avilableCommands)
                 btStart.setOnClickListener {
                     gameView.resetGame()
                     presenter.onStartClick(actionView.getActions())
@@ -61,11 +62,11 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
             GameManager.STAGE_FLOW -> {
                 val actionView = when (gameManager.getCurrentLevel()) {
                     1 -> FlowView1(this)
-                    2 -> FlowView1(this)
+                    2 -> FlowView2(this)
                     else -> throw IllegalStateException("Invalid level flowview select")
                 }
                 actionViewPlaceholder.addView(actionView)
-                actionView.setupViews(supportFragmentManager)
+                actionView.setupViews(supportFragmentManager, avilableCommands)
                 btStart.setOnClickListener {
                     gameView.resetGame()
                     presenter.onStartClick(actionView.getActions())
@@ -79,7 +80,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                     else -> throw IllegalStateException("Invalid programing langugage in manager")
                 }
                 actionViewPlaceholder.addView(actionView)
-                actionView.setupViews(supportFragmentManager)
+                actionView.setupViews(supportFragmentManager, avilableCommands)
                 btStart.setOnClickListener {
                     gameView.resetGame()
                     presenter.onStartClick(actionView.getActions())
@@ -95,7 +96,8 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         gameView.doActions(actions)
     }
 
-    override fun onLevelFinished() {
+    override fun onLevelFinished(starsAchieved: Int) {
+        levelManager.setStarsForLevel(gameManager.getCurrentLevel(), starsAchieved)
         presenter.onLevelFinished()
     }
 

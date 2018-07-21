@@ -2,20 +2,18 @@ package com.mag.denis.game.ui.main.objects
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import com.mag.denis.game.R
+import com.mag.denis.game.utils.ImageUtils.drawableToBitmap
 
 
 class FloorSet(context: Context, resources: Resources, level1: List<List<String>>) {
 
     private val leafGreenBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_green)!!)
     private val leafBrownBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_brown)!!)
-    private val star = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_pick)!!)
+    private val starBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_pick)!!)
     private val floorGameObjects = mutableListOf<FloorGameObject>()
 
     init {
@@ -40,11 +38,11 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
                 }
                 if (tile == "1S") {
                     floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafGreenBitmap, TYPE_LEAF_GREEN))
-                    floorGameObjects.add(FloorGameObject(xTmp + 15, yPosition + 12, star, TYPE_LEAF_STAR))
+                    floorGameObjects.add(FloorGameObject(xTmp + starBitmap.width, yPosition + starBitmap.height / 2, starBitmap, TYPE_LEAF_STAR))
                 }
-                if (tile == "2s") {
+                if (tile == "2S") {
                     floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_BROWN))
-                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, star, TYPE_LEAF_STAR))
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, starBitmap, TYPE_LEAF_STAR))
                 }
                 if (tile == "F") {
                     floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_FINISH))//TODO finish leaf
@@ -57,25 +55,14 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
 
     fun draw(canvas: Canvas, paint: Paint) {
         for (floor in floorGameObjects) {
-            canvas.drawBitmap(floor.image, floor.x, floor.y, paint)
+            if (floor.visible) {
+                canvas.drawBitmap(floor.image, floor.x, floor.y, paint)
+            }
         }
     }
 
     fun update() {
 
-    }
-
-    private fun drawableToBitmap(drawable: Drawable): Bitmap {
-        if (drawable is BitmapDrawable) {
-            return drawable.bitmap
-        }
-
-        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-
-        return bitmap
     }
 
     fun getTileWidth(): Int {
@@ -97,14 +84,27 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
 
     fun isPositionOnFloorSet(numAction: Int, x: Float, y: Float): Boolean {
         return if (numAction < floorGameObjects.size) {
+            getFloorObjects(numAction, x, y).firstOrNull() != null
+        } else {
+            false
+        }
+    }
 
-            val floorTile = floorGameObjects[numAction + 1]
-            val imageWidthBounds = floorTile.image.width / 2
-            val imageHeightBounds = floorTile.image.height / 2
-            floorGameObjects.firstOrNull {
-                x > (it.x - imageWidthBounds) && x < (it.x + imageWidthBounds)
-                        && y > (it.y - imageHeightBounds) && y < (it.y + imageHeightBounds)
-            } != null
+    private fun getFloorObjects(numAction: Int, x: Float, y: Float): List<FloorGameObject> {
+        val floorTile = floorGameObjects[numAction + 1]
+        val imageWidthBounds = floorTile.image.width / 2
+        val imageHeightBounds = floorTile.image.height / 2
+        return floorGameObjects.filter {
+            x > (it.x - imageWidthBounds) && x < (it.x + imageWidthBounds)
+                    && y > (it.y - imageHeightBounds) && y < (it.y + imageHeightBounds)
+        }
+    }
+
+    fun checkForStar(numAction: Int, x: Float, y: Float): Boolean {
+        return if (numAction < floorGameObjects.size) {
+            val starObject = getFloorObjects(numAction, x, y).firstOrNull { it.leafColorType == TYPE_LEAF_STAR }
+            starObject?.visible = false
+            starObject != null
         } else {
             false
         }

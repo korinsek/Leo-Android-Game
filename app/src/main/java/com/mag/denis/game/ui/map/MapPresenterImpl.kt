@@ -1,8 +1,9 @@
 package com.mag.denis.game.ui.map
 
 import com.mag.denis.game.manager.GameManager
+import com.mag.denis.game.manager.LevelManager
 
-class MapPresenterImpl(private val view: MapView, private val gameManager: GameManager) : MapPresenter {
+class MapPresenterImpl(private val view: MapView, private val gameManager: GameManager, private val levelManager: LevelManager) : MapPresenter {
 
     private var currentStage = 0
     private var maxStage = 0
@@ -65,8 +66,8 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
 
     private fun setupLevels() {
         view.clearLevels()
-        for (i in 1..8) {
-            view.setupLevel(i, i <= gameManager.getMaxLevelAchived(), 0, i == gameManager.getMaxLevelAchived()) //TODO get stars for level from history
+        for (i in 1..levelManager.numOfLevels) {
+            view.setupLevel(i, i <= gameManager.getMaxLevelAchived(), levelManager.getStarsForLevel(i), i == gameManager.getMaxLevelAchived()) //TODO get stars for level from history
         }
     }
 }

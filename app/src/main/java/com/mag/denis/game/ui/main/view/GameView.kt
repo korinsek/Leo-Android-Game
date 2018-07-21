@@ -1,6 +1,8 @@
 package com.mag.denis.game.ui.main.view
 
+import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -17,6 +19,7 @@ import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet
 import com.mag.denis.game.ui.main.objects.GameActor
+import com.mag.denis.game.utils.ImageUtils.drawableToBitmap
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,6 +45,13 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private var initPositiony = 0f
     private var currentLevel: List<List<String>>? = null
 
+    private val noStars = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_0)!!)
+    private val oneStars = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_1)!!)
+    private val twoStars = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_2)!!)
+    private val threeStars = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_3)!!)
+    private var starsAchieved = 0
+    private var starsWidth = noStars.width
+
     init {
         holder.addCallback(this)
 
@@ -61,6 +71,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     }
 
     private fun initGameObjects() {
+        starsAchieved = 0
         floorGameObjects = FloorSet(context, resources, currentLevel!!)
         initPositionX = floorGameObjects?.getInitPosition()?.first ?: 0f
         initPositiony = floorGameObjects?.getInitPosition()?.second ?: 0f
@@ -75,11 +86,15 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                     actor?.stopAnimation()
                     callback?.showGameMessage(R.string.main_message_fall_into_see)
                 }
+                if (floorGameObjects!!.checkForStar(execActionPosition, actor!!.x, actor!!.y)) {
+                    starsAchieved++
+                    animateStars()
+                }
             }
 
             override fun onFinish(x: Float, y: Float) {
                 if (isFinish(x, y)) {
-                    callback?.onLevelFinished()
+                    callback?.onLevelFinished(starsAchieved)
                 }
             }
         })
@@ -91,9 +106,23 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
 
     fun render(canvas: Canvas) {
+        canvas.save()
         canvas.drawColor(ContextCompat.getColor(context, R.color.backgroundBlueLight))
         floorGameObjects?.draw(canvas, paint)
         actor?.draw(canvas, paint)
+        val stars = getStarsBitmap()
+        canvas.drawBitmap(stars, (canvas.width - starsWidth - 10).toFloat(), 10f, paint)
+        canvas.restore()
+    }
+
+    fun getStarsBitmap(): Bitmap {
+        return when (starsAchieved) {
+            0 -> noStars
+            1 -> oneStars
+            2 -> twoStars
+            3 -> threeStars
+            else -> throw IllegalStateException("Illegal num of stars")
+        }
     }
 
     private fun isFinish(x: Float, y: Float): Boolean {
@@ -202,9 +231,20 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
         currentLevel = level
     }
 
+    private fun animateStars() {
+        val animator = ValueAnimator.ofInt(starsWidth, starsWidth - starsWidth / 8, starsWidth)
+        animator.addUpdateListener { animation ->
+            starsWidth = (animation.animatedValue as Int)
+        }
+        animator.repeatMode = ValueAnimator.REVERSE
+        animator.repeatCount = 10
+        animator.duration = 20
+        animator.start()
+    }
+
     interface OnMessageCallback {
         fun showGameMessage(@StringRes messageId: Int)
-        fun onLevelFinished()
+        fun onLevelFinished(starsAchieved: Int)
     }
 
     companion object {
