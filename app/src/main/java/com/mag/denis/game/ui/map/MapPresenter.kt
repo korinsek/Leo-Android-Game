@@ -7,4 +7,5 @@ interface MapPresenter {
     fun onNextClick()
     fun onPrevClick()
     fun onLevelComplete()
+    fun onDestroy()
 }

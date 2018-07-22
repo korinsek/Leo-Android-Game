@@ -28,4 +28,6 @@
     <color name="loop_text_color">#cc7832</color>
 
     <color name="green">#196b00</color>
+
+    <color name="lock">#a4a4a4</color>
 </resources>

@@ -98,15 +98,26 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         tv.setOnClickListener {
             presenter.onLevelClicked(level)
         }
-        val drawable = when (stars) {
-            0 -> R.drawable.ic_star_0
-            1 -> R.drawable.ic_star_1
-            2 -> R.drawable.ic_star_2
-            3 -> R.drawable.ic_star_3
-            else -> throw IllegalStateException("Drawable for so many stars not supported")
+
+
+        val img = if (enabled) {
+            val drawable = when (stars) {
+                0 -> R.drawable.ic_star_0
+                1 -> R.drawable.ic_star_1
+                2 -> R.drawable.ic_star_2
+                3 -> R.drawable.ic_star_3
+                else -> throw IllegalStateException("Drawable for so many stars not supported")
+            }
+            val img = ContextCompat.getDrawable(this, drawable)
+            img?.setBounds(0, 0, 150, 80)
+            img
+        } else {
+            val img = ContextCompat.getDrawable(this, R.drawable.ic_lock)
+            img?.setBounds(0, 0, 80, 80)
+            img
         }
-        val img = ContextCompat.getDrawable(this, drawable)
-        img?.setBounds(0, 0, 150, 80)
+
+
         tv.setCompoundDrawables(null, null, null, img)
         tv.isEnabled = enabled
         glLevels.addView(tv)
@@ -123,6 +134,11 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         val anim = ObjectAnimator.ofFloat(view, "rotation", 360f)
         anim.duration = 500
         anim.start()
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
     companion object {

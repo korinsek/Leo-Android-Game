@@ -251,9 +251,10 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as ConditionView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
+                val container = v as LinearLayout
                 if (draggedView.parent != llActions) {
-                    val container = v as LinearLayout
-                    if (draggedView != container.parent) {
+
+                    if (draggedView != container.parent.parent) {
                         val owner = draggedView.parent as ViewGroup
                         owner.removeView(draggedView)
                         container.addView(draggedView)
@@ -276,8 +277,7 @@ class ActionBlockView : ConstraintLayout {
                         getDragListener(v, event)
                     }
 
-                    val container = v as LinearLayout
-                    if (container != llActions) {
+                    if (container != llActions && draggedView != container.parent) {
                         container.addView(newCondition)
                     }
                 }

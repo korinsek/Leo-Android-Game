@@ -70,4 +70,8 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
             view.setupLevel(i, i <= gameManager.getMaxLevelAchived(), levelManager.getStarsForLevel(i), i == gameManager.getMaxLevelAchived()) //TODO get stars for level from history
         }
     }
+
+    override fun onDestroy() {
+        levelManager.saveScores()
+    }
 }

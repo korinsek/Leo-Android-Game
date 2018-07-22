@@ -13,6 +13,7 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
 
     private val leafGreenBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_green)!!)
     private val leafBrownBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_brown)!!)
+    private val leafFinishBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_dark_yelow)!!)
     private val starBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_star_pick)!!)
     private val floorGameObjects = mutableListOf<FloorGameObject>()
 
@@ -42,10 +43,10 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
                 }
                 if (tile == "2S") {
                     floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_BROWN))
-                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, starBitmap, TYPE_LEAF_STAR))
+                    floorGameObjects.add(FloorGameObject(xTmp + starBitmap.width, yPosition + starBitmap.height / 2, starBitmap, TYPE_LEAF_STAR))
                 }
                 if (tile == "F") {
-                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafBrownBitmap, TYPE_LEAF_FINISH))//TODO finish leaf
+                    floorGameObjects.add(FloorGameObject(xTmp, yPosition, leafFinishBitmap, TYPE_LEAF_FINISH))//TODO finish leaf
                 }
                 xTmp += leafGreenBitmap.width
             }
@@ -102,7 +103,7 @@ class FloorSet(context: Context, resources: Resources, level1: List<List<String>
 
     fun checkForStar(numAction: Int, x: Float, y: Float): Boolean {
         return if (numAction < floorGameObjects.size) {
-            val starObject = getFloorObjects(numAction, x, y).firstOrNull { it.leafColorType == TYPE_LEAF_STAR }
+            val starObject = getFloorObjects(numAction, x, y).firstOrNull { it.leafColorType == TYPE_LEAF_STAR && it.visible }
             starObject?.visible = false
             starObject != null
         } else {

@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.mag.denis.game.R
@@ -85,8 +86,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 if (!floorGameObjects!!.isPositionOnFloorSet(execActionPosition, actor!!.x, actor!!.y)) {
                     actor?.stopAnimation()
                     callback?.showGameMessage(R.string.main_message_fall_into_see)
-                }
-                if (floorGameObjects!!.checkForStar(execActionPosition, actor!!.x, actor!!.y)) {
+                } else if (floorGameObjects!!.checkForStar(execActionPosition, actor!!.x, actor!!.y)) {
                     starsAchieved++
                     animateStars()
                 }
@@ -95,9 +95,11 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
             override fun onFinish(x: Float, y: Float) {
                 if (isFinish(x, y)) {
                     callback?.onLevelFinished(starsAchieved)
+                    gameThreadSubscription?.dispose()
                 }
             }
         })
+        gameThreadSubscription?.dispose()
     }
 
     fun update() {
@@ -106,13 +108,13 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
 
     fun render(canvas: Canvas) {
-        canvas.save()
+        Log.d("gamelog", "render")
         canvas.drawColor(ContextCompat.getColor(context, R.color.backgroundBlueLight))
         floorGameObjects?.draw(canvas, paint)
         actor?.draw(canvas, paint)
         val stars = getStarsBitmap()
         canvas.drawBitmap(stars, (canvas.width - starsWidth - 10).toFloat(), 10f, paint)
-        canvas.restore()
+        Log.d("gamelog", "render ended")
     }
 
     fun getStarsBitmap(): Bitmap {
@@ -130,6 +132,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
     }
 
     fun doActions(actions: List<Command>) {
+        initGameThread()
         executeActions(actions)
     }
 
@@ -143,7 +146,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                         if (action.repeat > 0) {
                             action.repeat--
                             executeActions(action.commands)
-                            executeActions(actions)
+                            executeActions(listOf(action))
                         }
                     }
                     is IfCondition -> {
@@ -200,14 +203,21 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 .flatMapSingle {
                     Single.fromCallable {
                         val canvas = this.holder.lockCanvas() // locking the canvas allows us to draw on to it
+                        Log.d("gamelog", "canvas locked")
                         synchronized(holder) {
-                            if (canvas != null) {
-                                mainCanvas = canvas
-                                this.update()
-                                this.render(canvas)
+                            synchronized(canvas) {
+                                if (canvas != null) {
+                                    mainCanvas = canvas
+                                    this.update()
+                                    this.render(canvas)
+                                }
                             }
+                            holder.unlockCanvasAndPost(mainCanvas)
                         }
-                    }.map { holder.unlockCanvasAndPost(mainCanvas) }
+                    }.map {
+//                        holder.unlockCanvasAndPost(mainCanvas)
+                        Log.d("gamelog", "canvas unlocked   ")
+                    }
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -215,6 +225,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                     //nothing to do
                 }, {
                     //TODO error
+                    Log.d("gamelog", it.message)
                 })
     }
 

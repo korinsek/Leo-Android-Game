@@ -7,9 +7,20 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:paddingBottom="28dp"
         app:layout_constraintEnd_toStartOf="@id/llActionHolder1"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ivTrash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/llActions"
+        app:layout_constraintEnd_toEndOf="@id/llActions"
+        app:layout_constraintStart_toStartOf="@id/llActions"
+        app:srcCompat="@drawable/ic_trash" />
 
     <com.mag.denis.game.ui.main.view.PlaceholderView
         android:id="@+id/llActionHolder1"
