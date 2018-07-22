@@ -26,7 +26,7 @@ class GameManager @Inject constructor(private val sharedPreferences: SharedPrefe
 
     fun setMaxLevelAchived(level: Int) {
         val editor = sharedPreferences.edit()
-        editor.putInt(MAX_LEVEL_PREFERENCES_ID, level)
+        editor.putInt("$MAX_LEVEL_PREFERENCES_ID${getCurrentStage()}", level)
         editor.apply()
         if (getMaxLevelAchived() < level) {
             setMaxLevelAchived(level)
@@ -34,7 +34,7 @@ class GameManager @Inject constructor(private val sharedPreferences: SharedPrefe
     }
 
     fun getMaxLevelAchived(): Int {
-        return sharedPreferences.getInt(MAX_LEVEL_PREFERENCES_ID, 1)
+        return sharedPreferences.getInt("$MAX_LEVEL_PREFERENCES_ID${getCurrentStage()}", 1)
     }
 
     fun getCurrentLevel(): Int {

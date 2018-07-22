@@ -37,6 +37,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         gameManager.setCurrentStage(stages[currentStage])
         checkButtons()
         view.setStageTitle(stages[currentStage])
+        setupLevels()
         view.animateLevels()
     }
 
@@ -47,6 +48,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         gameManager.setCurrentStage(stages[currentStage])
         checkButtons()
         view.setStageTitle(stages[currentStage])
+        setupLevels()
         view.animateLevels()
     }
 

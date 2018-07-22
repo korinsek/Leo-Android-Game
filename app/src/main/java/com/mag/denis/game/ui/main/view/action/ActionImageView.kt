@@ -2,6 +2,7 @@ package com.mag.denis.game.ui.main.view.action
 
 import android.content.Context
 import android.support.v7.widget.AppCompatImageView
+import android.util.TypedValue
 import android.widget.LinearLayout
 import com.mag.denis.game.R
 
@@ -11,6 +12,7 @@ class ActionImageView(context: Context, val drawableId: Int, val type: String,
     init {
         setImageResource(drawableId)
         setBackgroundResource(backgroundId)
-        this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        val height = resources.getDimensionPixelSize(R.dimen.actionHeight)
+        this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
     }
 }

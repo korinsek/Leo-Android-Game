@@ -1,6 +1,9 @@
 package com.mag.denis.game.manager
 
 import android.content.SharedPreferences
+import com.mag.denis.game.manager.GameManager.Companion.STAGE_BLOCK
+import com.mag.denis.game.manager.GameManager.Companion.STAGE_FLOW
+import com.mag.denis.game.manager.GameManager.Companion.STAGE_PSEUDO
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,25 +49,26 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
 //            listOf("1", "1", "1", "1", "1", "1", "1", "F"))
 
     private val level6 = listOf(
-            listOf("1", "1", "1", "1", "2", "0", "0"),
+            listOf("1", "1", "1", "1", "2S", "0", "0"),
             listOf("2", "0", "1", "0", "2", "0", "0"),
             listOf("2", "0", "1", "1", "2", "0", "0"),
             listOf("2", "0", "0", "0", "2", "0", "0"),
-            listOf("2", "1", "1", "1", "2", "1", "F"))
+            listOf("2", "1", "1", "1S", "1", "1S", "F"))
 
     private val level7 = listOf(
-            listOf("1", "1", "1", "1", "1", "1", "2"),
-            listOf("0", "1", "0", "0", "0", "0", "0"),
-            listOf("0", "1", "1", "1", "0", "0", "0"),
-            listOf("0", "0", "0", "1", "0", "0", "0"),
-            listOf("0", "0", "0", "1", "1", "1", "F"))
+            listOf("0", "0", "0", "0", "0", "0", "0"),
+            listOf("1", "2", "1", "2", "1", "2", "F"),
+            listOf("0", "1S", "1", "1S", "1", "1S", "0"),
+            listOf("0", "0", "2", "1", "2", "0", "0"),
+            listOf("0", "0", "0", "2", "0", "0", "0"),
+            listOf("0", "0", "0", "0", "0", "0", "0"))
 
     private val level8 = listOf(
             listOf("0", "0", "0", "0", "0", "0", "1"),
-            listOf("0", "2", "0", "0", "0", "0", "1"),
-            listOf("0", "1", "1", "1", "0", "0", "1"),
-            listOf("0", "0", "0", "1", "0", "1", "1"),
-            listOf("0", "0", "0", "1", "1", "1", "F"))
+            listOf("0", "0", "0", "0", "0", "1", "2"),
+            listOf("0", "0", "0", "0", "1S", "2", "1"),
+            listOf("0", "0", "0", "1", "2S", "1", "0"),
+            listOf("0", "0", "1S", "2", "1", "1", "F"))
 
 //    private val level9 = listOf(
 //            listOf("0", "0", "0", "1", "0", "0", "0"),
@@ -75,13 +79,25 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
 
     val numOfLevels = 8
 
-    private val starsLevels = mutableListOf<Int>()
+    private val starsBlockLevels = mutableListOf<Int>()
+    private val starsFlowLevels = mutableListOf<Int>()
+    private val starsPseudoLevels = mutableListOf<Int>()
 
     init {
-        val str = sharedPreferences.getString(STARS_PREFERENCES_ID, "0".repeat(numOfLevels))
+        val blockStars = sharedPreferences.getString(STARS_STAGE_BLOCK_PREFERENCES_ID, "0".repeat(numOfLevels))
+        val pseudoStars = sharedPreferences.getString(STARS_STAGE_PSEUDO_PREFERENCES_ID, "0".repeat(numOfLevels))
+        val flowStars = sharedPreferences.getString(STARS_STAGE_FLOW_PREFERENCES_ID, "0".repeat(numOfLevels))
 
-        for (s in str) {
-            starsLevels.add(s.toString().toInt())
+        for (s in blockStars) {
+            starsBlockLevels.add(s.toString().toInt())
+        }
+
+        for (s in flowStars) {
+            starsFlowLevels.add(s.toString().toInt())
+        }
+
+        for (s in pseudoStars) {
+            starsPseudoLevels.add(s.toString().toInt())
         }
     }
 
@@ -101,6 +117,7 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
     }
 
     fun setStarsForLevel(level: Int, stars: Int) {
+        val starsLevels = getCurentLevelStarsList()
         val value = starsLevels[level - 1]
         if (value < stars) {
             starsLevels[level - 1] = stars
@@ -108,13 +125,13 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
     }
 
     fun getStarsForLevel(level: Int): Int {
-        return starsLevels[level - 1]
+        return getCurentLevelStarsList()[level - 1]
     }
 
     fun getAvilableCommandsForLevel(level: Int): List<Int> {
         return when (gameManager.getCurrentLevel()) {
-            1,2 -> listOf(COMMAND_ACTIONS)
-            3,4 -> listOf(COMMAND_ACTIONS, COMMAND_LOOP)
+            1, 2 -> listOf(COMMAND_ACTIONS)
+            3, 4 -> listOf(COMMAND_ACTIONS, COMMAND_LOOP)
             5, 6, 7, 8 -> listOf(COMMAND_ACTIONS, COMMAND_LOOP, COMMAND_CONDITION)
             else -> throw IllegalStateException("Level don't exists")
         }
@@ -122,8 +139,26 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
 
     fun saveScores() {
         val editor = sharedPreferences.edit()
-        editor.putString(STARS_PREFERENCES_ID, starsLevels.joinToString(separator = ""))
+        editor.putString(getStagePreference(), getCurentLevelStarsList().joinToString(separator = ""))
         editor.apply()
+    }
+
+    private fun getStagePreference(): String {
+        return when (gameManager.getCurrentStage()) {
+            STAGE_BLOCK -> STARS_STAGE_BLOCK_PREFERENCES_ID
+            STAGE_FLOW -> STARS_STAGE_FLOW_PREFERENCES_ID
+            STAGE_PSEUDO -> STARS_STAGE_PSEUDO_PREFERENCES_ID
+            else -> throw IllegalStateException("Invalid stage preferences")
+        }
+    }
+
+    private fun getCurentLevelStarsList(): MutableList<Int> {
+        return when (gameManager.getCurrentStage()) {
+            STAGE_BLOCK -> starsBlockLevels
+            STAGE_FLOW -> starsFlowLevels
+            STAGE_PSEUDO -> starsPseudoLevels
+            else -> throw IllegalStateException("Invalid stage preferences")
+        }
     }
 
     companion object {
@@ -131,6 +166,8 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
         const val COMMAND_LOOP = 2
         const val COMMAND_CONDITION = 3
 
-        const val STARS_PREFERENCES_ID = "com.mag.denis.game.manager.levelManager.stars"
+        const val STARS_STAGE_BLOCK_PREFERENCES_ID = "com.mag.denis.game.manager.levelManager.starsBlock"
+        const val STARS_STAGE_FLOW_PREFERENCES_ID = "com.mag.denis.game.manager.levelManager.starsFlow"
+        const val STARS_STAGE_PSEUDO_PREFERENCES_ID = "com.mag.denis.game.manager.levelManager.starsPseudo"
     }
 }

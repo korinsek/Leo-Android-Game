@@ -1,4 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="actionPadding">10dp</dimen>
+    <dimen name="actionHeight">28dp</dimen>
 </resources>
