@@ -44,6 +44,16 @@ class MenuActivity : DaggerAppCompatActivity(), MenuView {
         startActivity(AboutActivity.newIntent(this))
     }
 
+    override fun onResume() {
+        ActivityCompat.startForegroundService(this, MusicService.newIntent(this))
+        super.onResume()
+    }
+
+    override fun onPause() {
+        stopService(MusicService.newIntent(this))
+        super.onPause()
+    }
+
     companion object {
 
         fun newIntent(context: Context): Intent {

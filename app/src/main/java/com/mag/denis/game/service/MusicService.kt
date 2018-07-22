@@ -16,7 +16,7 @@ class MusicService : DaggerService(), MusicView {
         super.onCreate()
         player = MediaPlayer.create(this, R.raw.melody)
         player.isLooping = true
-        player.setVolume(0.4f, 0.4f)
+        player.setVolume(0.3f, 0.3f)
         startForegroundService()
     }
 
