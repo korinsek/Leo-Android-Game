@@ -89,7 +89,11 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 actionView.setupViews(supportFragmentManager, avilableCommands)
                 btStart.setOnClickListener {
                     gameView.resetGame()
-                    presenter.onStartClick(actionView.getActions())
+                    try {
+                        presenter.onStartClick(actionView.getActions())
+                    } catch (e: IllegalStateException) {
+
+                    }
                 }
                 btnHelp.visibility = View.VISIBLE
                 btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }//Todo show only when is pseudo mode

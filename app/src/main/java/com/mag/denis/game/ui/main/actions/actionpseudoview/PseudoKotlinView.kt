@@ -7,10 +7,12 @@ import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import com.mag.denis.game.R
+import com.mag.denis.game.manager.ErrorMessageManager
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
+import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_BROWN
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_GREEN
@@ -31,7 +33,7 @@ class PseudoKotlinView : AbsPseudoView {
         val numOfCloseBrackets = code.count { it == '}' }
         if (numOfOpenBrackets != numOfCloseBrackets) {
             //TODO show error
-            throw IllegalStateException("Brackets missing")
+            throw IllegalStateException(ErrorMessageManager.ERROR_MISSING_BRACKETS)
         }
         val commands = if (code.isNotEmpty()) {
             //TODO execute this in background and subscribe on obervable
@@ -77,7 +79,6 @@ class PseudoKotlinView : AbsPseudoView {
     }
 
     private fun getCommands(codeLines: ArrayList<String>): ArrayList<Command> {
-
         val list = ArrayList<Command>()
 
         while (codeLines.isNotEmpty()) {
@@ -129,7 +130,6 @@ class PseudoKotlinView : AbsPseudoView {
                             whileCodeLines.add(line)
                         }
                     }
-                    //TODO VALUE
                     list.add(Loop(conditionRepeat, getCommands(whileCodeLines)))
                 } else if (child.contains(RESERVED_CONDITION_IF)) {
                     var bracketsOpened = 0
@@ -194,13 +194,11 @@ class PseudoKotlinView : AbsPseudoView {
                             }
                         }
                     }
-                    //TODO condition
                     list.add(IfCondition(ColorCondition(conditionColor, Condition.TYPE_TRUE), getCommands(trueCodeLines), getCommands(falseCodeLines)))
                 } else {
                     throw IllegalStateException("Cannot recognize command: $child")
                 }
             } else {
-                //TODO show error
                 break
             }
         }

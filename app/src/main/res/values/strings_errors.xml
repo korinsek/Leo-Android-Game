@@ -1,4 +1,8 @@
 <resources>
     <string name="error_empty_actions">Fill all actions</string>
     <string name="error_title_message">Message</string>
+
+    <string name="error_general">Something went wrong</string>
+    <string name="error_parser_problem_condition">Problem with condition</string>
+    <string name="error_missing_brackets">"Brackets missing"</string>
 </resources>

@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.mag.denis.game.R
+import com.mag.denis.game.manager.ErrorMessageManager
 import com.mag.denis.game.ui.main.model.Command
 import io.reactivex.BackpressureStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -93,7 +94,7 @@ abstract class AbsPseudoView : ConstraintLayout, TextWatcher, View.OnKeyListener
         val conditionEndIndex = child.indexOfLast { it == ')' }
         if (conditionStartIndex == -1 || conditionEndIndex == -1 || (conditionStartIndex > conditionEndIndex)) {
             //TODO handle error
-            throw IllegalStateException("Problem with condition")
+            throw IllegalStateException(ErrorMessageManager.ERROR_PROBLEM_CONDITION)
         }
         return child.substring(conditionStartIndex, conditionEndIndex).trim()
     }
