@@ -1,5 +1,7 @@
 package com.mag.denis.game.ui
 
+import com.mag.denis.game.service.MusicModule
+import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.about.AboutActivity
 import com.mag.denis.game.ui.about.AboutModule
 import com.mag.denis.game.ui.finish.FinishActivity
@@ -41,4 +43,7 @@ abstract class InjectorModule {
 
     @ActivityScope @ContributesAndroidInjector(modules = [AboutModule::class])
     abstract fun contributeAboutActivityInjector(): AboutActivity
+
+    @ServiceScope @ContributesAndroidInjector(modules = [MusicModule::class])
+    abstract fun contributeMusicServiceInjector(): MusicService
 }

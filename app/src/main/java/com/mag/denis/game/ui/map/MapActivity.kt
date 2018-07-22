@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.transition.TransitionManager
 import android.util.TypedValue
@@ -13,6 +14,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import com.mag.denis.game.R
+import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.main.MainActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_map.*
@@ -36,6 +38,15 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         presenter.onCreate()
     }
 
+    override fun onResume() {
+        ActivityCompat.startForegroundService(this, MusicService.newIntent(this))
+        super.onResume()
+    }
+
+    override fun onPause() {
+        stopService(MusicService.newIntent(this))
+        super.onPause()
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_GAME_PLAY -> {

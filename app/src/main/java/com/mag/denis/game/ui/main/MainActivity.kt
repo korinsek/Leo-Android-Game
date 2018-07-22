@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.StringRes
+import android.support.v4.app.ActivityCompat
 import android.view.View
 import com.mag.denis.game.R
 import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
+import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView2
@@ -44,8 +46,8 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
         gameView.setOnMessageCallback(this)
         gameView.setLevel(levelManager.getCurrentLevel())
-    }
 
+    }
 
     private fun setupActionView() {
         val stage = gameManager.getCurrentStage()
@@ -113,6 +115,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
     override fun onResume() {
         super.onResume()
         gameView.invalidate()
+        ActivityCompat.startForegroundService(this, MusicService.newIntent(this))
     }
 
     override fun openMenuActivity() {
@@ -128,6 +131,12 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
     override fun showMessageDialog(@StringRes messageId: Int) {
         messageDialog = MessageDialog.show(supportFragmentManager, messageId)
     }
+
+    override fun onPause() {
+        stopService(MusicService.newIntent(this))
+        super.onPause()
+    }
+
 
     companion object {
         const val ACTION_UP = "action_up"
