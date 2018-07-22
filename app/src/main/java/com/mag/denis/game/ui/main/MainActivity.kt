@@ -12,6 +12,8 @@ import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView2
+import com.mag.denis.game.ui.main.actions.actionflowview.FlowView3
+import com.mag.denis.game.ui.main.actions.actionflowview.FlowView4
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoPythonView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpPythonDialog
@@ -63,6 +65,8 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 val actionView = when (gameManager.getCurrentLevel()) {
                     1 -> FlowView1(this)
                     2 -> FlowView2(this)
+                    3 -> FlowView3(this)
+                    4 -> FlowView4(this)
                     else -> throw IllegalStateException("Invalid level flowview select")
                 }
                 actionViewPlaceholder.addView(actionView)

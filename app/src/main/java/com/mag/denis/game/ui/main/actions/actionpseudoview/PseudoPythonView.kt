@@ -58,7 +58,7 @@ class PseudoPythonView : AbsPseudoView {
     }
 
     override fun getActions(): ArrayList<Command> {
-        val codeLines = etCode.text.split("\n") as ArrayList
+        val codeLines = etCode.text.split("\n").toMutableList() as ArrayList
 
         val commands = getCommands(codeLines)
 

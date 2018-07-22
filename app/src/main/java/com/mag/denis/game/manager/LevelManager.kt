@@ -25,6 +25,11 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
             listOf("0", "0", "0", "1S", "1", "1S"),
             listOf("F", "1", "1", "1", "1", "1"))
 
+    private val level3Flow = listOf(
+            listOf("0", "0", "0", "0", "0", "0"),
+            listOf("1", "1", "1", "1", "1", "2S"),
+            listOf("0", "0", "0", "0", "0", "F"))
+
     private val level4 = listOf(
             listOf("1", "1", "0", "0", "0", "0", "0"),
             listOf("0", "1", "1S", "0", "0", "0", "0"),
@@ -70,23 +75,18 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
             listOf("0", "0", "0", "1", "2S", "1", "0"),
             listOf("0", "0", "1S", "2", "1", "1", "F"))
 
-//    private val level9 = listOf(
-//            listOf("0", "0", "0", "1", "0", "0", "0"),
-//            listOf("2", "0", "0", "1", "0", "0", "1"),
-//            listOf("1", "0", "0", "1", "0", "0", "1"),
-//            listOf("1", "1", "1", "1", "1", "1", "1"),
-//            listOf("0", "0", "0", "F", "0", "0", "0"))
-
-    val numOfLevels = 8
+    private val numOfLevelsBlock = 8
+    private val numOfLevelsPseudo = 8
+    private val numOfLevelsFlow = 4
 
     private val starsBlockLevels = mutableListOf<Int>()
     private val starsFlowLevels = mutableListOf<Int>()
     private val starsPseudoLevels = mutableListOf<Int>()
 
     init {
-        val blockStars = sharedPreferences.getString(STARS_STAGE_BLOCK_PREFERENCES_ID, "0".repeat(numOfLevels))
-        val pseudoStars = sharedPreferences.getString(STARS_STAGE_PSEUDO_PREFERENCES_ID, "0".repeat(numOfLevels))
-        val flowStars = sharedPreferences.getString(STARS_STAGE_FLOW_PREFERENCES_ID, "0".repeat(numOfLevels))
+        val blockStars = sharedPreferences.getString(STARS_STAGE_BLOCK_PREFERENCES_ID, "0".repeat(numOfLevelsBlock))
+        val pseudoStars = sharedPreferences.getString(STARS_STAGE_PSEUDO_PREFERENCES_ID, "0".repeat(numOfLevelsPseudo))
+        val flowStars = sharedPreferences.getString(STARS_STAGE_FLOW_PREFERENCES_ID, "0".repeat(numOfLevelsFlow))
 
         for (s in blockStars) {
             starsBlockLevels.add(s.toString().toInt())
@@ -103,16 +103,26 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
 
     fun getCurrentLevel(): List<List<String>> {
         //TODO more levels
-        return when (gameManager.getCurrentLevel()) {
-            1 -> level1
-            2 -> level2
-            3 -> level3
-            4 -> level4
-            5 -> level5
-            6 -> level6
-            7 -> level7
-            8 -> level8
-            else -> throw IllegalStateException("Level don't exists")
+        if (gameManager.getCurrentStage() == STAGE_FLOW) {
+            return when (gameManager.getCurrentLevel()) {
+                1 -> level1
+                2 -> level2
+                3 -> level3Flow
+                4 -> level4
+                else -> throw IllegalStateException("Level don't exists")
+            }
+        } else {
+            return when (gameManager.getCurrentLevel()) {
+                1 -> level1
+                2 -> level2
+                3 -> level3
+                4 -> level4
+                5 -> level5
+                6 -> level6
+                7 -> level7
+                8 -> level8
+                else -> throw IllegalStateException("Level don't exists")
+            }
         }
     }
 
@@ -141,6 +151,15 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
         val editor = sharedPreferences.edit()
         editor.putString(getStagePreference(), getCurentLevelStarsList().joinToString(separator = ""))
         editor.apply()
+    }
+
+    fun numOfLevelsForStage(): Int {
+        return when (gameManager.getCurrentStage()) {
+            STAGE_BLOCK -> numOfLevelsBlock
+            STAGE_FLOW -> numOfLevelsFlow
+            STAGE_PSEUDO -> numOfLevelsPseudo
+            else -> throw IllegalStateException("Invalid stage preferences")
+        }
     }
 
     private fun getStagePreference(): String {

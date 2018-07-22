@@ -68,7 +68,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
 
     private fun setupLevels() {
         view.clearLevels()
-        for (i in 1..levelManager.numOfLevels) {
+        for (i in 1..levelManager.numOfLevelsForStage()) {
             view.setupLevel(i, i <= gameManager.getMaxLevelAchived(), levelManager.getStarsForLevel(i), i == gameManager.getMaxLevelAchived()) //TODO get stars for level from history
         }
     }
