@@ -11,14 +11,7 @@ object LanguageUtils {
         val rs = context.resources
         val config = rs.configuration
 
-        @Suppress("DEPRECATION")
-        val sysLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            config.locales.get(0)
-        } else {
-            config.locale
-        }
-
-        if (lang.isNotEmpty() && sysLocale.language != lang) {
+        if (lang.isNotEmpty()) {
             val locale = Locale(lang)
             Locale.setDefault(locale)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

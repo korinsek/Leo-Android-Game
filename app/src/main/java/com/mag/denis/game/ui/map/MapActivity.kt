@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.transition.TransitionManager
@@ -17,7 +18,6 @@ import com.mag.denis.game.R
 import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.main.MainActivity
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_map.*
 import javax.inject.Inject
 
@@ -84,8 +84,8 @@ class MapActivity : BaseActivity(), MapView {
         }
     }
 
-    override fun setStageTitle(title: String) {
-        tvStage.text = title
+    override fun setStageTitle(@StringRes titleId: Int) {
+        tvStage.setText(titleId)
     }
 
     override fun animateLevels() {

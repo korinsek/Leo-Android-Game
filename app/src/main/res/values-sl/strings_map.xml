@@ -1,4 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:locale="sl">
     <string name="map_activity_title">Izbira stopnje</string>
+    <string name="map_stage_title_blocks">BLOKI</string>
+    <string name="map_stage_title_flow">DIAGRAM POTEKA</string>
+    <string name="map_stage_title_pseudo">PSEUDO KODA</string>
 </resources>

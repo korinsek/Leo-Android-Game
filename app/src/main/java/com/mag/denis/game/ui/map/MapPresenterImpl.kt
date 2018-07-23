@@ -1,6 +1,10 @@
 package com.mag.denis.game.ui.map
 
+import com.mag.denis.game.R
 import com.mag.denis.game.manager.GameManager
+import com.mag.denis.game.manager.GameManager.Companion.STAGE_BLOCK
+import com.mag.denis.game.manager.GameManager.Companion.STAGE_FLOW
+import com.mag.denis.game.manager.GameManager.Companion.STAGE_PSEUDO
 import com.mag.denis.game.manager.LevelManager
 
 class MapPresenterImpl(private val view: MapView, private val gameManager: GameManager, private val levelManager: LevelManager) : MapPresenter {
@@ -15,7 +19,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
             currentStage = stages.indexOf(gameManager.getCurrentStage())
             gameManager.setCurrentStage(stages[currentStage])
         }
-        view.setStageTitle(stages[currentStage])
+        view.setStageTitle(getStageTitle())
         maxStage = stages.size - 1
         checkButtons()
         setupLevels()
@@ -36,7 +40,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         }
         gameManager.setCurrentStage(stages[currentStage])
         checkButtons()
-        view.setStageTitle(stages[currentStage])
+        view.setStageTitle(getStageTitle())
         setupLevels()
         view.animateLevels()
     }
@@ -47,7 +51,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         }
         gameManager.setCurrentStage(stages[currentStage])
         checkButtons()
-        view.setStageTitle(stages[currentStage])
+        view.setStageTitle(getStageTitle())
         setupLevels()
         view.animateLevels()
     }
@@ -70,6 +74,15 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         view.clearLevels()
         for (i in 1..levelManager.numOfLevelsForStage()) {
             view.setupLevel(i, i <= gameManager.getMaxLevelAchived(), levelManager.getStarsForLevel(i), i == gameManager.getMaxLevelAchived()) //TODO get stars for level from history
+        }
+    }
+
+    private fun getStageTitle(): Int {
+        return when (stages[currentStage]) {
+            STAGE_BLOCK -> R.string.map_stage_title_blocks
+            STAGE_FLOW -> R.string.map_stage_title_flow
+            STAGE_PSEUDO -> R.string.map_stage_title_pseudo
+            else -> throw IllegalStateException("Stage dont exists")
         }
     }
 
