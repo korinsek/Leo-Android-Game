@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import com.mag.denis.game.R
 import com.mag.denis.game.service.MusicService
+import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.about.AboutActivity
 import com.mag.denis.game.ui.map.MapActivity
 import com.mag.denis.game.ui.score.ScoreActivity
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_menu.*
 import javax.inject.Inject
 
 
-class MenuActivity : DaggerAppCompatActivity(), MenuView {
+class MenuActivity : BaseActivity(), MenuView {
 
     @Inject lateinit var presenter: MenuPresenter
 

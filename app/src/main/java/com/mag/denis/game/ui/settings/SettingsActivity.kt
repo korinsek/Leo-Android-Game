@@ -11,13 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.mag.denis.game.R
-import com.mag.denis.game.manager.GameManager
+import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.main.view.PlaceholderView
-import dagger.android.support.DaggerAppCompatActivity
+import com.mag.denis.game.ui.menu.MenuActivity
 import kotlinx.android.synthetic.main.activity_settings.*
+import java.util.*
 import javax.inject.Inject
 
-class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
+
+class SettingsActivity : BaseActivity(), SettingsView {
 
     @Inject lateinit var presenter: SettingsPresenter
 
@@ -27,6 +29,8 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
         btBack.setOnClickListener { presenter.onBackClicked(getStages()) }
         btnKotlin.setOnClickListener { presenter.onKotlinClicked() }
         btnPython.setOnClickListener { presenter.onPythonClicked() }
+        btnEng.setOnClickListener { presenter.onEngClicked() }
+        btnSlo.setOnClickListener { presenter.onSloClicked() }
         initReorderThemes()
         presenter.onCreate()
     }
@@ -48,11 +52,15 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
         }
     }
 
-    override fun selectLanguage(isKotlin: Boolean) {
+    override fun selectProgLanguage(isKotlin: Boolean) {
         btnKotlin.isActivated = isKotlin
         btnPython.isActivated = !isKotlin
     }
 
+    override fun selectLanguage(isEng: Boolean) {
+        btnEng.isActivated = isEng
+        btnSlo.isActivated = !isEng
+    }
 
     private fun getDragListener(v: View, e: DragEvent): Boolean {
         if (e.action == DragEvent.ACTION_DROP || e.action == DragEvent.ACTION_DRAG_ENDED) {
@@ -87,6 +95,7 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     v.startDragAndDrop(data, shadowBuilder, v, 0)
                 } else {
+                    @Suppress("DEPRECATION")
                     v.startDrag(data, shadowBuilder, v, 0)
                 }
                 true
@@ -111,6 +120,13 @@ class SettingsActivity : DaggerAppCompatActivity(), SettingsView {
         tvStage1.text = stage1
         tvStage2.text = stage2
         tvStage3.text = stage3
+    }
+
+    override fun recreateView() {
+        val intent = MenuActivity.newIntent(this)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivities(arrayOf(intent, SettingsActivity.newIntent(this)))
+        overridePendingTransition(0, 0)
     }
 
     private fun getStages(): ArrayList<String> {

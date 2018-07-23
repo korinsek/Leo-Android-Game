@@ -11,6 +11,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.service.MusicService
+import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView2
@@ -24,12 +25,11 @@ import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.GameView
 import com.mag.denis.game.ui.menu.MenuActivity
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCallback {
+class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback {
 
     @Inject lateinit var presenter: MainPresenter
     @Inject lateinit var levelManager: LevelManager
@@ -53,7 +53,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
 
     private fun setupActionView() {
         val stage = gameManager.getCurrentStage()
-        val avilableCommands = levelManager.getAvilableCommandsForLevel(gameManager.getCurrentLevel())
+        val avilableCommands = levelManager.getAvailableCommands()
         when (stage) {
             GameManager.STAGE_BLOCK -> {
                 val actionView = ActionBlockView(this)
@@ -96,7 +96,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                     else -> throw IllegalStateException("Invalid programing langugage in manager")
                 }
                 actionViewPlaceholder.addView(actionView)
-                actionView.setupViews(supportFragmentManager, avilableCommands)
+                actionView.setupViews()
                 btStart.setOnClickListener {
                     gameView.resetGame()
                     try {

@@ -1,5 +1,5 @@
 <resources>
 
     <string name="flow_start_title">START</string>
-    <string name="flow_end_title">Konec</string>
+    <string name="flow_end_title">END</string>
 </resources>

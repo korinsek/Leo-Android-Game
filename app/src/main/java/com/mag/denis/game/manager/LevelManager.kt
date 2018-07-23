@@ -138,7 +138,7 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
         return getCurentLevelStarsList()[level - 1]
     }
 
-    fun getAvilableCommandsForLevel(level: Int): List<Int> {
+    fun getAvailableCommands(): List<Int> {
         return when (gameManager.getCurrentLevel()) {
             1, 2 -> listOf(COMMAND_ACTIONS)
             3, 4 -> listOf(COMMAND_ACTIONS, COMMAND_LOOP)

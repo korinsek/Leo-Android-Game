@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="sl">
+    <string name="settings_activity_title">Nastavitve</string>
+    <string name="settings_topics">Sklopi</string>
+    <string name="settings_programming_language">Programski jezik</string>
+    <string name="settings_label_reorder_themes">Preuredi sklope</string>
+</resources>

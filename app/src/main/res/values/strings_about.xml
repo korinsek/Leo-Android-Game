@@ -1,4 +1,4 @@
 <resources>
     <string name="about_activity_title">About</string>
-    <string name="about_text">In the master\'s thesis work we presented the development of a mobile game application for the operation system Android. The purpose of the application is that the user can learn basics of programming.</string>
+    <string name="about_text">In the master\'s thesis work we presented the development of a mobile game for the operation system Android. The purpose of the game is that the user can learn basics of programming.</string>
 </resources>

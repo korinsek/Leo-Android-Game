@@ -9,7 +9,6 @@ import android.graphics.Paint
 import android.support.annotation.StringRes
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.mag.denis.game.R
@@ -73,7 +72,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
     private fun initGameObjects() {
         starsAchieved = 0
-        floorGameObjects = FloorSet(context, resources, currentLevel!!)
+        floorGameObjects = FloorSet(context, currentLevel!!)
         initPositionX = floorGameObjects?.getInitPosition()?.first ?: 0f
         initPositiony = floorGameObjects?.getInitPosition()?.second ?: 0f
         actor = GameActor(resources, floorGameObjects!!, floorGameObjects!!.getTileWidth(), floorGameObjects!!.getTileHeight(), initPositionX, initPositiony)
@@ -108,13 +107,11 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
 
     fun render(canvas: Canvas) {
-        Log.d("gamelog", "render")
         canvas.drawColor(ContextCompat.getColor(context, R.color.backgroundBlueLight))
         floorGameObjects?.draw(canvas, paint)
         actor?.draw(canvas, paint)
         val stars = getStarsBitmap()
         canvas.drawBitmap(stars, (canvas.width - starsWidth - 10).toFloat(), 10f, paint)
-        Log.d("gamelog", "render ended")
     }
 
     fun getStarsBitmap(): Bitmap {
@@ -169,11 +166,7 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                             conditions
                         }
 
-                        val condition1 = when (action.condition) {
-                            is ColorCondition -> ColorCondition(action.condition.leafColorType, Condition.TYPE_FALSE)
-                            else -> throw IllegalStateException("Condition dont exists")
-                        }
-                        conditionsFalse.conditions.add(condition1)
+                        conditionsFalse.conditions.add(ColorCondition(action.condition.leafColorType, Condition.TYPE_FALSE))
 
                         executeActions(action.trueCommands, conditionsTrue)
                         executeActions(action.falseCommands, conditionsFalse)
@@ -203,7 +196,6 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 .flatMapSingle {
                     Single.fromCallable {
                         val canvas = this.holder.lockCanvas() // locking the canvas allows us to draw on to it
-                        Log.d("gamelog", "canvas locked")
                         synchronized(holder) {
                             synchronized(canvas) {
                                 if (canvas != null) {
@@ -214,9 +206,6 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                             }
                             holder.unlockCanvasAndPost(mainCanvas)
                         }
-                    }.map {
-//                        holder.unlockCanvasAndPost(mainCanvas)
-                        Log.d("gamelog", "canvas unlocked   ")
                     }
                 }
                 .subscribeOn(Schedulers.io())
@@ -225,7 +214,6 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                     //nothing to do
                 }, {
                     //TODO error
-                    Log.d("gamelog", it.message)
                 })
     }
 

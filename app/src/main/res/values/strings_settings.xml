@@ -1,5 +1,10 @@
 <resources>
     <string name="settings_activity_title">Settings</string>
-    <string name="settings_topics">Sklopi</string>
+    <string name="settings_topics">Stages</string>
     <string name="settings_programming_language">Programming language</string>
+    <string name="settings_programing_language_kotlin" translatable="false">Kotlin</string>
+    <string name="settings_programing_language_python" translatable="false">Python</string>
+    <string name="settings_label_reorder_themes">Reorder stages</string>
+    <string name="settings_lang_english" translatable="false">English</string>
+    <string name="settings_lang_slo" translatable="false">Slovenščina</string>
 </resources>

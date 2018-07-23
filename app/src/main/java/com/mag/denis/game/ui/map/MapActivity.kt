@@ -15,13 +15,14 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.mag.denis.game.R
 import com.mag.denis.game.service.MusicService
+import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.main.MainActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_map.*
 import javax.inject.Inject
 
 
-class MapActivity : DaggerAppCompatActivity(), MapView {
+class MapActivity : BaseActivity(), MapView {
 
     @Inject lateinit var presenter: MapPresenter
 

@@ -1,0 +1,6 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="sl">
+
+    <string name="flow_start_title">ZAČETEK</string>
+    <string name="flow_end_title">KONEC</string>
+</resources>

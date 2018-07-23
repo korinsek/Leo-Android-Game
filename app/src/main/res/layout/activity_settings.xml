@@ -20,10 +20,15 @@
 
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="80dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:padding="20dp"
         android:background="@color/actionViewBackground"
+        app:layout_constraintStart_toEndOf="@id/btBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btBack"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btBack">
 
 
@@ -37,14 +42,63 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/tvLang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Language"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <Button
+            android:id="@+id/btnEng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_button_selector"
+            android:text="@string/settings_lang_english"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/tvLang"
+            app:layout_constraintStart_toEndOf="@id/tvLang"
+            app:layout_constraintTop_toTopOf="@id/tvLang" />
+
+        <Button
+            android:id="@+id/btnSlo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/bg_button_selector"
+            android:text="@string/settings_lang_slo"
+            android:textColor="@color/white"
+            app:layout_constraintBaseline_toBaselineOf="@id/btnEng"
+            app:layout_constraintStart_toEndOf="@id/btnEng" />
+
+        <TextView
+            android:id="@+id/tvProgLang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Programming language"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnEng" />
+
         <Button
             android:id="@+id/btnKotlin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/bg_button_selector"
-            android:text="Kotlin"
+            android:text="@string/settings_programing_language_kotlin"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            app:layout_constraintBottom_toBottomOf="@id/tvProgLang"
+            app:layout_constraintStart_toEndOf="@id/tvProgLang"
+            app:layout_constraintTop_toTopOf="@id/tvProgLang" />
 
         <Button
             android:id="@+id/btnPython"
@@ -52,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:background="@drawable/bg_button_selector"
-            android:text="Python"
+            android:text="@string/settings_programing_language_python"
             android:textColor="@color/white"
             app:layout_constraintBaseline_toBaselineOf="@id/btnKotlin"
             app:layout_constraintStart_toEndOf="@id/btnKotlin"
@@ -63,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Reorder themes"
+            android:text="@string/settings_label_reorder_themes"
             android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@id/btnKotlin" />
 
@@ -71,10 +125,12 @@
             android:id="@+id/llActions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:background="@color/actionViewBackground"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvReorderThemes">
+            app:layout_constraintBottom_toBottomOf="@id/tvReorderThemes"
+            app:layout_constraintStart_toEndOf="@id/tvReorderThemes"
+            app:layout_constraintTop_toTopOf="@id/tvReorderThemes">
 
             <TextView
                 android:id="@+id/tvStage1"

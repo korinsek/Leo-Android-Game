@@ -6,4 +6,6 @@ interface SettingsPresenter {
     fun onBackPressed(stages: ArrayList<String>)
     fun onPythonClicked()
     fun onKotlinClicked()
+    fun onEngClicked()
+    fun onSloClicked()
 }

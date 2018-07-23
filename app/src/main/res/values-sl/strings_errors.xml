@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="sl">
+    <string name="error_empty_actions">Napolnite vsa polja</string>
+    <string name="error_title_message">Sporočilo</string>
+    <string name="error_title_error">Napaka</string>
+
+    <string name="error_general">Napaka pri izvajanju</string>
+    <string name="error_parser_problem_condition">Napaka v pogoju</string>
+    <string name="error_missing_brackets">Manjkajo oklepaji</string>
+</resources>

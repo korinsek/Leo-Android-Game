@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="sl">
+    <string name="about_activity_title">O igri</string>
+    <string name="about_text">V magisterskem delu predstavljamo razvoj mobilne igre za operacijski sistem Android. Igra je namenjena učenju osnov programiranja.</string>
+</resources>

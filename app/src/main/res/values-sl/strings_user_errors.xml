@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="sl">
+    <string name="user_error_missing_brackets_command">Manjkajo oklepaji () v ukazu: %1$s</string>
+    <string name="user_error_command_dont_exists">Ukaz ne obstaja: %1$s</string>
+    <string name="user_error_missing_brackets_condition">Manjkajo oklepaji () v pogoju</string>
+    <string name="user_error_cannot_recognize_command">Neprepoznaven ukaz: %1$s</string>
+    <string name="user_error_command_field_empty">Ukazno polje je prazno.</string>
+    <string name="user_error_missing_brackets">Manjkajo oklepaji</string>
+    <string name="user_error_condition_problem">Težava s pogojem</string>
+</resources>

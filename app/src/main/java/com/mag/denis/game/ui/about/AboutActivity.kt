@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.mag.denis.game.R
-import dagger.android.support.DaggerAppCompatActivity
+import com.mag.denis.game.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_about.*
 import javax.inject.Inject
 
-class AboutActivity : DaggerAppCompatActivity(), AboutView {
+class AboutActivity : BaseActivity(), AboutView {
 
     @Inject lateinit var presenter: AboutPresenter
 

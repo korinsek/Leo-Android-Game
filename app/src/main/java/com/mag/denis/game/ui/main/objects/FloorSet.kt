@@ -9,7 +9,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.utils.ImageUtils.drawableToBitmap
 
 
-class FloorSet(context: Context, resources: Resources, level1: List<List<String>>) {
+class FloorSet(context: Context, level1: List<List<String>>) {
 
     private val leafGreenBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_green)!!)
     private val leafBrownBitmap = drawableToBitmap(ContextCompat.getDrawable(context, R.drawable.ic_leaf_brown)!!)

@@ -38,11 +38,11 @@ abstract class AbsFlowView : ConstraintLayout {
         return true
     }
 
-    private fun handleActionToPlaceholderDrag(v: View, e: DragEvent) {
+    private fun handleActionToPlaceholderDrag(view: View, e: DragEvent) {
         val draggedView = e.localState as ActionImageView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                if (v.parent != llActions) {
+                if (view.parent != llActions) {
                     val owner = draggedView.parent as ViewGroup
                     if (owner != llActions) {
                         owner.removeView(draggedView)
@@ -52,7 +52,7 @@ abstract class AbsFlowView : ConstraintLayout {
                     newImageView.setOnTouchListener { v, event ->
                         getTouchListener(v, event)
                     }
-                    val container = v as PlaceholderView
+                    val container = view as PlaceholderView
                     if (container != llActions) {
                         container.addView(newImageView)
                     }
@@ -76,6 +76,7 @@ abstract class AbsFlowView : ConstraintLayout {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     v.startDragAndDrop(data, shadowBuilder, v, 0)
                 } else {
+                    @Suppress("DEPRECATION")
                     v.startDrag(data, shadowBuilder, v, 0)
                 }
                 true

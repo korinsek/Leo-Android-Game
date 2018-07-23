@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.mag.denis.game.R
+import com.mag.denis.game.ui.BaseActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_score.*
 import javax.inject.Inject
 
-class ScoreActivity : DaggerAppCompatActivity(), ScoreView {
+class ScoreActivity : BaseActivity(), ScoreView {
 
     @Inject lateinit var presenter: ScorePresenter
 

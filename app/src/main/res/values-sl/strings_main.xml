@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="sl">
+    <string name="main_activity_title">Igra</string>
+    <string name="main_message_fall_into_see">Ups. Padel si v vodo.</string>
+    <string name="help_actions_title">Ukazi:</string>
+    <string name="help_conditions">Pogoji:</string>
+</resources>
