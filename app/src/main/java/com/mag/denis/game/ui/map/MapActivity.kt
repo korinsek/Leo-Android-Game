@@ -47,14 +47,12 @@ class MapActivity : DaggerAppCompatActivity(), MapView {
         stopService(MusicService.newIntent(this))
         super.onPause()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_GAME_PLAY -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        presenter.onLevelComplete()
-                    }
-                    else -> finish()
+                if (resultCode == Activity.RESULT_OK) {
+                    presenter.onLevelComplete()
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
