@@ -11,6 +11,7 @@ import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
+import com.mag.denis.game.ui.main.exception.GameParserException
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_BROWN
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_GREEN
@@ -58,48 +59,52 @@ class PseudoPythonView : AbsPseudoView {
     }
 
     override fun getActions(): ArrayList<Command> {
-        val codeLines = etCode.text.split("\n").toMutableList() as ArrayList
+        val code = "${etCode.text}\n"
 
-        val commands = getCommands(codeLines)
-
-        return commands
+        return if (code.isNotEmpty()) {
+            //TODO execute this in background
+            val codeLines = code.split("\n") as ArrayList
+            getCommands(codeLines)
+        } else {
+            arrayListOf()
+        }
     }
 
     private fun getCommands(codeLines: ArrayList<String>): ArrayList<Command> {
         if (codeLines.firstOrNull()?.trim().isNullOrEmpty()) {
-            throw IllegalStateException("Command field is empty.")
+            throw GameParserException(context.getString(R.string.user_error_command_field_empty))
         }
         val list = ArrayList<Command>()
 
         while (codeLines.isNotEmpty()) {
-            val child = codeLines.firstOrNull()
+            val command = codeLines.firstOrNull()
 
-            if (child != null) {
-                if (child.isEmpty()) {
+            if (command != null) {
+                if (command.isEmpty()) {
                     codeLines.removeAt(0)
                     continue
                 }
-                if (child.contains("move")) {
-                    val action = when (child.trim()) {
+                if (command.contains(MOVE_PREFIX)) {
+                    val action = when (command.trim()) {
                         MOVE_UP -> Action(ACTION_UP)
                         MOVE_DOWN -> Action(ACTION_DOWN)
                         MOVE_RIGHT -> Action(ACTION_RIGHT)
                         MOVE_LEFT -> Action(ACTION_LEFT)
                         else -> {
-                            throw if (child.contains("(") && child.contains(")")) {
-                                IllegalStateException("Mising brackets () in command: $child")//TODO handle error
+                            throw if (!command.contains("(") && !command.contains(")")) {
+                                GameParserException(context.getString(R.string.user_error_missing_brackets_command, command))
                             } else {
-                                IllegalStateException("Command dont exists: $child")//TODO handle error
+                                GameParserException(context.getString(R.string.user_error_command_dont_exists, command))
                             }
                         }
                     }
                     list.add(action)
                     codeLines.removeAt(0)
-                } else if (child.contains(RESERVED_LOOP)) {
+                } else if (command.contains(RESERVED_LOOP)) {
                     val whileCodeLines = ArrayList<String>()
 
-                    val conditionRepeat = getCondition(child).toIntOrNull() ?: 0
-                    val loopSpaceRange = child.substringBefore(RESERVED_LOOP).filter { it == ' ' } + SPACE
+                    val conditionRepeat = getCondition(command).toIntOrNull() ?: 0
+                    val loopSpaceRange = command.substringBefore(RESERVED_LOOP).filter { it == ' ' } + SPACE
 
                     codeLines.removeAt(0)
                     while (codeLines.isNotEmpty()) {
@@ -114,17 +119,17 @@ class PseudoPythonView : AbsPseudoView {
                     }
                     //TODO VALUE
                     list.add(Loop(conditionRepeat, getCommands(whileCodeLines)))
-                } else if (child.contains(RESERVED_CONDITION_IF)) {
+                } else if (command.contains(RESERVED_CONDITION_IF)) {
                     val trueCodeLines = ArrayList<String>()
 
-                    val conditionColor = when (getCondition(child)) {
+                    val conditionColor = when (getCondition(command)) {
                         CONDITION_GREEN_LEAF -> TYPE_LEAF_GREEN
                         CONDITION_BROWN_LEAF -> TYPE_LEAF_BROWN
                         else -> {
-                            throw if (child.contains("(") && child.contains(")")) {
-                                IllegalStateException("Mising brackets () in condition.")//TODO handle error
+                            throw if (command.contains("(") && command.contains(")")) {
+                                GameParserException(context.getString(R.string.user_error_missing_brackets_condition))
                             } else {
-                                IllegalStateException("Command dont exists: $child")//TODO handle error
+                                GameParserException(context.getString(R.string.user_error_command_dont_exists, command))
                             }
                         }
                     }
@@ -134,7 +139,6 @@ class PseudoPythonView : AbsPseudoView {
                         val line = codeLines.firstOrNull()
                         if (line != null) {
                             codeLines.removeAt(0)
-                            //TODO handle this
 
                             if (line.contains(RESERVED_CONDITION_ELSE)) {
                                 if (line.contains(RESERVED_CONDITION_ELSE)) {
@@ -143,12 +147,12 @@ class PseudoPythonView : AbsPseudoView {
                                 break
                             }
                             trueCodeLines.add(line)
-
                         }
                     }
 
                     val falseCodeLines = ArrayList<String>()
                     val elseLine = codeLines.firstOrNull()
+
                     if (elseLine != null && elseLine.contains(RESERVED_CONDITION_ELSE)) {
                         codeLines.removeAt(0)
                         val loopSpaceRange = elseLine.substringBefore(RESERVED_LOOP).filter { it == ' ' } + SPACE
@@ -165,10 +169,9 @@ class PseudoPythonView : AbsPseudoView {
                     }
                     list.add(IfCondition(ColorCondition(conditionColor, Condition.TYPE_TRUE), getCommands(trueCodeLines), getCommands(falseCodeLines)))
                 } else {
-                    throw IllegalStateException("Cannot recognize command: $child")
+                    throw GameParserException(context.getString(R.string.user_error_cannot_recognize_command, command))
                 }
             } else {
-                //TODO show error
                 break
             }
         }

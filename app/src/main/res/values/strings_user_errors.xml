@@ -1,0 +1,9 @@
+<resources>
+    <string name="user_error_missing_brackets_command">Mising brackets () in command: %1$s</string>
+    <string name="user_error_command_dont_exists">Command don\'t exists: %1$s</string>
+    <string name="user_error_missing_brackets_condition">Mising brackets () condition</string>
+    <string name="user_error_cannot_recognize_command">Cannot recognize command: %1$s</string>
+    <string name="user_error_command_field_empty">Command field is empty.</string>
+    <string name="user_error_missing_brackets">Brackets missing</string>
+    <string name="user_error_condition_problem">Problem with condition</string>
+</resources>

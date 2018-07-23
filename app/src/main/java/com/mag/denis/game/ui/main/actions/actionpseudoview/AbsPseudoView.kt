@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.mag.denis.game.R
+import com.mag.denis.game.ui.main.exception.GameParserException
 import com.mag.denis.game.ui.main.model.Command
 import io.reactivex.BackpressureStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -93,7 +94,7 @@ abstract class AbsPseudoView : ConstraintLayout, TextWatcher, View.OnKeyListener
         val conditionEndIndex = child.indexOfLast { it == ')' }
         if (conditionStartIndex == -1 || conditionEndIndex == -1 || (conditionStartIndex > conditionEndIndex)) {
             //TODO handle error
-            throw IllegalStateException("Problem with condition")
+            throw GameParserException(context.getString(R.string.user_error_condition_problem))
         }
         return child.substring(conditionStartIndex, conditionEndIndex).trim()
     }
@@ -108,6 +109,7 @@ abstract class AbsPseudoView : ConstraintLayout, TextWatcher, View.OnKeyListener
         const val MOVE_DOWN = "moveDown()"
         const val MOVE_RIGHT = "moveRight()"
         const val MOVE_LEFT = "moveLeft()"
+        const val MOVE_PREFIX = "move"
         const val CONDITION_GREEN_LEAF = "isGreenLeaf()"
         const val CONDITION_BROWN_LEAF = "isBrownLeaf()"
         const val SPACE = "    "
