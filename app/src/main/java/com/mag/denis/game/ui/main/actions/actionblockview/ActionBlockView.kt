@@ -74,7 +74,6 @@ class ActionBlockView : ConstraintLayout {
             val loop1 = LoopView(context)
             val loop2 = LoopView(context)
             llActions.addView(loop1)
-//        llActions.addView(loop2)
 
             loop1.setOnTouchListener { v, event ->
                 getTouchListener(v, event)
@@ -128,6 +127,7 @@ class ActionBlockView : ConstraintLayout {
                 true
             }
             event.action == MotionEvent.ACTION_UP -> {
+                v.alpha = 1f
                 true
             }
             else -> false
@@ -162,18 +162,20 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as ActionImageView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                val owner = draggedView.parent as ViewGroup
-                if (owner != llActions) {
-                    owner.removeView(draggedView)
-                }
+                if (v.parent != llActions) {
+                    val owner = draggedView.parent as ViewGroup
+                    if (owner != llActions) {
+                        owner.removeView(draggedView)
+                    }
 
-                val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
-                newImageView.setOnTouchListener { v, event ->
-                    getTouchListener(v, event)
-                }
-                val container = v as PlaceholderView
-                if (container != llActions) {
-                    container.addView(newImageView)
+                    val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
+                    newImageView.setOnTouchListener { v, event ->
+                        getTouchListener(v, event)
+                    }
+                    val container = v as PlaceholderView
+                    if (container != llActions) {
+                        container.addView(newImageView)
+                    }
                 }
                 draggedView.visibility = View.VISIBLE
                 draggedView.alpha = 1f
@@ -188,18 +190,20 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as ActionImageView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                val owner = draggedView.parent as ViewGroup
-                if (owner != llActions) {
-                    owner.removeView(draggedView)
-                }
+                if (v.parent.parent.parent != llActions) {
+                    val owner = draggedView.parent as ViewGroup
+                    if (owner != llActions) {
+                        owner.removeView(draggedView)
+                    }
 
-                val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
-                newImageView.setOnTouchListener { v, event ->
-                    getTouchListener(v, event)
-                }
+                    val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
+                    newImageView.setOnTouchListener { v, event ->
+                        getTouchListener(v, event)
+                    }
 
-                val container = v as LinearLayout
-                container.addView(newImageView)
+                    val container = v as LinearLayout
+                    container.addView(newImageView)
+                }
                 draggedView.visibility = View.VISIBLE
                 draggedView.alpha = 1f
             }
@@ -213,29 +217,31 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as LoopView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                val parent = draggedView.parent
-                if (parent != llActions) {
-                    val owner = parent as ViewGroup
-                    owner.removeView(draggedView)
-                    val container = v as LinearLayout
-                    container.addView(draggedView)
-                } else {
-                    val owner = parent as ViewGroup
-                    if (owner != llActions) {
+                if (v.parent.parent.parent!= llActions) {
+                    val parent = draggedView.parent
+                    if (parent != llActions) {
+                        val owner = parent as ViewGroup
                         owner.removeView(draggedView)
-                    }
+                        val container = v as LinearLayout
+                        container.addView(draggedView)
+                    } else {
+                        val owner = parent as ViewGroup
+                        if (owner != llActions) {
+                            owner.removeView(draggedView)
+                        }
 
-                    val newLoop = LoopView(context)
-                    newLoop.setOnTouchListener { v, event ->
-                        getTouchListener(v, event)
-                    }
-                    newLoop.setOnDragListener { v, event ->
-                        getDragListener(v, event)
-                    }
+                        val newLoop = LoopView(context)
+                        newLoop.setOnTouchListener { v, event ->
+                            getTouchListener(v, event)
+                        }
+                        newLoop.setOnDragListener { v, event ->
+                            getDragListener(v, event)
+                        }
 
-                    val container = v as LinearLayout
-                    if (container != llActions) {
-                        container.addView(newLoop)
+                        val container = v as LinearLayout
+                        if (container != llActions) {
+                            container.addView(newLoop)
+                        }
                     }
                 }
                 draggedView.alpha = 1f
@@ -251,34 +257,36 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as ConditionView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                val container = v as LinearLayout
-                if (draggedView.parent != llActions) {
+                if (v.parent.parent.parent!= llActions) {
+                    val container = v as LinearLayout
+                    if (draggedView.parent != llActions) {
 
-                    if (draggedView != container.parent.parent) {
+                        if (draggedView != container.parent.parent) {
+                            val owner = draggedView.parent as ViewGroup
+                            owner.removeView(draggedView)
+                            container.addView(draggedView)
+                        }
+                    } else {
                         val owner = draggedView.parent as ViewGroup
-                        owner.removeView(draggedView)
-                        container.addView(draggedView)
-                    }
-                } else {
-                    val owner = draggedView.parent as ViewGroup
-                    if (owner != llActions) {
-                        owner.removeView(draggedView)
-                    }
+                        if (owner != llActions) {
+                            owner.removeView(draggedView)
+                        }
 
-                    val newCondition = ConditionView(context, draggedView.supportFragmentManager)
-                    newCondition.setOnTouchListener { v, event ->
-                        getTouchListener(v, event)
-                    }
+                        val newCondition = ConditionView(context, draggedView.supportFragmentManager)
+                        newCondition.setOnTouchListener { v, event ->
+                            getTouchListener(v, event)
+                        }
 
-                    newCondition.getTruePlaceholder().setOnDragListener { v, event ->
-                        getDragListener(v, event)
-                    }
-                    newCondition.getFalsePlaceholder().setOnDragListener { v, event ->
-                        getDragListener(v, event)
-                    }
+                        newCondition.getTruePlaceholder().setOnDragListener { v, event ->
+                            getDragListener(v, event)
+                        }
+                        newCondition.getFalsePlaceholder().setOnDragListener { v, event ->
+                            getDragListener(v, event)
+                        }
 
-                    if (container != llActions && draggedView != container.parent) {
-                        container.addView(newCondition)
+                        if (container != llActions && draggedView != container.parent) {
+                            container.addView(newCondition)
+                        }
                     }
                 }
                 draggedView.visibility = View.VISIBLE
@@ -295,22 +303,24 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as LoopView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                val owner = draggedView.parent as ViewGroup
-                if (owner != llActions) {
-                    owner.removeView(draggedView)
-                }
+                if (v.parent != llActions) {
+                    val owner = draggedView.parent as ViewGroup
+                    if (owner != llActions) {
+                        owner.removeView(draggedView)
+                    }
 
-                val newLoop = LoopView(context)
-                newLoop.setOnTouchListener { v, event ->
-                    getTouchListener(v, event)
-                }
-                newLoop.setOnDragListener { v, event ->
-                    getDragListener(v, event)
-                }
+                    val newLoop = LoopView(context)
+                    newLoop.setOnTouchListener { v, event ->
+                        getTouchListener(v, event)
+                    }
+                    newLoop.setOnDragListener { v, event ->
+                        getDragListener(v, event)
+                    }
 
-                val container = v as PlaceholderView
-                if (container != llActions) {
-                    container.addView(newLoop)
+                    val container = v as PlaceholderView
+                    if (container != llActions) {
+                        container.addView(newLoop)
+                    }
                 }
                 draggedView.visibility = View.VISIBLE
                 draggedView.alpha = 1f
@@ -325,110 +335,7 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as ConditionView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                val owner = draggedView.parent as ViewGroup
-                if (owner != llActions) {
-                    owner.removeView(draggedView)
-                }
-
-                val newCondition = ConditionView(context, draggedView.supportFragmentManager)
-                newCondition.setOnTouchListener { v, event ->
-                    getTouchListener(v, event)
-                }
-
-                newCondition.getTruePlaceholder().setOnDragListener { v, event ->
-                    getDragListener(v, event)
-                }
-                newCondition.getFalsePlaceholder().setOnDragListener { v, event ->
-                    getDragListener(v, event)
-                }
-
-                val container = v as PlaceholderView
-                if (container != llActions) {
-                    container.addView(newCondition)
-                }
-                draggedView.visibility = View.VISIBLE
-                draggedView.alpha = 1f
-            }
-            DragEvent.ACTION_DRAG_ENDED -> {
-                draggedView.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    private fun handleActionToLoopDrag(v: View, e: DragEvent) {
-        val draggedView = e.localState as ActionImageView
-        when (e.action) {
-            DragEvent.ACTION_DROP -> {
-                val owner = draggedView.parent as ViewGroup
-                if (owner != llActions) {
-                    owner.removeView(draggedView)
-                }
-
-                val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
-                newImageView.setOnTouchListener { v, event ->
-                    getTouchListener(v, event)
-                }
-
-                val container = v as LoopView
-                container.getPlaceholder().addView(newImageView)
-                draggedView.visibility = View.VISIBLE
-                draggedView.alpha = 1f
-            }
-            DragEvent.ACTION_DRAG_ENDED -> {
-                draggedView.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    private fun handleLoopToLoopDrag(v: View, e: DragEvent) {
-        val draggedView = e.localState as LoopView
-        when (e.action) {
-            DragEvent.ACTION_DROP -> {
-                if (draggedView.parent != llActions) {
-                    val container = v as LoopView
-                    if (draggedView != container) {
-                        val owner = draggedView.parent as ViewGroup
-                        owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
-                        container.getPlaceholder().addView(draggedView)
-                    }
-                } else {
-                    val owner = parent as ViewGroup
-                    if (owner != llActions) {
-                        owner.removeView(draggedView)
-                    }
-
-                    val newLoop = LoopView(context)
-                    newLoop.setOnTouchListener { v, event ->
-                        getTouchListener(v, event)
-                    }
-                    newLoop.setOnDragListener { v, event ->
-                        getDragListener(v, event)
-                    }
-
-                    val container = v as LoopView
-                    container.getPlaceholder().addView(newLoop)
-                }
-                draggedView.visibility = View.VISIBLE
-                draggedView.alpha = 1f
-            }
-            DragEvent.ACTION_DRAG_ENDED -> {
-                draggedView.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    private fun handleConditionToLoopDrag(v: View, e: DragEvent) {
-        val draggedView = e.localState as ConditionView
-        when (e.action) {
-            DragEvent.ACTION_DROP -> {
-                val parent = draggedView.parent
-                if (parent != llActions) {
-                    val owner = parent as ViewGroup
-                    owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit, v nasem primeru ga pustimo tam
-                    val container = v as LoopView
-                    container.getPlaceholder().addView(draggedView)
-                } else {
-
+                if (v.parent != llActions) {
                     val owner = draggedView.parent as ViewGroup
                     if (owner != llActions) {
                         owner.removeView(draggedView)
@@ -446,8 +353,119 @@ class ActionBlockView : ConstraintLayout {
                         getDragListener(v, event)
                     }
 
+                    val container = v as PlaceholderView
+                    if (container != llActions) {
+                        container.addView(newCondition)
+                    }
+                }
+                draggedView.visibility = View.VISIBLE
+                draggedView.alpha = 1f
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                draggedView.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun handleActionToLoopDrag(v: View, e: DragEvent) {
+        val draggedView = e.localState as ActionImageView
+        when (e.action) {
+            DragEvent.ACTION_DROP -> {
+                if (v.parent != llActions) {
+                    val owner = draggedView.parent as ViewGroup
+                    if (owner != llActions) {
+                        owner.removeView(draggedView)
+                    }
+
+                    val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
+                    newImageView.setOnTouchListener { v, event ->
+                        getTouchListener(v, event)
+                    }
+
                     val container = v as LoopView
-                    container.getPlaceholder().addView(newCondition)
+                    container.getPlaceholder().addView(newImageView)
+                }
+                draggedView.visibility = View.VISIBLE
+                draggedView.alpha = 1f
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                draggedView.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun handleLoopToLoopDrag(v: View, e: DragEvent) {
+        val draggedView = e.localState as LoopView
+        when (e.action) {
+            DragEvent.ACTION_DROP -> {
+                if (v.parent != llActions) {
+                    if (draggedView.parent != llActions) {
+                        val container = v as LoopView
+                        if (draggedView != container) {
+                            val owner = draggedView.parent as ViewGroup
+                            owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
+                            container.getPlaceholder().addView(draggedView)
+                        }
+                    } else {
+                        val owner = parent as ViewGroup
+                        if (owner != llActions) {
+                            owner.removeView(draggedView)
+                        }
+
+                        val newLoop = LoopView(context)
+                        newLoop.setOnTouchListener { v, event ->
+                            getTouchListener(v, event)
+                        }
+                        newLoop.setOnDragListener { v, event ->
+                            getDragListener(v, event)
+                        }
+
+                        val container = v as LoopView
+                        container.getPlaceholder().addView(newLoop)
+                    }
+                }
+                draggedView.visibility = View.VISIBLE
+                draggedView.alpha = 1f
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                draggedView.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun handleConditionToLoopDrag(v: View, e: DragEvent) {
+        val draggedView = e.localState as ConditionView
+        when (e.action) {
+            DragEvent.ACTION_DROP -> {
+                if (v.parent != llActions) {
+                    val parent = draggedView.parent
+                    if (parent != llActions) {
+                        val owner = parent as ViewGroup
+                        owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit, v nasem primeru ga pustimo tam
+                        val container = v as LoopView
+                        container.getPlaceholder().addView(draggedView)
+                    } else {
+
+                        val owner = draggedView.parent as ViewGroup
+                        if (owner != llActions) {
+                            owner.removeView(draggedView)
+                        }
+
+                        val newCondition = ConditionView(context, draggedView.supportFragmentManager)
+                        newCondition.setOnTouchListener { v, event ->
+                            getTouchListener(v, event)
+                        }
+
+                        newCondition.getTruePlaceholder().setOnDragListener { v, event ->
+                            getDragListener(v, event)
+                        }
+                        newCondition.getFalsePlaceholder().setOnDragListener { v, event ->
+                            getDragListener(v, event)
+                        }
+
+                        val container = v as LoopView
+                        container.getPlaceholder().addView(newCondition)
+                    }
                 }
                 draggedView.visibility = View.VISIBLE
                 draggedView.alpha = 1f
@@ -464,6 +482,9 @@ class ActionBlockView : ConstraintLayout {
 
     private fun getAllChildren(v: View): ArrayList<Command> {
         val viewGroup = v as ViewGroup
+        if (viewGroup.childCount == 0) {
+            throw IllegalStateException("Block field is empty.")
+        }
 
         val list = ArrayList<Command>()
 
@@ -478,7 +499,7 @@ class ActionBlockView : ConstraintLayout {
                 val value = if (!repeatEt.text.isNullOrEmpty()) {
                     repeatEt.text.toString().toInt()
                 } else {
-                    0
+                    throw IllegalStateException("Missing repeat value")
                 }
 
                 list.add(Loop(value, getAllChildren(containterll)))

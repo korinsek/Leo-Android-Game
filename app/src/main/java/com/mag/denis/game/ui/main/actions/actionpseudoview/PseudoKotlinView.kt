@@ -7,12 +7,10 @@ import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import com.mag.denis.game.R
-import com.mag.denis.game.manager.ErrorMessageManager
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_LEFT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_UP
-import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_BROWN
 import com.mag.denis.game.ui.main.objects.FloorSet.Companion.TYPE_LEAF_GREEN
@@ -33,7 +31,7 @@ class PseudoKotlinView : AbsPseudoView {
         val numOfCloseBrackets = code.count { it == '}' }
         if (numOfOpenBrackets != numOfCloseBrackets) {
             //TODO show error
-            throw IllegalStateException(ErrorMessageManager.ERROR_MISSING_BRACKETS)
+            throw IllegalStateException("Brackets missing")
         }
         val commands = if (code.isNotEmpty()) {
             //TODO execute this in background and subscribe on obervable
@@ -79,6 +77,10 @@ class PseudoKotlinView : AbsPseudoView {
     }
 
     private fun getCommands(codeLines: ArrayList<String>): ArrayList<Command> {
+        if (codeLines.firstOrNull()?.trim().isNullOrEmpty()) {
+            throw IllegalStateException("Command field is empty.")
+        }
+
         val list = ArrayList<Command>()
 
         while (codeLines.isNotEmpty()) {
@@ -96,7 +98,7 @@ class PseudoKotlinView : AbsPseudoView {
                         MOVE_RIGHT -> Action(ACTION_RIGHT)
                         MOVE_LEFT -> Action(ACTION_LEFT)
                         else -> {
-                            throw if (child.contains("(") && child.contains(")")) {
+                            throw if (!child.contains("(") && !child.contains(")")) {
                                 IllegalStateException("Mising brackets () in command: $child")//TODO handle error
                             } else {
                                 IllegalStateException("Command dont exists: $child")//TODO handle error

@@ -19,6 +19,7 @@ import com.mag.denis.game.ui.main.actions.actionflowview.FlowView4
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoPythonView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpPythonDialog
+import com.mag.denis.game.ui.main.dialog.ErrorDialog
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.GameView
@@ -35,6 +36,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
     @Inject lateinit var gameManager: GameManager
 
     private var messageDialog: MessageDialog? = null
+    private var errorDialog: ErrorDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +61,11 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 actionView.setupViews(supportFragmentManager, avilableCommands)
                 btStart.setOnClickListener {
                     gameView.resetGame()
-                    presenter.onStartClick(actionView.getActions())
+                    try {
+                        presenter.onStartClick(actionView.getActions())
+                    } catch (e: IllegalStateException) {
+                        showErrorDialog(e.message!!)
+                    }
                 }
                 btnHelp.visibility = View.GONE
             }
@@ -75,7 +81,11 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                 actionView.setupViews(supportFragmentManager, avilableCommands)
                 btStart.setOnClickListener {
                     gameView.resetGame()
-                    presenter.onStartClick(actionView.getActions())
+                    try {
+                        presenter.onStartClick(actionView.getActions())
+                    } catch (e: IllegalStateException) {
+                        showErrorDialog(e.message!!)
+                    }
                 }
                 btnHelp.visibility = View.GONE
             }
@@ -92,7 +102,7 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
                     try {
                         presenter.onStartClick(actionView.getActions())
                     } catch (e: IllegalStateException) {
-
+                        showErrorDialog(e.message!!)
                     }
                 }
                 btnHelp.visibility = View.VISIBLE
@@ -133,7 +143,13 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
     }
 
     override fun showMessageDialog(@StringRes messageId: Int) {
+        messageDialog?.dismiss()
         messageDialog = MessageDialog.show(supportFragmentManager, messageId)
+    }
+
+    override fun showErrorDialog(message: String) {
+        errorDialog?.dismiss()
+        errorDialog = ErrorDialog.show(supportFragmentManager, message)
     }
 
     override fun onPause() {
@@ -141,6 +157,11 @@ class MainActivity : DaggerAppCompatActivity(), MainView, GameView.OnMessageCall
         super.onPause()
     }
 
+    override fun onDestroy() {
+        messageDialog?.dismiss()
+        errorDialog?.dismiss()
+        super.onDestroy()
+    }
 
     companion object {
         const val ACTION_UP = "action_up"

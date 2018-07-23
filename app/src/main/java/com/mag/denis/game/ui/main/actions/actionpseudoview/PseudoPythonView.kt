@@ -66,7 +66,9 @@ class PseudoPythonView : AbsPseudoView {
     }
 
     private fun getCommands(codeLines: ArrayList<String>): ArrayList<Command> {
-
+        if (codeLines.firstOrNull()?.trim().isNullOrEmpty()) {
+            throw IllegalStateException("Command field is empty.")
+        }
         val list = ArrayList<Command>()
 
         while (codeLines.isNotEmpty()) {

@@ -8,4 +8,5 @@ interface MainView {
     fun openMenuActivity()
     fun showMessageDialog(@StringRes messageId: Int)
     fun closeOk()
+    fun showErrorDialog(message: String)
 }
