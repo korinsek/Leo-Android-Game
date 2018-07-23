@@ -47,14 +47,18 @@ class FlowView1 : AbsFlowView {
     }
 
     override fun getActions(): ArrayList<Command> {
-        //TODO check placeholders if all filled
         val list = ArrayList<Command>()
 
-        listOf(llActionHolder1, llActionHolder2, llActionHolder3, llActionHolder4, llActionHolder5).forEach {
+                val views = listOf(llActionHolder1, llActionHolder2, llActionHolder3, llActionHolder4, llActionHolder5)
+        views.forEach {
             val action = it.getChildAt(0)
             if (action is ActionImageView) {
                 list.add(Action(action.type))
             }
+        }
+
+        if(list.size<views.size){
+            throw IllegalStateException("Fill all flow chart fields")
         }
 
         return list

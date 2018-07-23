@@ -15,6 +15,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.PlaceholderView
 import com.mag.denis.game.ui.main.view.action.ActionImageView
+import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 
 abstract class AbsFlowView : ConstraintLayout {
 
@@ -37,21 +38,25 @@ abstract class AbsFlowView : ConstraintLayout {
         return true
     }
 
-    internal fun handleActionToPlaceholderDrag(v: View, e: DragEvent) {
+    private fun handleActionToPlaceholderDrag(v: View, e: DragEvent) {
         val draggedView = e.localState as ActionImageView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-//                val owner = draggedView.parent as ViewGroup
-//                owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
+                if (v.parent != llActions) {
+                    val owner = draggedView.parent as ViewGroup
+                    if (owner != llActions) {
+                        owner.removeView(draggedView)
+                    }
 
-                val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
-                newImageView.setOnClickListener {
-                    (newImageView.parent as ViewGroup).removeAllViews()
+                    val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
+                    newImageView.setOnTouchListener { v, event ->
+                        getTouchListener(v, event)
+                    }
+                    val container = v as PlaceholderView
+                    if (container != llActions) {
+                        container.addView(newImageView)
+                    }
                 }
-
-                val container = v as PlaceholderView
-                container.removeAllViews()
-                container.addView(newImageView)
                 draggedView.visibility = View.VISIBLE
                 draggedView.alpha = 1f
             }

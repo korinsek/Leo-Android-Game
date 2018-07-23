@@ -1,5 +1,5 @@
 <resources>
     <string name="main_activity_title">Game</string>
-    <string name="main_message_fall_into_see">You fall into sea</string>
+    <string name="main_message_fall_into_see">Ups. You fall into sea</string>
     <string name="help_actions_title">Actions:</string>
 </resources>
