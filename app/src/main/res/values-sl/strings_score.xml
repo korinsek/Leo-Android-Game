@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="sl">
+    <string name="score_activity_title">Rezultati</string>
+    <string name="score_title_finished">Igra je koncana</string>
+    <string name="score_message_no_scores">Odigraj igro do konca za prvi rezultat</string>
+    <string name="score_current_points">Zbrane zvezdice: %1$d</string>
+</resources>

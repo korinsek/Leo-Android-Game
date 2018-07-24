@@ -76,8 +76,9 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
             listOf("0", "0", "1S", "2", "1", "1", "F"))
 
     private val numOfLevelsBlock = 8
-    private val numOfLevelsPseudo = 8
     private val numOfLevelsFlow = 4
+    private val numOfLevelsPseudo = 8
+
 
     private val starsBlockLevels = mutableListOf<Int>()
     private val starsFlowLevels = mutableListOf<Int>()
@@ -85,8 +86,9 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
 
     init {
         val blockStars = sharedPreferences.getString(STARS_STAGE_BLOCK_PREFERENCES_ID, "0".repeat(numOfLevelsBlock))
-        val pseudoStars = sharedPreferences.getString(STARS_STAGE_PSEUDO_PREFERENCES_ID, "0".repeat(numOfLevelsPseudo))
         val flowStars = sharedPreferences.getString(STARS_STAGE_FLOW_PREFERENCES_ID, "0".repeat(numOfLevelsFlow))
+        val pseudoStars = sharedPreferences.getString(STARS_STAGE_PSEUDO_PREFERENCES_ID, "0".repeat(numOfLevelsPseudo))
+
 
         for (s in blockStars) {
             starsBlockLevels.add(s.toString().toInt())
@@ -179,6 +181,19 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
             else -> throw IllegalStateException("Invalid stage preferences")
         }
     }
+
+    fun isGameFinished(): Boolean {
+
+        val stageBlockCompleted = starsBlockLevels.count { it > 0 } == numOfLevelsBlock
+        val stageFlowCompleted = starsFlowLevels.count { it > 0 } == numOfLevelsFlow
+        val stagePseudoCompleted = starsPseudoLevels.count { it > 0 } == numOfLevelsPseudo
+        return stageBlockCompleted && stageFlowCompleted && stagePseudoCompleted
+    }
+
+    fun getSumStars(): Int {
+        return starsBlockLevels.sumBy { it } + starsFlowLevels.sumBy { it } + starsPseudoLevels.sumBy { it }
+    }
+
 
     companion object {
         const val COMMAND_ACTIONS = 1

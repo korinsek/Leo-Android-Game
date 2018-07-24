@@ -4,8 +4,6 @@ import com.mag.denis.game.service.MusicModule
 import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.about.AboutActivity
 import com.mag.denis.game.ui.about.AboutModule
-import com.mag.denis.game.ui.finish.FinishActivity
-import com.mag.denis.game.ui.finish.FinishModule
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.MainModule
 import com.mag.denis.game.ui.map.MapActivity
@@ -37,9 +35,6 @@ abstract class InjectorModule {
 
     @ActivityScope @ContributesAndroidInjector(modules = [ScoreModule::class])
     abstract fun contributeScoreActivityInjector(): ScoreActivity
-
-    @ActivityScope @ContributesAndroidInjector(modules = [FinishModule::class])
-    abstract fun contributeFinishActivityInjector(): FinishActivity
 
     @ActivityScope @ContributesAndroidInjector(modules = [AboutModule::class])
     abstract fun contributeAboutActivityInjector(): AboutActivity

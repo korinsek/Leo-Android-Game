@@ -25,6 +25,7 @@ import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
 import com.mag.denis.game.ui.main.view.GameView
 import com.mag.denis.game.ui.menu.MenuActivity
+import com.mag.denis.game.ui.score.ScoreActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -161,6 +162,13 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback {
         messageDialog?.dismiss()
         errorDialog?.dismiss()
         super.onDestroy()
+    }
+
+    override fun openScoreScreen() {
+        val intent = MenuActivity.newIntent(this)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivities(arrayOf(intent, ScoreActivity.newIntent(this)))
+        overridePendingTransition(0, 0)
     }
 
     companion object {

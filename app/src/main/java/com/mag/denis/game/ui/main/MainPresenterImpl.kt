@@ -1,11 +1,12 @@
 package com.mag.denis.game.ui.main
 
-import com.mag.denis.game.ui.main.model.*
+import com.mag.denis.game.manager.LevelManager
+import com.mag.denis.game.ui.main.model.Command
 
 
-class MainPresenterImpl(private val view: MainView) : MainPresenter {
+class MainPresenterImpl(private val view: MainView, private val levelManager: LevelManager) : MainPresenter {
 
-    override fun onStartClick(commands:ArrayList<Command>) {
+    override fun onStartClick(commands: ArrayList<Command>) {
         view.doActionsInGame(commands)
     }
 
@@ -14,6 +15,10 @@ class MainPresenterImpl(private val view: MainView) : MainPresenter {
     }
 
     override fun onLevelFinished() {
-        view.closeOk()
+        if (levelManager.isGameFinished()) {
+            view.openScoreScreen()
+        } else {
+            view.closeOk()
+        }
     }
 }

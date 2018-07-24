@@ -47,12 +47,6 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".ui.finish.FinishActivity"
-            android:label="@string/finish_activity_title"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
-
-        <activity
             android:name=".ui.about.AboutActivity"
             android:label="@string/about_activity_title"
             android:screenOrientation="landscape"

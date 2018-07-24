@@ -9,4 +9,5 @@ interface MainView {
     fun showMessageDialog(@StringRes messageId: Int)
     fun closeOk()
     fun showErrorDialog(message: String)
+    fun openScoreScreen()
 }
