@@ -13,6 +13,7 @@ import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
+import com.mag.denis.game.ui.main.actions.actionblockview.AnimationIntroView
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView2
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView3
@@ -30,7 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback {
+class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, AnimationIntroView.AnimationIntroCallback {
 
     @Inject lateinit var presenter: MainPresenter
     @Inject lateinit var levelManager: LevelManager
@@ -69,6 +70,13 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback {
                     }
                 }
                 btnHelp.visibility = View.GONE
+
+                animationIntroView.startAnimation()
+                animationIntroView.setAnimationIntroCallback(this)
+                animationIntroView.setOnClickListener {
+                    gameView.resetGame()
+                    animationIntroView.hide()
+                }
             }
             GameManager.STAGE_FLOW -> {
                 val actionView = when (gameManager.getCurrentLevel()) {
@@ -169,6 +177,14 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivities(arrayOf(intent, ScoreActivity.newIntent(this)))
         overridePendingTransition(0, 0)
+    }
+
+    override fun onStartAnimationClick(commands: ArrayList<Command>) {
+        presenter.onStartClick(commands)
+    }
+
+    override fun animationWantResetGame() {
+        gameView.resetGame()
     }
 
     companion object {

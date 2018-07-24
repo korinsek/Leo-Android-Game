@@ -21,4 +21,5 @@ class MainPresenterImpl(private val view: MainView, private val levelManager: Le
             view.closeOk()
         }
     }
+
 }

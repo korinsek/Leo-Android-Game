@@ -30,4 +30,6 @@
     <color name="green">#196b00</color>
 
     <color name="lock">#a4a4a4</color>
+
+    <color name="transparentBlack">#92000000</color>
 </resources>

@@ -22,7 +22,7 @@ import com.mag.denis.game.ui.main.view.PlaceholderView
 import com.mag.denis.game.ui.main.view.action.ActionImageView
 import com.mag.denis.game.ui.main.view.action.ConditionView
 import com.mag.denis.game.ui.main.view.action.LoopView
-import kotlinx.android.synthetic.main.partial_flow_action1.view.*
+import kotlinx.android.synthetic.main.partial_action_view.view.*
 
 class ActionBlockView : ConstraintLayout {
 
@@ -218,7 +218,7 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as LoopView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                if (view.parent.parent.parent!= llActions) {
+                if (view.parent.parent.parent != llActions) {
                     val parent = draggedView.parent
                     if (parent != llActions) {
                         val owner = parent as ViewGroup
@@ -258,7 +258,7 @@ class ActionBlockView : ConstraintLayout {
         val draggedView = e.localState as ConditionView
         when (e.action) {
             DragEvent.ACTION_DROP -> {
-                if (view.parent.parent.parent!= llActions) {
+                if (view.parent.parent.parent != llActions) {
                     val container = view as LinearLayout
                     if (draggedView.parent != llActions) {
 
