@@ -71,7 +71,7 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Anima
                 }
                 btnHelp.visibility = View.GONE
 
-                animationIntroView.startAnimation()
+                animationIntroView.startAnimationLoopAndIf(supportFragmentManager)
                 animationIntroView.setAnimationIntroCallback(this)
                 animationIntroView.setOnClickListener {
                     gameView.resetGame()

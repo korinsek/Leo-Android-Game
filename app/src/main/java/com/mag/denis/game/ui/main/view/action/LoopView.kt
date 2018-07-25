@@ -15,4 +15,8 @@ class LoopView(context: Context) : ConstraintLayout(context), ActionView {
     fun getPlaceholder(): LinearLayout {
         return llLoopPlaceholder
     }
+
+    fun setValue(value: Int) {
+        etLoopValue.setText(value.toString())
+    }
 }

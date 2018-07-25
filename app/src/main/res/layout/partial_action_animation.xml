@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/transparentBlack">
 
     <Button
         android:id="@+id/btSkipIntro"
@@ -15,5 +16,6 @@
         android:background="@color/transparentBlack"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:textColor="@color/white"
+        android:visibility="gone"
         android:text="@string/main_animation_skip_title"/>
 </android.support.constraint.ConstraintLayout>
