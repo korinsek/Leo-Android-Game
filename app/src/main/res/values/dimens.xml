@@ -3,4 +3,5 @@
     <dimen name="actionPadding">10dp</dimen>
     <dimen name="actionHeight">28dp</dimen>
     <dimen name="actionWidth">80dp</dimen>
+    <dimen name="actionWidthSmall">50dp</dimen>
 </resources>

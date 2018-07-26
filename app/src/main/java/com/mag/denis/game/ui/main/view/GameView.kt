@@ -197,14 +197,16 @@ class GameView(context: Context, attributes: AttributeSet) : SurfaceView(context
                     Single.fromCallable {
                         val canvas = this.holder.lockCanvas() // locking the canvas allows us to draw on to it
                         synchronized(holder) {
-                            synchronized(canvas) {
-                                if (canvas != null) {
+                            if (canvas != null) {
+                                synchronized(canvas) {
                                     mainCanvas = canvas
                                     this.update()
                                     this.render(canvas)
                                 }
                             }
-                            holder.unlockCanvasAndPost(mainCanvas)
+                            if(!holder.isCreating && mainCanvas!=null && holder.surface.isValid) {
+                                holder.unlockCanvasAndPost(mainCanvas)
+                            }
                         }
                     }
                 }

@@ -132,10 +132,11 @@
         app:layout_constraintEnd_toEndOf="@id/btnMenu"
         app:layout_constraintStart_toStartOf="@id/btnMenu"
         />
-    <com.mag.denis.game.ui.main.actions.actionblockview.AnimationIntroView
+    <com.mag.denis.game.ui.main.actions.intro.IntroView
         android:id="@+id/animationIntroView"
         android:clickable="true"
         android:focusable="true"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

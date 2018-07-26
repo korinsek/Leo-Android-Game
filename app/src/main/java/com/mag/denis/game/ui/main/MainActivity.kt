@@ -13,7 +13,6 @@ import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
-import com.mag.denis.game.ui.main.actions.actionblockview.AnimationIntroView
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView2
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView3
@@ -21,6 +20,7 @@ import com.mag.denis.game.ui.main.actions.actionflowview.FlowView4
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoPythonView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpPythonDialog
+import com.mag.denis.game.ui.main.actions.intro.IntroView
 import com.mag.denis.game.ui.main.dialog.ErrorDialog
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, AnimationIntroView.AnimationIntroCallback {
+class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, IntroView.AnimationIntroCallback {
 
     @Inject lateinit var presenter: MainPresenter
     @Inject lateinit var levelManager: LevelManager
@@ -71,7 +71,12 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Anima
                 }
                 btnHelp.visibility = View.GONE
 
-                animationIntroView.startAnimationLoopAndIf(supportFragmentManager)
+                when (gameManager.getCurrentLevel()) {
+                    1 -> animationIntroView.startAnimationAction()
+                    3 -> animationIntroView.startAnimationLoop()
+                    5 -> animationIntroView.startAnimationLoopAndIf(supportFragmentManager)
+                    else -> animationIntroView.hide()
+                }
                 animationIntroView.setAnimationIntroCallback(this)
                 animationIntroView.setOnClickListener {
                     gameView.resetGame()
@@ -97,6 +102,15 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Anima
                     }
                 }
                 btnHelp.visibility = View.GONE
+
+                if (gameManager.getCurrentLevel() == 1) {
+                    animationIntroView.startAnimationFlowAction()
+                    animationIntroView.setAnimationIntroCallback(this)
+                    animationIntroView.setOnClickListener {
+                        gameView.resetGame()
+                        animationIntroView.hide()
+                    }
+                }
             }
             GameManager.STAGE_PSEUDO -> {
                 val actionView = when (gameManager.getLanguage()) {
