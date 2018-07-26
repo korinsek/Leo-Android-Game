@@ -2,6 +2,7 @@ package com.mag.denis.game.ui.main.actions.intro
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.AppCompatTextView
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -14,7 +15,7 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
-class DelayedTextView : TextView {
+class DelayedTextView : AppCompatTextView {
 
     private var index: Int = 0
     private var delay: Long = 150
