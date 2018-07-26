@@ -25,8 +25,10 @@ class PseudoPythonView : AbsPseudoView {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
+    override val reservedWordsPattern = "$RESERVED_LOOP|$RESERVED_CONDITION_IF|$RESERVED_CONDITION_ELSE|$RESERVED_IN|$RESERVED_RANGE"
+
     override fun colorAndAddSpacing(s: Editable): Editable {
-        val pattern = Pattern.compile("$RESERVED_LOOP|$RESERVED_CONDITION_IF|$RESERVED_CONDITION_ELSE|$RESERVED_IN|$RESERVED_RANGE")
+        val pattern = Pattern.compile(reservedWordsPattern)
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -176,5 +178,13 @@ class PseudoPythonView : AbsPseudoView {
             }
         }
         return list
+    }
+
+    override fun getIntroCodeLoop(): String {
+        return "$RESERVED_LOOP i in range(${4}):\n    moveRight()\n"
+    }
+
+    override fun getIntroCodeLoopIf(): String {
+        return "$RESERVED_LOOP i in range(${4}):\n    $RESERVED_CONDITION_IF($CONDITION_GREEN_LEAF):\n        moveRight()\n    else\n        moveDown()\n"
     }
 }

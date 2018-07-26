@@ -2,20 +2,36 @@
 <android.support.constraint.ConstraintLayout
     android:id="@+id/animationConstraint"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/transparentBlack">
+
+    <com.mag.denis.game.ui.main.actions.intro.DelayedTextView
+        android:id="@+id/delayedTextView"
+        android:layout_width="match_parent"
+        android:singleLine="false"
+        android:layout_height="match_parent"
+        android:inputType="textMultiLine"
+        android:padding="20dp"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/btSkipIntro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/transparentBlack"
         android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/main_animation_skip_title"
         android:textColor="@color/white"
         android:visibility="gone"
-        android:text="@string/main_animation_skip_title"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
 </android.support.constraint.ConstraintLayout>

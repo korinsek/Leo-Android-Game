@@ -25,6 +25,7 @@ class PseudoKotlinView : AbsPseudoView {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
+    override val reservedWordsPattern = "$RESERVED_LOOP|$RESERVED_CONDITION_IF|$RESERVED_CONDITION_ELSE"
 
     override fun getActions(): ArrayList<Command> {
         val code = "${etCode.text}\n"
@@ -43,7 +44,7 @@ class PseudoKotlinView : AbsPseudoView {
     }
 
     override fun colorAndAddSpacing(s: Editable): Editable {
-        val pattern = Pattern.compile("$RESERVED_LOOP|$RESERVED_CONDITION_IF|$RESERVED_CONDITION_ELSE")
+        val pattern = Pattern.compile(reservedWordsPattern)
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -204,6 +205,14 @@ class PseudoKotlinView : AbsPseudoView {
             }
         }
         return list
+    }
+
+    override fun getIntroCodeLoop(): String {
+        return "$RESERVED_LOOP (4){\n    moveRight()\n}"
+    }
+
+    override fun getIntroCodeLoopIf(): String {
+        return "$RESERVED_LOOP (6){\n   $RESERVED_CONDITION_IF ($CONDITION_GREEN_LEAF){\n        $MOVE_RIGHT\n    } else { \n        $MOVE_DOWN\n}\n"
     }
 
     companion object {

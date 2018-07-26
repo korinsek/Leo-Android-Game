@@ -14,6 +14,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
+import com.mag.denis.game.ui.main.actions.actionpseudoview.AbsPseudoView
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet
 import com.mag.denis.game.ui.main.view.action.ActionImageView
@@ -22,6 +23,8 @@ import com.mag.denis.game.ui.main.view.action.LoopView
 import kotlinx.android.synthetic.main.partial_action_animation.view.*
 
 class IntroView : ConstraintLayout {
+    //TODO code for animations can be peatier without duplicated code, its something to be done later.
+
     private var callback: AnimationIntroCallback? = null
 
     constructor(context: Context) : super(context)
@@ -29,7 +32,6 @@ class IntroView : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     init {
-        //TODO code for animations can be peatier, its something to be done later
         inflate(context, R.layout.partial_action_animation, this)
         this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
     }
@@ -361,6 +363,173 @@ class IntroView : ConstraintLayout {
         }
     }
 
+    fun startAnimationPseudo1Action(reservedWordsPattern: String) {
+        show()
+        delayedTextView.animateText("${AbsPseudoView.MOVE_RIGHT}\n${AbsPseudoView.MOVE_RIGHT}", reservedWordsPattern, object : DelayedTextView.TextTypedCallback {
+            override fun onTextTypingEnd() {
+                val handPointer = ImageView(context)
+                handPointer.setImageResource(R.drawable.ic_touch)
+                animationConstraint.addView(handPointer)
+
+                val anim1 = TranslateAnimation(300f, width.toFloat() / 3 - handPointer.drawable.intrinsicWidth / 2, 50f, height.toFloat() - handPointer.drawable.intrinsicHeight * 1.5f)
+                anim1.duration = 2000
+
+                anim1.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {}
+
+                    override fun onAnimationRepeat(animation: Animation) {}
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        val arrowJump1 = AppCompatImageView(context)
+                        arrowJump1.setImageResource(R.drawable.ic_curved_arrow)
+                        arrowJump1.x = animationConstraint.width / 2.5f
+                        arrowJump1.y = animationConstraint.height / 7f
+
+                        val arrowJump2 = AppCompatImageView(context)
+                        arrowJump2.setImageResource(R.drawable.ic_curved_arrow)
+                        arrowJump2.x = animationConstraint.width / 2.5f + arrowJump1.drawable.intrinsicWidth
+                        arrowJump2.y = animationConstraint.height / 7f
+
+                        animationConstraint.addView(arrowJump1)
+                        animationConstraint.addView(arrowJump2)
+
+                        callback?.animationWantResetGame()
+                        callback?.onStartAnimationClick(getActionsPseudo1())
+                    }
+                })
+
+                anim1.fillAfter = true
+                handPointer.startAnimation(anim1)
+            }
+        })
+
+        btSkipIntro.visibility = View.VISIBLE
+        btSkipIntro.setOnClickListener {
+            hide()
+            callback?.animationWantResetGame()
+        }
+    }
+
+
+    fun startAnimationPseudo2Action(reservedWordsPattern: String) {
+        show()
+        delayedTextView.animateText("${AbsPseudoView.MOVE_RIGHT}\n${AbsPseudoView.MOVE_RIGHT}\n${AbsPseudoView.MOVE_DOWN}", reservedWordsPattern, object : DelayedTextView.TextTypedCallback {
+            override fun onTextTypingEnd() {
+                val handPointer = ImageView(context)
+                handPointer.setImageResource(R.drawable.ic_touch)
+                animationConstraint.addView(handPointer)
+
+                val anim1 = TranslateAnimation(300f, width.toFloat() / 3 - handPointer.drawable.intrinsicWidth / 2, 50f, height.toFloat() - handPointer.drawable.intrinsicHeight * 1.5f)
+                anim1.duration = 2000
+
+                anim1.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {}
+
+                    override fun onAnimationRepeat(animation: Animation) {}
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        val arrowJump1 = AppCompatImageView(context)
+                        arrowJump1.setImageResource(R.drawable.ic_curved_arrow)
+                        arrowJump1.x = animationConstraint.width / 2.5f
+                        arrowJump1.y = animationConstraint.height / 7f
+
+                        val arrowJump2 = AppCompatImageView(context)
+                        arrowJump2.setImageResource(R.drawable.ic_curved_arrow)
+                        arrowJump2.x = animationConstraint.width / 2.5f + arrowJump1.drawable.intrinsicWidth
+                        arrowJump2.y = animationConstraint.height / 7f
+
+                        animationConstraint.addView(arrowJump1)
+                        animationConstraint.addView(arrowJump2)
+
+                        callback?.animationWantResetGame()
+                        callback?.onStartAnimationClick(getActionsPseudo2())
+                    }
+                })
+
+                anim1.fillAfter = true
+                handPointer.startAnimation(anim1)
+            }
+        })
+
+        btSkipIntro.visibility = View.VISIBLE
+        btSkipIntro.setOnClickListener {
+            hide()
+            callback?.animationWantResetGame()
+        }
+    }
+
+    fun startAnimationPseudo3Action(reservedWordsPattern: String, code: String) {
+        show()
+        delayedTextView.animateText(code, reservedWordsPattern, object : DelayedTextView.TextTypedCallback {
+            override fun onTextTypingEnd() {
+                val handPointer = ImageView(context)
+                handPointer.setImageResource(R.drawable.ic_touch)
+                animationConstraint.addView(handPointer)
+
+                val anim1 = TranslateAnimation(300f, width.toFloat() / 3 - handPointer.drawable.intrinsicWidth / 2, 50f, height.toFloat() - handPointer.drawable.intrinsicHeight * 1.5f)
+                anim1.duration = 2000
+
+                anim1.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {}
+
+                    override fun onAnimationRepeat(animation: Animation) {}
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        callback?.animationWantResetGame()
+                        callback?.onStartAnimationClick(getActionsPseudo3())
+                    }
+                })
+
+                anim1.fillAfter = true
+                handPointer.startAnimation(anim1)
+            }
+        })
+
+        btSkipIntro.visibility = View.VISIBLE
+        btSkipIntro.setOnClickListener {
+            hide()
+            callback?.animationWantResetGame()
+        }
+    }
+
+    fun startAnimationPseudo4Action(reservedWordsPattern: String, code: String) {
+        show()
+        delayedTextView.animateText(code, reservedWordsPattern, object : DelayedTextView.TextTypedCallback {
+            override fun onTextTypingEnd() {
+                val handPointer = ImageView(context)
+                handPointer.setImageResource(R.drawable.ic_touch)
+                animationConstraint.addView(handPointer)
+
+                val anim1 = TranslateAnimation(300f, width.toFloat() / 3 - handPointer.drawable.intrinsicWidth / 2, 50f, height.toFloat() - handPointer.drawable.intrinsicHeight * 1.5f)
+                anim1.duration = 2000
+
+                anim1.setAnimationListener(object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {}
+
+                    override fun onAnimationRepeat(animation: Animation) {}
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        callback?.animationWantResetGame()
+                        callback?.onStartAnimationClick(getActionsPseudo4())
+                    }
+                })
+
+                anim1.fillAfter = true
+                handPointer.startAnimation(anim1)
+            }
+        })
+
+        btSkipIntro.visibility = View.VISIBLE
+        btSkipIntro.setOnClickListener {
+            hide()
+            callback?.animationWantResetGame()
+        }
+    }
+
     fun setAnimationIntroCallback(callback: AnimationIntroCallback) {
         this.callback = callback
     }
@@ -379,6 +548,22 @@ class IntroView : ConstraintLayout {
     }
 
     private fun getActionsIfLoop(): ArrayList<Command> {
+        return arrayListOf(Loop(6, listOf(IfCondition(ColorCondition(FloorSet.TYPE_LEAF_GREEN, Condition.TYPE_TRUE), listOf(Action(ACTION_RIGHT)), listOf(Action(ACTION_DOWN))))))
+    }
+
+    private fun getActionsPseudo1(): ArrayList<Command> {
+        return arrayListOf(Action(ACTION_RIGHT), Action(ACTION_RIGHT))
+    }
+
+    private fun getActionsPseudo2(): ArrayList<Command> {
+        return arrayListOf(Action(ACTION_RIGHT), Action(ACTION_RIGHT), Action(ACTION_DOWN))
+    }
+
+    private fun getActionsPseudo3(): ArrayList<Command> {
+        return arrayListOf(Loop(4, listOf(Action(ACTION_RIGHT))))
+    }
+
+    private fun getActionsPseudo4(): ArrayList<Command> {
         return arrayListOf(Loop(6, listOf(IfCondition(ColorCondition(FloorSet.TYPE_LEAF_GREEN, Condition.TYPE_TRUE), listOf(Action(ACTION_RIGHT)), listOf(Action(ACTION_DOWN))))))
     }
 

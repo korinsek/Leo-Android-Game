@@ -28,6 +28,7 @@ import com.mag.denis.game.ui.main.view.GameView
 import com.mag.denis.game.ui.menu.MenuActivity
 import com.mag.denis.game.ui.score.ScoreActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.partial_action_animation.*
 import javax.inject.Inject
 
 
@@ -129,7 +130,24 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Intro
                     }
                 }
                 btnHelp.visibility = View.VISIBLE
-                btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }//Todo show only when is pseudo mode
+                btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }
+
+                when (gameManager.getCurrentLevel()) {
+                    1 -> animationIntroView.startAnimationPseudo1Action(actionView.reservedWordsPattern) //TODO Get reserved for correct lang
+                    2 -> animationIntroView.startAnimationPseudo2Action(actionView.reservedWordsPattern)
+                    3 -> animationIntroView.startAnimationPseudo3Action(actionView.reservedWordsPattern, actionView.getIntroCodeLoop())
+                    5 -> animationIntroView.startAnimationPseudo4Action(actionView.reservedWordsPattern, actionView.getIntroCodeLoopIf())
+                    else -> animationIntroView.hide()
+                }
+
+                animationIntroView.setAnimationIntroCallback(this)
+                listOf(animationIntroView, delayedTextView).forEach {
+                    it.setOnClickListener {
+                        gameView.resetGame()
+                        animationIntroView.hide()
+                    }
+                }
+
             }
             else -> throw IllegalStateException("Invalid stage")
         }

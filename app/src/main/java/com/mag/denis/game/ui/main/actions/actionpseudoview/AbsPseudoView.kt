@@ -2,7 +2,6 @@ package com.mag.denis.game.ui.main.actions.actionpseudoview
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
-import android.support.v4.app.FragmentManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
@@ -26,6 +25,8 @@ abstract class AbsPseudoView : ConstraintLayout, TextWatcher, View.OnKeyListener
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    abstract val reservedWordsPattern: String
 
     init {
         this.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
@@ -88,6 +89,9 @@ abstract class AbsPseudoView : ConstraintLayout, TextWatcher, View.OnKeyListener
     abstract fun getActions(): ArrayList<Command>
 
     abstract fun colorAndAddSpacing(s: Editable): Editable
+
+    abstract fun getIntroCodeLoop(): String
+    abstract fun getIntroCodeLoopIf(): String
 
     internal fun getCondition(child: String): String {
         val conditionStartIndex = child.indexOfFirst { it == '(' } + 1
