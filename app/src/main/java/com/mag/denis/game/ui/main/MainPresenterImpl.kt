@@ -4,10 +4,12 @@ import com.mag.denis.game.R
 import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.manager.ScoreManager
+import com.mag.denis.game.ui.ActivityScope
 import com.mag.denis.game.ui.main.model.Command
+import javax.inject.Inject
 
-
-class MainPresenterImpl(private val view: MainView, private val levelManager: LevelManager,
+@ActivityScope
+class MainPresenterImpl @Inject constructor(private val view: MainView, private val levelManager: LevelManager,
         private val gameManager: GameManager, private val scoreManager: ScoreManager) : MainPresenter {
 
     override fun onStartClick(commands: ArrayList<Command>) {

@@ -4,9 +4,11 @@ import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.GameManager.Companion.LANGUAGE_KOTLIN
 import com.mag.denis.game.manager.GameManager.Companion.LANGUAGE_PYTHON
 import com.mag.denis.game.manager.LanguageManager
+import com.mag.denis.game.ui.ActivityScope
+import javax.inject.Inject
 
-
-class SettingsPresenterImpl(private val view: SettingsView, private val gameManager: GameManager, private val languageManager: LanguageManager) : SettingsPresenter {
+@ActivityScope
+class SettingsPresenterImpl @Inject constructor(private val view: SettingsView, private val gameManager: GameManager, private val languageManager: LanguageManager) : SettingsPresenter {
 
     private var selectedLanguage: String? = null
 

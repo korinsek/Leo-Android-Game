@@ -27,7 +27,5 @@ class AboutActivity : BaseActivity(), AboutView {
         fun newIntent(context: Context): Intent {
             return Intent(context, AboutActivity::class.java)
         }
-
     }
-
 }

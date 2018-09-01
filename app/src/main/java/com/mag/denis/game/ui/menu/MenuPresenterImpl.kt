@@ -1,6 +1,10 @@
 package com.mag.denis.game.ui.menu
 
-class MenuPresenterImpl(private val view: MenuView) : MenuPresenter {
+import com.mag.denis.game.ui.ActivityScope
+import javax.inject.Inject
+
+@ActivityScope
+class MenuPresenterImpl @Inject constructor(private val view: MenuView) : MenuPresenter {
 
     override fun onPlayClick() {
         view.openGameView()

@@ -4,8 +4,11 @@ import android.content.Context
 import com.mag.denis.game.R
 import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.manager.ScoreManager
+import com.mag.denis.game.ui.ActivityScope
+import javax.inject.Inject
 
-class ScorePresenterImpl(private val context: Context, private val view: ScoreView, private val levelManager: LevelManager, private val scoreManager: ScoreManager) : ScorePresenter {
+@ActivityScope
+class ScorePresenterImpl @Inject constructor(private val context: Context, private val view: ScoreView, private val levelManager: LevelManager, private val scoreManager: ScoreManager) : ScorePresenter {
 
     override fun onCreate() {
         val scores = scoreManager.getScores()

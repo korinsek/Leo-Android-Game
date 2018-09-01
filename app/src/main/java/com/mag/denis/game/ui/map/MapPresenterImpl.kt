@@ -6,8 +6,11 @@ import com.mag.denis.game.manager.GameManager.Companion.STAGE_BLOCK
 import com.mag.denis.game.manager.GameManager.Companion.STAGE_FLOW
 import com.mag.denis.game.manager.GameManager.Companion.STAGE_PSEUDO
 import com.mag.denis.game.manager.LevelManager
+import com.mag.denis.game.ui.ActivityScope
+import javax.inject.Inject
 
-class MapPresenterImpl(private val view: MapView, private val gameManager: GameManager, private val levelManager: LevelManager) : MapPresenter {
+@ActivityScope
+class MapPresenterImpl @Inject constructor(private val view: MapView, private val gameManager: GameManager, private val levelManager: LevelManager) : MapPresenter {
 
     private var currentStage = 0
     private var maxStage = 0

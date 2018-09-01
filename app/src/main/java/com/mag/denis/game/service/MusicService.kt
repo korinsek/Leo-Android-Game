@@ -10,6 +10,7 @@ import com.mag.denis.game.R
 import dagger.android.DaggerService
 
 class MusicService : DaggerService(), MusicView {
+
     private lateinit var player: MediaPlayer
 
     override fun onCreate() {
@@ -31,12 +32,12 @@ class MusicService : DaggerService(), MusicView {
     }
 
     private fun startForegroundService() {
-        val notification = NotificationCompat.Builder(this, "programing_game_foreground")
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getText(R.string.app_name))
                 .setContentText(getText(R.string.app_name))
 
         notification.priority = NotificationCompat.PRIORITY_MIN
-        startForeground(1, notification.build())
+        startForeground(FOREGROUND_NOTIFICATION_ID, notification.build())
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -44,10 +45,11 @@ class MusicService : DaggerService(), MusicView {
     }
 
     companion object {
+        private const val FOREGROUND_NOTIFICATION_ID = 1
+        private const val CHANNEL_ID = "programing_game_foreground"
 
         fun newIntent(context: Context): Intent {
             return Intent(context, MusicService::class.java)
         }
-
     }
 }
