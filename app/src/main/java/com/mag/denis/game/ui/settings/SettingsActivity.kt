@@ -26,33 +26,25 @@ class SettingsActivity : BaseActivity(), SettingsView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
         btBack.setOnClickListener { presenter.onBackClicked(getStages()) }
         btnKotlin.setOnClickListener { presenter.onKotlinClicked() }
         btnPython.setOnClickListener { presenter.onPythonClicked() }
         btnEng.setOnClickListener { presenter.onEngClicked() }
         btnSlo.setOnClickListener { presenter.onSloClicked() }
         initReorderThemes()
+
         presenter.onCreate()
     }
 
     private fun initReorderThemes() {
-
-        llActions.setOnDragListener { v, event ->
-            getDragListener(v, event)
-        }
-
-        tvStage1.setOnTouchListener { v, event ->
-            getTouchListener(v, event)
-        }
-        tvStage2.setOnTouchListener { v, event ->
-            getTouchListener(v, event)
-        }
-        tvStage3.setOnTouchListener { v, event ->
-            getTouchListener(v, event)
-        }
+        llActions.setOnDragListener { v, event -> getDragListener(v, event) }
+        tvStage1.setOnTouchListener { v, event -> getTouchListener(v, event) }
+        tvStage2.setOnTouchListener { v, event -> getTouchListener(v, event) }
+        tvStage3.setOnTouchListener { v, event -> getTouchListener(v, event) }
     }
 
-    override fun selectProgLanguage(isKotlin: Boolean) {
+    override fun selectProgramingLanguage(isKotlin: Boolean) {
         btnKotlin.isActivated = isKotlin
         btnPython.isActivated = !isKotlin
     }
@@ -84,7 +76,6 @@ class SettingsActivity : BaseActivity(), SettingsView {
         }
         return true
     }
-
 
     private fun getTouchListener(v: View, event: MotionEvent): Boolean {
         return when {

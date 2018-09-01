@@ -8,15 +8,17 @@ import com.mag.denis.game.ui.ActivityScope
 import javax.inject.Inject
 
 @ActivityScope
-class SettingsPresenterImpl @Inject constructor(private val view: SettingsView, private val gameManager: GameManager, private val languageManager: LanguageManager) : SettingsPresenter {
+class SettingsPresenterImpl @Inject constructor(private val view: SettingsView, private val gameManager: GameManager,
+        private val languageManager: LanguageManager) : SettingsPresenter {
 
     private var selectedLanguage: String? = null
 
     override fun onCreate() {
         val stages = gameManager.getStages()
-        view.setupStages(stages[0], stages[1], stages[2])
         selectedLanguage = gameManager.getLanguage()
-        view.selectProgLanguage(selectedLanguage == LANGUAGE_KOTLIN)
+
+        view.setupStages(stages[0], stages[1], stages[2])
+        view.selectProgramingLanguage(selectedLanguage == LANGUAGE_KOTLIN)
         view.selectLanguage(languageManager.getLang() == LanguageManager.LANG_CODE_EN)
     }
 
@@ -36,12 +38,12 @@ class SettingsPresenterImpl @Inject constructor(private val view: SettingsView, 
 
     override fun onPythonClicked() {
         selectedLanguage = LANGUAGE_PYTHON
-        view.selectProgLanguage(false)
+        view.selectProgramingLanguage(false)
     }
 
     override fun onKotlinClicked() {
         selectedLanguage = LANGUAGE_KOTLIN
-        view.selectProgLanguage(true)
+        view.selectProgramingLanguage(true)
     }
 
     override fun onEngClicked() {
@@ -51,9 +53,6 @@ class SettingsPresenterImpl @Inject constructor(private val view: SettingsView, 
 
     override fun onSloClicked() {
         languageManager.setLang(LanguageManager.LANG_CODE_SL)
-//        view.selectLanguage(false)
         view.recreateView()
     }
-
-
 }
