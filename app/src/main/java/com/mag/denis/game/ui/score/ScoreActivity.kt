@@ -21,6 +21,7 @@ class ScoreActivity : BaseActivity(), ScoreView {
         if (finished) {
             presenter.onFinish()
         }
+
         presenter.onCreate()
     }
 
@@ -52,7 +53,5 @@ class ScoreActivity : BaseActivity(), ScoreView {
             intent.putExtra(EXTRA_FINISH, showFinished)
             return intent
         }
-
     }
-
 }

@@ -1,6 +1,5 @@
 package com.mag.denis.game.ui.score
 
-import android.content.Context
 import com.mag.denis.game.R
 import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.manager.ScoreManager
@@ -8,12 +7,13 @@ import com.mag.denis.game.ui.ActivityScope
 import javax.inject.Inject
 
 @ActivityScope
-class ScorePresenterImpl @Inject constructor(private val context: Context, private val view: ScoreView, private val levelManager: LevelManager, private val scoreManager: ScoreManager) : ScorePresenter {
+class ScorePresenterImpl @Inject constructor(private val view: ScoreView, private val levelManager: LevelManager,
+        private val scoreManager: ScoreManager) : ScorePresenter {
 
     override fun onCreate() {
         val scores = scoreManager.getScores()
-        var scoreStr = ""
         if (scores.isNotEmpty()) {
+            var scoreStr = ""
             for ((i, score) in scores.withIndex()) {
                 scoreStr += "${i + 1}. $score points"
             }
