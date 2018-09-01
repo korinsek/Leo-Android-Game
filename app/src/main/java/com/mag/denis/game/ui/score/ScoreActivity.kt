@@ -40,6 +40,10 @@ class ScoreActivity : BaseActivity(), ScoreView {
         tvScores.text = scores
     }
 
+    override fun showScoreMessage(messageId: Int) {
+        tvScores.setText(R.string.score_message_no_scores)
+    }
+
     companion object {
         private const val EXTRA_FINISH = "com.mag.denis.game.ui.score.ScoreActivity.finish"
 

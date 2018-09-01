@@ -14,10 +14,10 @@ class ScorePresenterImpl(private val context: Context, private val view: ScoreVi
             for ((i, score) in scores.withIndex()) {
                 scoreStr += "${i + 1}. $score points"
             }
+            view.showScores(scoreStr)
         } else {
-            scoreStr = context.getString(R.string.score_message_no_scores)
+            view.showScoreMessage(R.string.score_message_no_scores)
         }
-        view.showScores(scoreStr)
 
         val starsSum = levelManager.getSumStars()
         view.showStars(starsSum)

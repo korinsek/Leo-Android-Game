@@ -19,6 +19,7 @@ import com.mag.denis.game.ui.main.actions.actionflowview.FlowView3
 import com.mag.denis.game.ui.main.actions.actionflowview.FlowView4
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
 import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoPythonView
+import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpKotlinDialog
 import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpPythonDialog
 import com.mag.denis.game.ui.main.actions.intro.IntroView
 import com.mag.denis.game.ui.main.dialog.ErrorDialog
@@ -79,9 +80,11 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Intro
                     else -> animationIntroView.hide()
                 }
                 animationIntroView.setAnimationIntroCallback(this)
-                animationIntroView.setOnClickListener {
-                    gameView.resetGame()
-                    animationIntroView.hide()
+                listOf(animationIntroView, delayedTextView).forEach {
+                    it.setOnClickListener {
+                        gameView.resetGame()
+                        animationIntroView.hide()
+                    }
                 }
             }
             GameManager.STAGE_FLOW -> {
@@ -107,9 +110,11 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Intro
                 if (gameManager.getCurrentLevel() == 1) {
                     animationIntroView.startAnimationFlowAction()
                     animationIntroView.setAnimationIntroCallback(this)
-                    animationIntroView.setOnClickListener {
-                        gameView.resetGame()
-                        animationIntroView.hide()
+                    listOf(animationIntroView, delayedTextView).forEach {
+                        it.setOnClickListener {
+                            gameView.resetGame()
+                            animationIntroView.hide()
+                        }
                     }
                 }
             }
@@ -130,7 +135,13 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Intro
                     }
                 }
                 btnHelp.visibility = View.VISIBLE
-                btnHelp.setOnClickListener { HelpPythonDialog.show(supportFragmentManager) }
+                btnHelp.setOnClickListener {
+                    when (gameManager.getLanguage()) {
+                        GameManager.LANGUAGE_KOTLIN -> HelpKotlinDialog.show(supportFragmentManager)
+                        GameManager.LANGUAGE_PYTHON -> HelpPythonDialog.show(supportFragmentManager)
+                        else -> throw IllegalStateException("Invalid programing langugage in manager")
+                    }
+                }
 
                 when (gameManager.getCurrentLevel()) {
                     1 -> animationIntroView.startAnimationPseudo1Action(actionView.reservedWordsPattern) //TODO Get reserved for correct lang

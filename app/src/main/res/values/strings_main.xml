@@ -4,4 +4,5 @@
     <string name="help_actions_title">Actions:</string>
     <string name="help_conditions">Conditions:</string>
     <string name="main_animation_skip_title">Skip intro</string>
+    <string name="main_end_not_compleated_message">To complete game you must achieve at least 1 star on each level.</string>
 </resources>

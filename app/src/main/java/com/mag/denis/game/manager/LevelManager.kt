@@ -183,7 +183,6 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
     }
 
     fun isGameFinished(): Boolean {
-
         val stageBlockCompleted = starsBlockLevels.count { it > 0 } == numOfLevelsBlock
         val stageFlowCompleted = starsFlowLevels.count { it > 0 } == numOfLevelsFlow
         val stagePseudoCompleted = starsPseudoLevels.count { it > 0 } == numOfLevelsPseudo

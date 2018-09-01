@@ -7,7 +7,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
-import android.widget.TextView
 import com.mag.denis.game.R
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
