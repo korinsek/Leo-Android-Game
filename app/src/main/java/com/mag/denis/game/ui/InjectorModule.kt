@@ -6,8 +6,8 @@ import com.mag.denis.game.ui.about.AboutActivity
 import com.mag.denis.game.ui.about.AboutModule
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.MainModule
-import com.mag.denis.game.ui.map.LevelActivity
-import com.mag.denis.game.ui.map.LevelModule
+import com.mag.denis.game.ui.level.LevelActivity
+import com.mag.denis.game.ui.level.LevelModule
 import com.mag.denis.game.ui.menu.MenuActivity
 import com.mag.denis.game.ui.menu.MenuModule
 import com.mag.denis.game.ui.score.ScoreActivity

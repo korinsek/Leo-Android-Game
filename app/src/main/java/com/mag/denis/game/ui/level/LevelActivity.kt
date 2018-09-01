@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.map
+package com.mag.denis.game.ui.level
 
 import android.animation.ObjectAnimator
 import android.app.Activity

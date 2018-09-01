@@ -8,7 +8,7 @@ import com.mag.denis.game.R
 import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.BaseActivity
 import com.mag.denis.game.ui.about.AboutActivity
-import com.mag.denis.game.ui.map.LevelActivity
+import com.mag.denis.game.ui.level.LevelActivity
 import com.mag.denis.game.ui.score.ScoreActivity
 import com.mag.denis.game.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_menu.*

@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.map
+package com.mag.denis.game.ui.level
 
 import dagger.Binds
 import dagger.Module
