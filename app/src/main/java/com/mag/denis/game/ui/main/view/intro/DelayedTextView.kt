@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.intro
+package com.mag.denis.game.ui.main.view.intro
 
 import android.content.Context
 import android.support.v4.content.ContextCompat

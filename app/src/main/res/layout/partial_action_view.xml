@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.mag.denis.game.ui.main.view.PlaceholderView
+    <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
         android:id="@+id/llActions"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="@id/llActions"
         app:srcCompat="@drawable/ic_trash" />
 
-    <com.mag.denis.game.ui.main.view.PlaceholderView
+    <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
         android:id="@+id/llActionHolder1"
         android:layout_width="0dp"
         android:layout_height="match_parent"

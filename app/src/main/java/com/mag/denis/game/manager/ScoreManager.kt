@@ -10,11 +10,7 @@ class ScoreManager @Inject constructor(private val sharedPreferences: SharedPref
     private val scores = mutableListOf<Int>()
 
     init {
-        val scoresStr = sharedPreferences.getString(SCORE_PREFERENCES_ID, "")
-
-        for (s in scoresStr) {
-            scores.add(s.toString().toInt())
-        }
+        sharedPreferences.getString(SCORE_PREFERENCES_ID, "").forEach { scores.add(it.toString().toInt()) }
     }
 
     fun addScore(newCompletedStars: Int) {

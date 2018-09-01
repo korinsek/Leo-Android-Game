@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.actionpseudoview.dialog
+package com.mag.denis.game.ui.main.view.pseudo.dialog
 
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
@@ -10,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.mag.denis.game.R
-import com.mag.denis.game.ui.main.actions.actionpseudoview.AbsPseudoView
-import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
+import com.mag.denis.game.ui.main.view.pseudo.interactionview.AbsPseudoView
+import com.mag.denis.game.ui.main.view.pseudo.interactionview.PseudoKotlinView
 import com.mag.denis.game.ui.main.dialog.BaseDialogFragment
 import com.mag.denis.game.ui.main.dialog.DialogUtils
 import kotlinx.android.synthetic.main.dialog_help.*

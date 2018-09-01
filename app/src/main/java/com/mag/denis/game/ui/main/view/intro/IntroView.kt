@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.intro
+package com.mag.denis.game.ui.main.view.intro
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
@@ -14,12 +14,12 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_DOWN
 import com.mag.denis.game.ui.main.MainActivity.Companion.ACTION_RIGHT
-import com.mag.denis.game.ui.main.actions.actionpseudoview.AbsPseudoView
+import com.mag.denis.game.ui.main.view.pseudo.interactionview.AbsPseudoView
 import com.mag.denis.game.ui.main.model.*
 import com.mag.denis.game.ui.main.objects.FloorSet
-import com.mag.denis.game.ui.main.view.action.ActionImageView
-import com.mag.denis.game.ui.main.view.action.ConditionView
-import com.mag.denis.game.ui.main.view.action.LoopView
+import com.mag.denis.game.ui.main.view.blocks.actionview.ActionImageView
+import com.mag.denis.game.ui.main.view.blocks.actionview.ConditionView
+import com.mag.denis.game.ui.main.view.blocks.actionview.LoopView
 import kotlinx.android.synthetic.main.partial_action_animation.view.*
 
 class IntroView : ConstraintLayout {

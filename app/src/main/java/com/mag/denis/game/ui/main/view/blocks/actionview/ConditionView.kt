@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.view.action
+package com.mag.denis.game.ui.main.view.blocks.actionview
 
 import android.content.Context
 import android.support.annotation.DrawableRes

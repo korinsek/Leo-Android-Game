@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.mag.denis.game.ui.main.view.PlaceholderView
+    <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
         android:id="@+id/llActions"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine0"
             app:srcCompat="@drawable/ic_arrow_point_down" />
 
-        <com.mag.denis.game.ui.main.view.PlaceholderView
+        <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
             android:id="@+id/llActionHolder1"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/actionHeight"
@@ -87,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine"
             app:srcCompat="@drawable/ic_arrow_point_down" />
 
-        <com.mag.denis.game.ui.main.view.PlaceholderView
+        <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
             android:id="@+id/llActionHolder2"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/actionHeight"
@@ -117,7 +117,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine2"
             app:srcCompat="@drawable/ic_arrow_point_down" />
 
-        <com.mag.denis.game.ui.main.view.PlaceholderView
+        <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
             android:id="@+id/llActionHolder3"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/actionHeight"
@@ -147,7 +147,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine3"
             app:srcCompat="@drawable/ic_arrow_point_down" />
 
-        <com.mag.denis.game.ui.main.view.PlaceholderView
+        <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
             android:id="@+id/llActionHolder4"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/actionHeight"
@@ -177,7 +177,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine4"
             app:srcCompat="@drawable/ic_arrow_point_down" />
 
-        <com.mag.denis.game.ui.main.view.PlaceholderView
+        <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
             android:id="@+id/llActionHolder5"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/actionHeight"
@@ -207,7 +207,7 @@
             app:layout_constraintTop_toBottomOf="@id/viewLine5"
             app:srcCompat="@drawable/ic_arrow_point_down" />
 
-        <com.mag.denis.game.ui.main.view.PlaceholderView
+        <com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
             android:id="@+id/llActionHolder6"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/actionHeight"

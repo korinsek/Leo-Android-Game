@@ -12,16 +12,16 @@ import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.BaseActivity
-import com.mag.denis.game.ui.main.actions.actionblockview.ActionBlockView
-import com.mag.denis.game.ui.main.actions.actionflowview.FlowView1
-import com.mag.denis.game.ui.main.actions.actionflowview.FlowView2
-import com.mag.denis.game.ui.main.actions.actionflowview.FlowView3
-import com.mag.denis.game.ui.main.actions.actionflowview.FlowView4
-import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoKotlinView
-import com.mag.denis.game.ui.main.actions.actionpseudoview.PseudoPythonView
-import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpKotlinDialog
-import com.mag.denis.game.ui.main.actions.actionpseudoview.dialog.HelpPythonDialog
-import com.mag.denis.game.ui.main.actions.intro.IntroView
+import com.mag.denis.game.ui.main.view.blocks.interactionview.ActionBlockView
+import com.mag.denis.game.ui.main.view.flow.interactionview.levels.FlowView1
+import com.mag.denis.game.ui.main.view.flow.interactionview.levels.FlowView2
+import com.mag.denis.game.ui.main.view.flow.interactionview.levels.FlowView3
+import com.mag.denis.game.ui.main.view.flow.interactionview.levels.FlowView4
+import com.mag.denis.game.ui.main.view.pseudo.interactionview.PseudoKotlinView
+import com.mag.denis.game.ui.main.view.pseudo.interactionview.PseudoPythonView
+import com.mag.denis.game.ui.main.view.pseudo.dialog.HelpKotlinDialog
+import com.mag.denis.game.ui.main.view.pseudo.dialog.HelpPythonDialog
+import com.mag.denis.game.ui.main.view.intro.IntroView
 import com.mag.denis.game.ui.main.dialog.ErrorDialog
 import com.mag.denis.game.ui.main.dialog.MessageDialog
 import com.mag.denis.game.ui.main.model.Command
@@ -231,6 +231,7 @@ class MainActivity : BaseActivity(), MainView, GameView.OnMessageCallback, Intro
     }
 
     companion object {
+
         const val ACTION_UP = "action_up"
         const val ACTION_DOWN = "action_down"
         const val ACTION_RIGHT = "action_right"

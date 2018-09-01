@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.BaseActivity
-import com.mag.denis.game.ui.main.view.PlaceholderView
+import com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
 import com.mag.denis.game.ui.menu.MenuActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 import java.util.*

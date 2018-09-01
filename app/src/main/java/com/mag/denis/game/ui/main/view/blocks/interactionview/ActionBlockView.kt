@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.actionblockview
+package com.mag.denis.game.ui.main.view.blocks.interactionview
 
 import android.content.ClipData
 import android.content.Context
@@ -18,10 +18,10 @@ import com.mag.denis.game.manager.LevelManager.Companion.COMMAND_CONDITION
 import com.mag.denis.game.manager.LevelManager.Companion.COMMAND_LOOP
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.*
-import com.mag.denis.game.ui.main.view.PlaceholderView
-import com.mag.denis.game.ui.main.view.action.ActionImageView
-import com.mag.denis.game.ui.main.view.action.ConditionView
-import com.mag.denis.game.ui.main.view.action.LoopView
+import com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
+import com.mag.denis.game.ui.main.view.blocks.actionview.ActionImageView
+import com.mag.denis.game.ui.main.view.blocks.actionview.ConditionView
+import com.mag.denis.game.ui.main.view.blocks.actionview.LoopView
 import kotlinx.android.synthetic.main.partial_action_view.view.*
 
 class ActionBlockView : ConstraintLayout {

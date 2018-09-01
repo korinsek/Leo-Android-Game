@@ -9,6 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LevelManager @Inject constructor(private val gameManager: GameManager, private val sharedPreferences: SharedPreferences) {
+
     private val level1 = listOf(
             listOf("0", "0", "0", "0", "0"),
             listOf("1", "1", "1S", "1S", "1S", "F"))
@@ -46,13 +47,6 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
             listOf("0", "0", "1S", "2", "0", "0", "0"),
             listOf("0", "0", "0", "F", "0", "0", "0"))
 
-//    private val level5 = listOf(
-//            listOf("1", "1", "1", "1", "1", "1", "1", "2"),
-//            listOf("0", "0", "0", "0", "0", "0", "0", "1"),
-//            listOf("1", "1", "1", "1", "1", "1", "1", "1"),
-//            listOf("1", "0", "0", "0", "0", "0", "0", "0"),
-//            listOf("1", "1", "1", "1", "1", "1", "1", "F"))
-
     private val level6 = listOf(
             listOf("1", "1", "1", "1", "2S", "0", "0"),
             listOf("2", "0", "1", "0", "2", "0", "0"),
@@ -75,36 +69,24 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
             listOf("0", "0", "0", "1", "2S", "1", "0"),
             listOf("0", "0", "1S", "2", "1", "1", "F"))
 
-    private val numOfLevelsBlock = 8
-    private val numOfLevelsFlow = 4
-    private val numOfLevelsPseudo = 8
-
 
     private val starsBlockLevels = mutableListOf<Int>()
     private val starsFlowLevels = mutableListOf<Int>()
     private val starsPseudoLevels = mutableListOf<Int>()
 
     init {
-        val blockStars = sharedPreferences.getString(STARS_STAGE_BLOCK_PREFERENCES_ID, "0".repeat(numOfLevelsBlock))
-        val flowStars = sharedPreferences.getString(STARS_STAGE_FLOW_PREFERENCES_ID, "0".repeat(numOfLevelsFlow))
-        val pseudoStars = sharedPreferences.getString(STARS_STAGE_PSEUDO_PREFERENCES_ID, "0".repeat(numOfLevelsPseudo))
+        sharedPreferences.getString(STARS_STAGE_BLOCK_PREFERENCES_ID, "0".repeat(NUM_LEVELS_BLOCKS))
+                .forEach { starsBlockLevels.add(it.toString().toInt()) }
 
 
-        for (s in blockStars) {
-            starsBlockLevels.add(s.toString().toInt())
-        }
+        sharedPreferences.getString(STARS_STAGE_FLOW_PREFERENCES_ID, "0".repeat(NUM_LEVELS_FLOW))
+                .forEach { starsFlowLevels.add(it.toString().toInt()) }
 
-        for (s in flowStars) {
-            starsFlowLevels.add(s.toString().toInt())
-        }
-
-        for (s in pseudoStars) {
-            starsPseudoLevels.add(s.toString().toInt())
-        }
+        sharedPreferences.getString(STARS_STAGE_PSEUDO_PREFERENCES_ID, "0".repeat(NUM_LEVELS_PSEUDO))
+                .forEach { starsPseudoLevels.add(it.toString().toInt()) }
     }
 
     fun getCurrentLevel(): List<List<String>> {
-        //TODO more levels
         if (gameManager.getCurrentStage() == STAGE_FLOW) {
             return when (gameManager.getCurrentLevel()) {
                 1 -> level1
@@ -129,7 +111,7 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
     }
 
     fun setStarsForLevel(level: Int, stars: Int) {
-        val starsLevels = getCurentLevelStarsList()
+        val starsLevels = getCurrentLevelStarsList()
         val value = starsLevels[level - 1]
         if (value < stars) {
             starsLevels[level - 1] = stars
@@ -137,7 +119,7 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
     }
 
     fun getStarsForLevel(level: Int): Int {
-        return getCurentLevelStarsList()[level - 1]
+        return getCurrentLevelStarsList()[level - 1]
     }
 
     fun getAvailableCommands(): List<Int> {
@@ -151,15 +133,15 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
 
     fun saveScores() {
         val editor = sharedPreferences.edit()
-        editor.putString(getStagePreference(), getCurentLevelStarsList().joinToString(separator = ""))
+        editor.putString(getStagePreference(), getCurrentLevelStarsList().joinToString(separator = ""))
         editor.apply()
     }
 
     fun numOfLevelsForStage(): Int {
         return when (gameManager.getCurrentStage()) {
-            STAGE_BLOCK -> numOfLevelsBlock
-            STAGE_FLOW -> numOfLevelsFlow
-            STAGE_PSEUDO -> numOfLevelsPseudo
+            STAGE_BLOCK -> NUM_LEVELS_BLOCKS
+            STAGE_FLOW -> NUM_LEVELS_FLOW
+            STAGE_PSEUDO -> NUM_LEVELS_PSEUDO
             else -> throw IllegalStateException("Invalid stage preferences")
         }
     }
@@ -173,7 +155,7 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
         }
     }
 
-    private fun getCurentLevelStarsList(): MutableList<Int> {
+    private fun getCurrentLevelStarsList(): MutableList<Int> {
         return when (gameManager.getCurrentStage()) {
             STAGE_BLOCK -> starsBlockLevels
             STAGE_FLOW -> starsFlowLevels
@@ -183,9 +165,9 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
     }
 
     fun isGameFinished(): Boolean {
-        val stageBlockCompleted = starsBlockLevels.count { it > 0 } == numOfLevelsBlock
-        val stageFlowCompleted = starsFlowLevels.count { it > 0 } == numOfLevelsFlow
-        val stagePseudoCompleted = starsPseudoLevels.count { it > 0 } == numOfLevelsPseudo
+        val stageBlockCompleted = starsBlockLevels.count { it > 0 } == NUM_LEVELS_BLOCKS
+        val stageFlowCompleted = starsFlowLevels.count { it > 0 } == NUM_LEVELS_FLOW
+        val stagePseudoCompleted = starsPseudoLevels.count { it > 0 } == NUM_LEVELS_PSEUDO
         return stageBlockCompleted && stageFlowCompleted && stagePseudoCompleted
     }
 
@@ -202,5 +184,9 @@ class LevelManager @Inject constructor(private val gameManager: GameManager, pri
         const val STARS_STAGE_BLOCK_PREFERENCES_ID = "com.mag.denis.game.manager.levelManager.starsBlock"
         const val STARS_STAGE_FLOW_PREFERENCES_ID = "com.mag.denis.game.manager.levelManager.starsFlow"
         const val STARS_STAGE_PSEUDO_PREFERENCES_ID = "com.mag.denis.game.manager.levelManager.starsPseudo"
+
+        const val NUM_LEVELS_BLOCKS = 8
+        const val NUM_LEVELS_FLOW = 4
+        const val NUM_LEVELS_PSEUDO = 8
     }
 }

@@ -60,7 +60,7 @@ class MapPresenterImpl(private val view: MapView, private val gameManager: GameM
         val currentLevel = gameManager.getCurrentLevel()
         //TODO check and move to next stage
         if (currentLevel < 8) {
-            gameManager.setMaxLevelAchived(currentLevel + 1)
+            gameManager.setMaxLevelAchieved(currentLevel + 1)
             setupLevels()
         }
     }

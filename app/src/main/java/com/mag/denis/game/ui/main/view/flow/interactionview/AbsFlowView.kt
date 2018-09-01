@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.actionflowview
+package com.mag.denis.game.ui.main.view.flow.interactionview
 
 import android.content.ClipData
 import android.content.Context
@@ -13,8 +13,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.view.PlaceholderView
-import com.mag.denis.game.ui.main.view.action.ActionImageView
+import com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
+import com.mag.denis.game.ui.main.view.blocks.actionview.ActionImageView
 import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 
 abstract class AbsFlowView : ConstraintLayout {

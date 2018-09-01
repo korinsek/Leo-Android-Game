@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.actionflowview
+package com.mag.denis.game.ui.main.view.flow.interactionview.levels
 
 import android.content.Context
 import android.support.v4.app.FragmentManager
@@ -7,17 +7,18 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.Action
 import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.view.action.ActionImageView
-import kotlinx.android.synthetic.main.partial_flow_action1.view.*
+import com.mag.denis.game.ui.main.view.blocks.actionview.ActionImageView
+import com.mag.denis.game.ui.main.view.flow.interactionview.AbsFlowView
+import kotlinx.android.synthetic.main.partial_flow_action2.view.*
 
-class FlowView1 : AbsFlowView {
+class FlowView2 : AbsFlowView {
 
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     init {
-        inflate(context, R.layout.partial_flow_action1, this)
+        inflate(context, R.layout.partial_flow_action2, this)
     }
 
     override fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>) {
@@ -39,7 +40,7 @@ class FlowView1 : AbsFlowView {
             getDragListener(v, event)
         }
 
-        listOf(llActionHolder1, llActionHolder2, llActionHolder3, llActionHolder4, llActionHolder5).forEach {
+        listOf(llActionHolder1, llActionHolder2, llActionHolder3, llActionHolder4, llActionHolder5, llActionHolder6).forEach {
             it.setOnDragListener { v, event ->
                 getDragListener(v, event)
             }
@@ -47,18 +48,14 @@ class FlowView1 : AbsFlowView {
     }
 
     override fun getActions(): ArrayList<Command> {
+        //TODO check placeholders if all filled
         val list = ArrayList<Command>()
 
-                val views = listOf(llActionHolder1, llActionHolder2, llActionHolder3, llActionHolder4, llActionHolder5)
-        views.forEach {
+        listOf(llActionHolder1, llActionHolder2, llActionHolder3, llActionHolder4, llActionHolder5, llActionHolder6).forEach {
             val action = it.getChildAt(0)
             if (action is ActionImageView) {
                 list.add(Action(action.type))
             }
-        }
-
-        if(list.size<views.size){
-            throw IllegalStateException("Fill all flow chart fields")
         }
 
         return list

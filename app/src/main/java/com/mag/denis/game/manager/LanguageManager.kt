@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-class LangManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
+class LanguageManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
     
     fun setLang(language: String) {
         sharedPreferences.edit().putString(LANG_PREFERENCES_ID, language).apply()
@@ -18,6 +18,7 @@ class LangManager @Inject constructor(private val sharedPreferences: SharedPrefe
 
     companion object {
         const val LANG_PREFERENCES_ID = "com.mag.denis.game.manager.lang"
+        
         const val LANG_CODE_EN = "en"
         const val LANG_CODE_SL = "sl"
     }

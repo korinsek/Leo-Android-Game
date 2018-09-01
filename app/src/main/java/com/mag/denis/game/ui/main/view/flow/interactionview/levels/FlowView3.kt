@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.actionflowview
+package com.mag.denis.game.ui.main.view.flow.interactionview.levels
 
 import android.content.Context
 import android.support.v4.app.FragmentManager
@@ -7,18 +7,19 @@ import com.mag.denis.game.R
 import com.mag.denis.game.manager.LevelManager
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.*
-import com.mag.denis.game.ui.main.view.action.ActionImageView
+import com.mag.denis.game.ui.main.view.blocks.actionview.ActionImageView
+import com.mag.denis.game.ui.main.view.flow.interactionview.AbsFlowView
 import kotlinx.android.synthetic.main.flow_condition.view.*
-import kotlinx.android.synthetic.main.partial_flow_action4.view.*
+import kotlinx.android.synthetic.main.partial_flow_action3.view.*
 
-class FlowView4 : AbsFlowView {
+class FlowView3 : AbsFlowView {
 
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     init {
-        inflate(context, R.layout.partial_flow_action4, this)
+        inflate(context, R.layout.partial_flow_action3, this)
     }
 
     override fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>) {
@@ -30,27 +31,15 @@ class FlowView4 : AbsFlowView {
             val actionLeft = ActionImageView(context, R.drawable.ic_arrow_left, MainActivity.ACTION_LEFT)
             val actionDown = ActionImageView(context, R.drawable.ic_arrow_down, MainActivity.ACTION_DOWN)
 
-
-            llActions.addView(actionUp)
-            llActions.addView(actionRight)
-            llActions.addView(actionLeft)
-            llActions.addView(actionDown)
+            listOf(actionUp, actionRight, actionLeft, actionDown).forEach {
+                llActions.addView(it)
+                it.setOnTouchListener { v, event ->
+                    getTouchListener(v, event)
+                }
+            }
 
             llActions.setOnDragListener { v, event ->
                 getDragListener(v, event)
-            }
-
-            actionUp.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            actionRight.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            actionLeft.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            actionDown.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
             }
         }
 
@@ -58,9 +47,12 @@ class FlowView4 : AbsFlowView {
             getDragListener(v, event)
         }
 
+
         llActionHolder2.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
+
+
         flowConditionView1.setOnDragListener { v, event ->
             getDragListener(v, event)
         }
@@ -74,16 +66,14 @@ class FlowView4 : AbsFlowView {
         val firstAction = Action(action1.type)
         list.add(firstAction)
 
+        val condition = etIfValue.text?.toString()?.toIntOrNull() ?: 1
+        for (i in 1..7) {
+            list.add(IfCondition(ColorCondition(condition, Condition.TYPE_TRUE), listOf(firstAction), emptyList()))
+        }
 
         val action2 = llActionHolder2.getChildAt(0) as ActionImageView
         val secondAction = Action(action2.type)
         list.add(secondAction)
-
-
-        val condition = etIfValue.text?.toString()?.toIntOrNull() ?: 1
-        for (i in 1..7) {
-            list.add(IfCondition(ColorCondition(condition, Condition.TYPE_TRUE), listOf(firstAction, secondAction), emptyList()))
-        }
 
 
         return list

@@ -1,4 +1,4 @@
-package com.mag.denis.game.ui.main.actions.actionpseudoview
+package com.mag.denis.game.ui.main.view.pseudo.interactionview
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout

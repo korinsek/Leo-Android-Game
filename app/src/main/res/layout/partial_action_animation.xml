@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/transparentBlack">
 
-    <com.mag.denis.game.ui.main.actions.intro.DelayedTextView
+    <com.mag.denis.game.ui.main.view.intro.DelayedTextView
         android:id="@+id/delayedTextView"
         android:layout_width="match_parent"
         android:singleLine="false"

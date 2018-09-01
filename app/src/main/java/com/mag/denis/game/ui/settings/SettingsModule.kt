@@ -1,7 +1,7 @@
 package com.mag.denis.game.ui.settings
 
 import com.mag.denis.game.manager.GameManager
-import com.mag.denis.game.manager.LangManager
+import com.mag.denis.game.manager.LanguageManager
 import com.mag.denis.game.ui.ActivityScope
 import dagger.Binds
 import dagger.Module
@@ -11,8 +11,8 @@ import dagger.Provides
 class SettingsModule {
 
     @Provides @ActivityScope
-    fun providePresenter(view: SettingsView, gameManager: GameManager, langManager: LangManager): SettingsPresenter {
-        return SettingsPresenterImpl(view, gameManager, langManager)
+    fun providePresenter(view: SettingsView, gameManager: GameManager, languageManager: LanguageManager): SettingsPresenter {
+        return SettingsPresenterImpl(view, gameManager, languageManager)
     }
 
     @Module
