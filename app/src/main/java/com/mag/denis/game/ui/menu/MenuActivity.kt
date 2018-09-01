@@ -22,6 +22,7 @@ class MenuActivity : BaseActivity(), MenuView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+
         btPlay.setOnClickListener { presenter.onPlayClick() }
         btScore.setOnClickListener { presenter.onScoreClick() }
         btSettings.setOnClickListener { presenter.onSettingsClick() }
@@ -45,13 +46,21 @@ class MenuActivity : BaseActivity(), MenuView {
     }
 
     override fun onResume() {
-        ActivityCompat.startForegroundService(this, MusicService.newIntent(this))
+        presenter.onResume()
         super.onResume()
     }
 
     override fun onPause() {
-        stopService(MusicService.newIntent(this))
+        presenter.onPause()
         super.onPause()
+    }
+
+    override fun startMusicService() {
+        ActivityCompat.startForegroundService(this, MusicService.newIntent(this))
+    }
+
+    override fun stopMusicService() {
+        stopService(MusicService.newIntent(this))
     }
 
     companion object {
@@ -60,5 +69,4 @@ class MenuActivity : BaseActivity(), MenuView {
             return Intent(context, MenuActivity::class.java)
         }
     }
-
 }

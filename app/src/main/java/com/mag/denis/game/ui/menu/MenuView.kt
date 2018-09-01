@@ -5,4 +5,6 @@ interface MenuView {
     fun openScoreView()
     fun openSettingsView()
     fun openAboutView()
+    fun startMusicService()
+    fun stopMusicService()
 }

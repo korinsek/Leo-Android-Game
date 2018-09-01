@@ -5,4 +5,6 @@ interface MenuPresenter {
     fun onScoreClick()
     fun onSettingsClick()
     fun onAboutClick()
+    fun onResume()
+    fun onPause()
 }

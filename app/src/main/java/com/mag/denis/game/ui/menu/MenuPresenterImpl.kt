@@ -6,6 +6,14 @@ import javax.inject.Inject
 @ActivityScope
 class MenuPresenterImpl @Inject constructor(private val view: MenuView) : MenuPresenter {
 
+    override fun onResume() {
+        view.startMusicService()
+    }
+
+    override fun onPause() {
+        view.stopMusicService()
+    }
+
     override fun onPlayClick() {
         view.openGameView()
     }
