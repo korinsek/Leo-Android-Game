@@ -35,7 +35,7 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".ui.map.MapActivity"
+            android:name=".ui.map.LevelActivity"
             android:label="@string/map_activity_title"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
