@@ -21,7 +21,7 @@ class FlowView1 : AbsFlowView {
         inflate(context, R.layout.partial_flow_action1, this)
     }
 
-    override fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>) {
+    override fun setupViews(fragmentManager: FragmentManager, availableCommands: List<Int>) {
         super.onAttachedToWindow()
 
         val actionUp = ActionImageView(context, R.drawable.ic_arrow_upward, MainActivity.ACTION_UP)

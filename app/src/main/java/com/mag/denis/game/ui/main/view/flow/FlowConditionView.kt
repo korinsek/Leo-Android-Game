@@ -9,7 +9,6 @@ import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.dialog.ColorDialog
 import kotlinx.android.synthetic.main.flow_condition.view.*
 
-
 class FlowConditionView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs), ColorDialog.ColorCallback {
 
     init {

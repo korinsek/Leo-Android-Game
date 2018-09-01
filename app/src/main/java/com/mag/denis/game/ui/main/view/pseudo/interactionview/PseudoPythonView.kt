@@ -31,7 +31,8 @@ class PseudoPythonView : AbsPseudoView {
         val pattern = Pattern.compile(reservedWordsPattern)
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
-            s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)),
+                    matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
         maxLastIndex = etCode.selectionStart
@@ -185,6 +186,7 @@ class PseudoPythonView : AbsPseudoView {
     }
 
     override fun getIntroCodeLoopIf(): String {
-        return "$RESERVED_LOOP i in range(${4}):\n    $RESERVED_CONDITION_IF($CONDITION_GREEN_LEAF):\n        moveRight()\n    else\n        moveDown()\n"
+        return "$RESERVED_LOOP i in range(${4}):\n    $RESERVED_CONDITION_IF($CONDITION_GREEN_LEAF):" +
+                "\n        moveRight()\n    else\n        moveDown()\n"
     }
 }

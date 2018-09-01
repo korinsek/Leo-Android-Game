@@ -12,6 +12,15 @@ import javax.inject.Inject
 class MainPresenterImpl @Inject constructor(private val view: MainView, private val levelManager: LevelManager,
         private val gameManager: GameManager, private val scoreManager: ScoreManager) : MainPresenter {
 
+    override fun onResume() {
+        view.startMusicService()
+        view.invalidateGame()
+    }
+
+    override fun onPause() {
+        view.stopMusicService()
+    }
+
     override fun onStartClick(commands: ArrayList<Command>) {
         view.doActionsInGame(commands)
     }
@@ -31,4 +40,7 @@ class MainPresenterImpl @Inject constructor(private val view: MainView, private 
         }
     }
 
+    override fun onHelpClicked() {
+        view.openHelpDialog()
+    }
 }

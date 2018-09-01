@@ -21,7 +21,7 @@ class FlowView2 : AbsFlowView {
         inflate(context, R.layout.partial_flow_action2, this)
     }
 
-    override fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>) {
+    override fun setupViews(fragmentManager: FragmentManager, availableCommands: List<Int>) {
         super.onAttachedToWindow()
 
         val actionUp = ActionImageView(context, R.drawable.ic_arrow_upward, MainActivity.ACTION_UP)
@@ -48,7 +48,6 @@ class FlowView2 : AbsFlowView {
     }
 
     override fun getActions(): ArrayList<Command> {
-        //TODO check placeholders if all filled
         val list = ArrayList<Command>()
 
         listOf(llActionHolder1, llActionHolder2, llActionHolder3, llActionHolder4, llActionHolder5, llActionHolder6).forEach {

@@ -22,10 +22,10 @@ class FlowView3 : AbsFlowView {
         inflate(context, R.layout.partial_flow_action3, this)
     }
 
-    override fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>) {
+    override fun setupViews(fragmentManager: FragmentManager, availableCommands: List<Int>) {
         super.onAttachedToWindow()
 
-        if (avilableCommands.contains(LevelManager.COMMAND_ACTIONS)) {
+        if (availableCommands.contains(LevelManager.COMMAND_ACTIONS)) {
             val actionUp = ActionImageView(context, R.drawable.ic_arrow_upward, MainActivity.ACTION_UP)
             val actionRight = ActionImageView(context, R.drawable.ic_arrow_right, MainActivity.ACTION_RIGHT)
             val actionLeft = ActionImageView(context, R.drawable.ic_arrow_left, MainActivity.ACTION_LEFT)
@@ -43,23 +43,14 @@ class FlowView3 : AbsFlowView {
             }
         }
 
-        llActionHolder1.setOnDragListener { v, event ->
-            getDragListener(v, event)
-        }
-
-
-        llActionHolder2.setOnDragListener { v, event ->
-            getDragListener(v, event)
-        }
-
-
-        flowConditionView1.setOnDragListener { v, event ->
-            getDragListener(v, event)
+        listOf(llActionHolder1, llActionHolder2, flowConditionView1).forEach {
+            it.setOnDragListener { v, event ->
+                getDragListener(v, event)
+            }
         }
     }
 
     override fun getActions(): ArrayList<Command> {
-        //TODO check placeholders if all filled
         val list = ArrayList<Command>()
 
         val action1 = llActionHolder1.getChildAt(0) as ActionImageView
@@ -74,7 +65,6 @@ class FlowView3 : AbsFlowView {
         val action2 = llActionHolder2.getChildAt(0) as ActionImageView
         val secondAction = Action(action2.type)
         list.add(secondAction)
-
 
         return list
     }

@@ -5,8 +5,8 @@ import android.support.v7.widget.AppCompatImageView
 import android.widget.LinearLayout
 import com.mag.denis.game.R
 
-class ActionImageView(context: Context, val drawableId: Int, val type: String,
-        val backgroundId: Int = R.drawable.bg_action, val viewWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT) : AppCompatImageView(context), ActionView {
+class ActionImageView(context: Context, val drawableId: Int, val type: String, backgroundId: Int = R.drawable.bg_action,
+        val viewWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT) : AppCompatImageView(context), ActionView {
 
     init {
         setImageResource(drawableId)

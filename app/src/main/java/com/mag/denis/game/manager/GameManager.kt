@@ -1,6 +1,9 @@
 package com.mag.denis.game.manager
 
 import android.content.SharedPreferences
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -56,6 +59,11 @@ class GameManager @Inject constructor(private val sharedPreferences: SharedPrefe
         val editor = sharedPreferences.edit()
         editor.putString(CURRENT_STAGE_PREFERENCES_ID, stage)
         editor.apply()
+    }
+
+    fun getGameLoop(fps: Long): Observable<Long> {
+        return Observable.interval(1000L / fps, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
     }
 
     companion object {

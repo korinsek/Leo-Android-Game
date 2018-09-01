@@ -47,7 +47,8 @@ class PseudoKotlinView : AbsPseudoView {
         val pattern = Pattern.compile(reservedWordsPattern)
         val matcher = pattern.matcher(s)
         while (matcher.find()) {
-            s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)),
+                    matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
         maxLastIndex = etCode.selectionStart
@@ -118,7 +119,8 @@ class PseudoKotlinView : AbsPseudoView {
                     while (codeLines.isNotEmpty()) {
                         val line = codeLines.firstOrNull()
                         if (line != null) {
-                            if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF) || line.contains(RESERVED_CONDITION_ELSE)) {
+                            if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF)
+                                    || line.contains(RESERVED_CONDITION_ELSE)) {
                                 bracketsOpened++
                             }
                             codeLines.removeAt(0)
@@ -154,7 +156,8 @@ class PseudoKotlinView : AbsPseudoView {
                     while (codeLines.isNotEmpty()) {
                         val line = codeLines.firstOrNull()
                         if (line != null) {
-                            if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF) || line.contains(RESERVED_CONDITION_ELSE)) {
+                            if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF)
+                                    || line.contains(RESERVED_CONDITION_ELSE)) {
                                 bracketsOpened++
                             }
                             codeLines.removeAt(0)
@@ -181,7 +184,8 @@ class PseudoKotlinView : AbsPseudoView {
                         while (codeLines.isNotEmpty()) {
                             val line = codeLines.firstOrNull()
                             if (line != null) {
-                                if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF) || line.contains(RESERVED_CONDITION_ELSE)) {
+                                if (line.contains(RESERVED_LOOP) || line.contains(RESERVED_CONDITION_IF)
+                                        || line.contains(RESERVED_CONDITION_ELSE)) {
                                     bracketsOpened++
                                 }
                                 codeLines.removeAt(0)
@@ -212,7 +216,8 @@ class PseudoKotlinView : AbsPseudoView {
     }
 
     override fun getIntroCodeLoopIf(): String {
-        return "$RESERVED_LOOP (6){\n   $RESERVED_CONDITION_IF ($CONDITION_GREEN_LEAF){\n        $MOVE_RIGHT\n    } else { \n        $MOVE_DOWN\n}\n"
+        return "$RESERVED_LOOP (6){\n   $RESERVED_CONDITION_IF ($CONDITION_GREEN_LEAF)" +
+                "{\n        $MOVE_RIGHT\n    } else { \n        $MOVE_DOWN\n}\n"
     }
 
     companion object {

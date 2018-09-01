@@ -10,4 +10,8 @@ interface MainView {
     fun closeOk()
     fun showErrorDialog(message: String)
     fun openScoreScreen()
+    fun startMusicService()
+    fun stopMusicService()
+    fun invalidateGame()
+    fun openHelpDialog()
 }

@@ -13,8 +13,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.mag.denis.game.R
 import com.mag.denis.game.ui.main.model.Command
-import com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
 import com.mag.denis.game.ui.main.view.blocks.actionview.ActionImageView
+import com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
 import kotlinx.android.synthetic.main.partial_flow_action1.view.*
 
 abstract class AbsFlowView : ConstraintLayout {
@@ -31,8 +31,8 @@ abstract class AbsFlowView : ConstraintLayout {
 
     internal fun getDragListener(v: View, e: DragEvent): Boolean {
         if (e.action == DragEvent.ACTION_DROP || e.action == DragEvent.ACTION_DRAG_ENDED) {
-            when (e.localState) {
-                is ActionImageView -> handleActionToPlaceholderDrag(v, e)
+            if (e.localState is ActionImageView) {
+                handleActionToPlaceholderDrag(v, e)
             }
         }
         return true
@@ -49,9 +49,11 @@ abstract class AbsFlowView : ConstraintLayout {
                     }
 
                     val newImageView = ActionImageView(context, draggedView.drawableId, draggedView.type)
-                    newImageView.setOnTouchListener { v, event ->
-                        getTouchListener(v, event)
-                    }
+                            .apply {
+                                setOnTouchListener { v, event ->
+                                    getTouchListener(v, event)
+                                }
+                            }
                     val container = view as PlaceholderView
                     if (container != llActions) {
                         container.addView(newImageView)
@@ -88,7 +90,7 @@ abstract class AbsFlowView : ConstraintLayout {
         }
     }
 
-    abstract fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>)
+    abstract fun setupViews(fragmentManager: FragmentManager, availableCommands: List<Int>)
 
     abstract fun getActions(): ArrayList<Command>
 }

@@ -16,10 +16,10 @@ import java.util.regex.Pattern
 
 class DelayedTextView : AppCompatTextView {
 
+    private var textUpdateDisposable: Disposable? = null
+    private var reservedWord: String = ""
     private var index: Int = 0
     private var delay: Long = 150
-    private var reservedWord: String = ""
-    private var textUpdateDisposable: Disposable? = null
 
     constructor(context: Context) : super(context)
 
@@ -50,11 +50,6 @@ class DelayedTextView : AppCompatTextView {
             s.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.loop_text_color)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         return s
-    }
-
-
-    fun setCharacterDelay(millis: Long) {
-        delay = millis
     }
 
     interface TextTypedCallback {

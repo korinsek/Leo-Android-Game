@@ -18,10 +18,10 @@ import com.mag.denis.game.manager.LevelManager.Companion.COMMAND_CONDITION
 import com.mag.denis.game.manager.LevelManager.Companion.COMMAND_LOOP
 import com.mag.denis.game.ui.main.MainActivity
 import com.mag.denis.game.ui.main.model.*
-import com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
 import com.mag.denis.game.ui.main.view.blocks.actionview.ActionImageView
 import com.mag.denis.game.ui.main.view.blocks.actionview.ConditionView
 import com.mag.denis.game.ui.main.view.blocks.actionview.LoopView
+import com.mag.denis.game.ui.main.view.blocks.actionview.PlaceholderView
 import kotlinx.android.synthetic.main.partial_action_view.view.*
 
 class ActionBlockView : ConstraintLayout {
@@ -37,72 +37,57 @@ class ActionBlockView : ConstraintLayout {
         this.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
     }
 
-    fun setupViews(fragmentManager: FragmentManager, avilableCommands: List<Int>) {
+    fun setupViews(fragmentManager: FragmentManager, availableCommands: List<Int>) {
         super.onAttachedToWindow()
 
-        if (avilableCommands.contains(LevelManager.COMMAND_ACTIONS)) {
+        if (availableCommands.contains(LevelManager.COMMAND_ACTIONS)) {
             val actionUp = ActionImageView(context, R.drawable.ic_arrow_upward, MainActivity.ACTION_UP)
             val actionRight = ActionImageView(context, R.drawable.ic_arrow_right, MainActivity.ACTION_RIGHT)
             val actionLeft = ActionImageView(context, R.drawable.ic_arrow_left, MainActivity.ACTION_LEFT)
             val actionDown = ActionImageView(context, R.drawable.ic_arrow_down, MainActivity.ACTION_DOWN)
-
 
             llActions.addView(actionUp)
             llActions.addView(actionRight)
             llActions.addView(actionLeft)
             llActions.addView(actionDown)
 
-            llActions.setOnDragListener { v, event ->
-                getDragListener(v, event)
-            }
-
-            actionUp.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            actionRight.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            actionLeft.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            actionDown.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
+            llActions.setOnDragListener { v, event -> getDragListener(v, event) }
+            listOf(actionUp, actionRight, actionLeft, actionDown).forEach { view ->
+                view.setOnTouchListener { v, event -> getTouchListener(v, event) }
             }
         }
-        if (avilableCommands.contains(COMMAND_LOOP)) {
+        if (availableCommands.contains(COMMAND_LOOP)) {
             //Loop
             val loop1 = LoopView(context)
             val loop2 = LoopView(context)
             llActions.addView(loop1)
 
-            loop1.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            loop1.setOnDragListener { v, event ->
-                getDragListener(v, event)
+            loop1.apply {
+                setOnTouchListener { v, event -> getTouchListener(v, event) }
+                setOnDragListener { v, event -> getDragListener(v, event) }
             }
 
-            loop2.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            loop2.setOnDragListener { v, event ->
-                getDragListener(v, event)
+            loop2.apply {
+                setOnTouchListener { v, event -> getTouchListener(v, event) }
+                setOnDragListener { v, event -> getDragListener(v, event) }
             }
         }
 
-        if (avilableCommands.contains(COMMAND_CONDITION)) {
+        if (availableCommands.contains(COMMAND_CONDITION)) {
 
             val if1 = ConditionView(context, fragmentManager)
             llActions.addView(if1)
 
-            if1.setOnTouchListener { v, event ->
-                getTouchListener(v, event)
-            }
-            if1.getTruePlaceholder().setOnDragListener { v, event ->
-                getDragListener(v, event)
-            }
-            if1.getFalsePlaceholder().setOnDragListener { v, event ->
-                getDragListener(v, event)
+            if1.apply {
+                setOnTouchListener { v, event ->
+                    getTouchListener(v, event)
+                }
+                getTruePlaceholder().setOnDragListener { v, event ->
+                    getDragListener(v, event)
+                }
+                getFalsePlaceholder().setOnDragListener { v, event ->
+                    getDragListener(v, event)
+                }
             }
         }
 
@@ -414,12 +399,10 @@ class ActionBlockView : ConstraintLayout {
                         }
 
                         val newLoop = LoopView(context)
-                        newLoop.setOnTouchListener { v, event ->
-                            getTouchListener(v, event)
-                        }
-                        newLoop.setOnDragListener { v, event ->
-                            getDragListener(v, event)
-                        }
+                                .apply {
+                                    setOnTouchListener { v, event -> getTouchListener(v, event) }
+                                    setOnDragListener { v, event -> getDragListener(v, event) }
+                                }
 
                         val container = view as LoopView
                         container.getPlaceholder().addView(newLoop)
@@ -506,7 +489,8 @@ class ActionBlockView : ConstraintLayout {
                     list.add(Loop(value, getAllChildren(containerll))) //Recursive call
                 }
                 is ConditionView -> {
-                    val condition = child.findViewById<EditText>(R.id.etIfValue)?.text?.toString()?.toIntOrNull() ?: 1
+                    val condition = child.findViewById<EditText>(R.id.etIfValue)?.text?.toString()?.toIntOrNull()
+                            ?: 1
                     val containerTrue = child.findViewById<LinearLayout>(R.id.llIfTruePlaceholder)
                     val containerFalse = child.findViewById<LinearLayout>(R.id.llIfFalsePlaceholder)
                     list.add(IfCondition(ColorCondition(condition, Condition.TYPE_TRUE),
@@ -518,5 +502,4 @@ class ActionBlockView : ConstraintLayout {
         }
         return list
     }
-
 }
