@@ -207,9 +207,12 @@ class ActionBlockView : ConstraintLayout {
                     val parent = draggedView.parent
                     if (parent != llActions) {
                         val owner = parent as ViewGroup
-                        owner.removeView(draggedView)
-                        val container = view as LinearLayout
-                        container.addView(draggedView)
+                        val safe = isSafeToAdd(owner, draggedView)
+                        if (safe) {
+                            owner.removeView(draggedView)
+                            val container = view as LinearLayout
+                            container.addView(draggedView)
+                        }
                     } else {
                         val owner = parent as ViewGroup
                         if (owner != llActions) {
@@ -246,9 +249,10 @@ class ActionBlockView : ConstraintLayout {
                 if (view.parent.parent.parent != llActions) {
                     val container = view as LinearLayout
                     if (draggedView.parent != llActions) {
-
-                        if (draggedView != container.parent.parent) {
-                            val owner = draggedView.parent as ViewGroup
+                        val owner = draggedView.parent as ViewGroup
+                        val safe = isSafeToAdd(owner, draggedView)
+                        if (draggedView != container.parent.parent && safe
+                                && draggedView.javaClass != container.parent.parent.javaClass) {
                             owner.removeView(draggedView)
                             container.addView(draggedView)
                         }
@@ -387,9 +391,10 @@ class ActionBlockView : ConstraintLayout {
                 if (view.parent != llActions) {
                     if (draggedView.parent != llActions) {
                         val container = view as LoopView
-                        if (draggedView != container) {
-                            val owner = draggedView.parent as ViewGroup
-                            owner.removeView(draggedView) //odstrani view ce ga hocemo prestavit
+                        val owner = draggedView.parent as ViewGroup
+                        val safe = isSafeToAdd(owner, draggedView)
+                        if (draggedView != container && safe && draggedView.javaClass != container.parent.parent.javaClass) {
+                            owner.removeView(draggedView)
                             container.getPlaceholder().addView(draggedView)
                         }
                     } else {
@@ -501,5 +506,31 @@ class ActionBlockView : ConstraintLayout {
             }
         }
         return list
+    }
+
+    private fun isSafeToAdd(v: View, target: View): Boolean {
+        val viewGroup = v as ViewGroup
+        for (i in 0 until viewGroup.childCount) {
+            val child = viewGroup.getChildAt(i)
+
+            if (child == target) {
+                return false
+            }
+            when (child) {
+                is ActionImageView -> return child != target
+                is LoopView -> {
+                    val containerll = child.findViewById<LinearLayout>(R.id.llLoopPlaceholder)
+                    return isSafeToAdd(containerll, target)
+                }
+                is ConditionView -> {
+                    val containerTrue = child.findViewById<LinearLayout>(R.id.llIfTruePlaceholder)
+                    val containerFalse = child.findViewById<LinearLayout>(R.id.llIfFalsePlaceholder)
+
+                    return isSafeToAdd(containerTrue, target) && isSafeToAdd(containerFalse, target)
+                }
+                else -> return isSafeToAdd(child, target) //Recursive call
+            }
+        }
+        return true
     }
 }
