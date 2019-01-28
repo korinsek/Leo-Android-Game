@@ -6,10 +6,12 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.mag.denis.game"
+        applicationId "com.kode.leo"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -43,6 +45,8 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-ads:17.1.2'
 
 
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"

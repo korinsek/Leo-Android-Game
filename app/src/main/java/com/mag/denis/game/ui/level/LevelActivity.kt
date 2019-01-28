@@ -9,11 +9,15 @@ import android.support.annotation.StringRes
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.transition.TransitionManager
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.mag.denis.game.R
 import com.mag.denis.game.service.MusicService
 import com.mag.denis.game.ui.BaseActivity
@@ -26,6 +30,8 @@ class LevelActivity : BaseActivity(), LevelView {
 
     @Inject lateinit var presenter: LevelPresenter
 
+    private var interstitialAd: InterstitialAd? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -35,11 +41,21 @@ class LevelActivity : BaseActivity(), LevelView {
         ibPrevious.setOnClickListener { presenter.onPrevClick() }
 
         presenter.onCreate()
+
+        MobileAds.initialize(this, ADMOB_ACCOUNT_ID)
+        interstitialAd = InterstitialAd(this)
+        interstitialAd?.adUnitId = ADMOB_APP_ID_INTERSTITIAL
+        interstitialAd?.loadAd(AdRequest.Builder().build())
     }
 
     override fun onResume() {
         presenter.onResume()
         super.onResume()
+        if (interstitialAd?.isLoaded() == true) {
+            interstitialAd?.show()
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.");
+        }
     }
 
     override fun onPause() {
@@ -154,6 +170,8 @@ class LevelActivity : BaseActivity(), LevelView {
     }
 
     companion object {
+        private const val ADMOB_ACCOUNT_ID = "ca-app-pub-8587807693891191~9353326209"
+        private const val ADMOB_APP_ID_INTERSTITIAL = "ca-app-pub-8587807693891191/6161268220"
 
         const val REQUEST_GAME_PLAY = 1
 

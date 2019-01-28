@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v4.app.ActivityCompat
 import android.view.View
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.mag.denis.game.R
 import com.mag.denis.game.manager.GameManager
 import com.mag.denis.game.manager.LevelManager
