@@ -132,3 +132,5 @@ gradle-app.setting
 /build
 /captures
 .externalNativeBuild
+
+google-services.json
